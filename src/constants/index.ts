@@ -21,8 +21,6 @@ import {
   Car,
   Dumbbell,
   Star,
-  Home,
-  LocateIcon,
 } from 'lucide-react';
 
 // Icons for eCommerce categories
@@ -58,12 +56,6 @@ export const ecommerceIcons = [
   { name: 'Payment', icon: CreditCard },
   { name: 'Shopping Cart', icon: ShoppingCart },
   { name: 'Discount', icon: Tag },
-];
-
-export const navItems: NavItem[] = [
-  { name: 'Dashboard', path: '/dashboard', icon: Home },
-  { name: 'Order History', path: '/orders', icon: ShoppingBag },
-  { name: 'Addresses', path: '/addresses', icon: LocateIcon },
 ];
 
 // routes

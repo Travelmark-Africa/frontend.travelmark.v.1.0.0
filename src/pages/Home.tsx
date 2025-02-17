@@ -10,11 +10,7 @@ const Home = () => {
       {/* Background Image */}
       <div className='absolute inset-0 bg-primary/10'>
         <div className='relative w-full h-full'>
-          <BlurImage
-            src={hero1}
-            alt='Beautiful destination hero image'
-            className='object-cover w-full h-full'
-          />
+          <BlurImage src={hero1} alt='Beautiful destination hero image' className='object-cover w-full h-full' />
         </div>
       </div>
 
@@ -24,11 +20,7 @@ const Home = () => {
       {/* Logo */}
       <div className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-10'>
         <div className='relative h-16 sm:h-24 md:h-28 w-[250px] sm:w-[280px]'>
-          <img
-            src={logo}
-            alt='Travelmark logo'
-            className='object-contain w-full h-full'
-          />
+          <img src={logo} alt='Travelmark logo' className='object-contain w-full h-full' />
         </div>
       </div>
 
@@ -38,8 +30,6 @@ const Home = () => {
           <h1 className='text-primary-foreground tracking-tight mb-6 text-3xl sm:text-5xl md:text-6xl drop-shadow-lg font-heading'>
             Unforgettable travel experiences <br className='hidden sm:block' /> with a positive impact
           </h1>
-
-
 
           {/* Button Container - Modified for mobile */}
           <div className='flex flex-row justify-center gap-2 sm:gap-4'>
@@ -81,23 +71,22 @@ const Home = () => {
           ))}
         </div>
 
-        <div className='flex'>
+        <div className='flex gap-3'>
           {/* About Us Link */}
-          <Button
-            variant='link'
+          <Link
             className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500'
-            onClick={() => window.location.href = '/about_us'}
+            to='/about-us'
           >
             About Us
-          </Button>
+          </Link>
           {/* Contact Us Link */}
-          <Button
-            variant='link'
+          <span className='text-white'>|</span>
+          <Link
             className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500'
-            onClick={() => window.location.href = '/contact_us'}
+            to='/contact-us'
           >
             Contact Us
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

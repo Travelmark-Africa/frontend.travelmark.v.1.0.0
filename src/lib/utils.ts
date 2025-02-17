@@ -60,7 +60,7 @@ export const formatDateRange = (startDate?: string, endDate?: string) => {
 
 export const handleError = (error: unknown) => {
   if (typeof error === 'object' && error !== null && 'data' in error) {
-    const { data } = error as { data: { message: string; }; };
+    const { data } = error as { data: { message: string } };
     toast.error(data.message || 'Something went wrong', {
       duration: 2000,
     });

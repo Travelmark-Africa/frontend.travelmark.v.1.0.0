@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError 
 
 const { VITE_APP_BASE_API_URL } = import.meta.env;
 
+// Base query with reauthentication logic
 const baseQuery = fetchBaseQuery({
   baseUrl: VITE_APP_BASE_API_URL,
   prepareHeaders: headers => {
@@ -20,9 +21,8 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 ) => {
   const result = await baseQuery(args, api, extraOptions);
 
-  // Ensure error.data is treated as an object with an optional 'message' property
+  // Handle token expiration
   const errorData = result.error?.data as { code?: string } | undefined;
-
   if (errorData && errorData.code === 'EXPIREDTOKEN') {
     localStorage.removeItem('token');
     window.location.href = '/';
@@ -31,411 +31,342 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   return result;
 };
 
+// Create the API slice
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  endpoints: builder => {
-    return {
-      // Login
-      login: builder.mutation({
-        query: data => ({
-          url: 'auth/login',
-          method: 'POST',
-          body: data,
-        }),
+  endpoints: builder => ({
+    // Auth endpoints
+    login: builder.mutation({
+      query: data => ({
+        url: 'auth/login',
+        method: 'POST',
+        body: data,
       }),
-
-      // Login with google
-      loginWithGoogle: builder.mutation({
-        query: data => ({
-          url: 'auth/login/oath/google',
-          method: 'POST',
-          body: data,
-        }),
+    }),
+    loginWithGoogle: builder.mutation({
+      query: data => ({
+        url: 'auth/login/oath/google',
+        method: 'POST',
+        body: data,
       }),
-
-      // Forgot Password
-      forgotPassword: builder.mutation({
-        query: data => ({
-          url: 'auth/forgot-password',
-          method: 'POST',
-          body: data,
-        }),
+    }),
+    forgotPassword: builder.mutation({
+      query: data => ({
+        url: 'auth/forgot-password',
+        method: 'POST',
+        body: data,
       }),
-
-      // Reset Password
-      resetPassword: builder.mutation({
-        query: ({ resetToken, password }) => ({
-          url: `auth/reset-password/${resetToken}`,
-          method: 'POST',
-          body: { password },
-        }),
+    }),
+    resetPassword: builder.mutation({
+      query: ({ resetToken, password }) => ({
+        url: `auth/reset-password/${resetToken}`,
+        method: 'POST',
+        body: { password },
       }),
+    }),
 
-      // Get Categories
-      getCategories: builder.query({
-        query: () => ({
-          url: '/categories',
-          method: 'GET',
-        }),
+    // User endpoints
+    getUsers: builder.query({
+      query: () => ({
+        url: '/users',
+        method: 'GET',
       }),
-
-      // Get Category
-      getCategory: builder.query({
-        query: categoryId => ({
-          url: `/categories/${categoryId}`,
-          method: 'GET',
-        }),
+    }),
+    createUser: builder.mutation({
+      query: data => ({
+        url: '/users',
+        method: 'POST',
+        body: data,
       }),
-
-      // Get Sub Categories
-      getSubcategories: builder.query({
-        query: () => ({
-          url: '/sub-categories',
-          method: 'GET',
-        }),
+    }),
+    updateUser: builder.mutation({
+      query: ({ userId, data }) => ({
+        url: `/users/${userId}`,
+        method: 'PUT',
+        body: data,
       }),
-
-      // Get Brands
-      getBrands: builder.query({
-        query: () => ({
-          url: '/brands',
-          method: 'GET',
-        }),
+    }),
+    deleteUser: builder.mutation({
+      query: userId => ({
+        url: `/users/${userId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      // Create User
-      createUser: builder.mutation({
-        query: data => ({
-          url: '/users',
-          method: 'POST',
-          body: data,
-        }),
+    // Role endpoints
+    getRoles: builder.query({
+      query: () => ({
+        url: '/roles',
+        method: 'GET',
       }),
-      // Create User
-      createUserWithGoogle: builder.mutation({
-        query: data => ({
-          url: '/users/oath/google',
-          method: 'POST',
-          body: data,
-        }),
+    }),
+
+    // Destination endpoints
+    getDestinations: builder.query({
+      query: () => ({
+        url: '/destinations',
+        method: 'GET',
       }),
-
-      // Get Users
-      getCurrentUser: builder.query({
-        query: () => ({
-          url: `/users/me`,
-          method: 'GET',
-        }),
+    }),
+    createDestination: builder.mutation({
+      query: data => ({
+        url: '/destinations',
+        method: 'POST',
+        body: data,
       }),
-
-      // Add to Cart
-      addToCart: builder.mutation({
-        query: data => ({
-          url: '/cart',
-          method: 'POST',
-          body: data,
-        }),
+    }),
+    getDestination: builder.query({
+      query: destinationId => ({
+        url: `/destinations/${destinationId}`,
+        method: 'GET',
       }),
-
-      // Get User Cart items
-      getUserCartItems: builder.query({
-        query: ({ currency }) => {
-          const queryString = 'cart?';
-          const params = new URLSearchParams();
-          if (currency !== undefined) params.append('currency', currency);
-          return queryString + params.toString();
-        },
+    }),
+    updateDestination: builder.mutation({
+      query: ({ destinationId, data }) => ({
+        url: `/destinations/${destinationId}`,
+        method: 'PUT',
+        body: data,
       }),
-
-      // Update User CartItem
-      updateUserCartItem: builder.mutation({
-        query: ({ id, quantity }) => ({
-          url: `/cart/${id}`,
-          method: 'PUT',
-          body: { quantity },
-        }),
+    }),
+    deleteDestination: builder.mutation({
+      query: destinationId => ({
+        url: `/destinations/${destinationId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      // Delete a User CartItem
-      deleteUserCartItem: builder.mutation({
-        query: (id: number) => ({
-          url: `/cart/${id}`,
-          method: 'DELETE',
-        }),
+    // Trip Plan endpoints
+    getTripPlans: builder.query({
+      query: () => ({
+        url: '/trip-plans',
+        method: 'GET',
       }),
-
-      // Get Users Cart Products
-      getUsersCartProducts: builder.query({
-        query: () => ({
-          url: `/users/cart/products`,
-          method: 'GET',
-        }),
+    }),
+    createTripPlan: builder.mutation({
+      query: data => ({
+        url: '/trip-plans',
+        method: 'POST',
+        body: data,
       }),
-
-      // Add to Wishlist
-      addToWishlist: builder.mutation({
-        query: data => ({
-          url: '/wishlist',
-          method: 'POST',
-          body: data,
-        }),
+    }),
+    getTripPlan: builder.query({
+      query: tripPlanId => ({
+        url: `/trip-plans/${tripPlanId}`,
+        method: 'GET',
       }),
-
-      // Get Users Wishlist Products
-      getUsersWishlistProducts: builder.query({
-        query: () => ({
-          url: `/users/wishlist/products`,
-          method: 'GET',
-        }),
+    }),
+    updateTripPlan: builder.mutation({
+      query: ({ tripPlanId, data }) => ({
+        url: `/trip-plans/${tripPlanId}`,
+        method: 'PATCH',
+        body: data,
       }),
-
-      // Get User wishlist items
-      getUserWishlistItems: builder.query({
-        query: ({ currency }) => {
-          const queryString = 'wishlist?';
-          const params = new URLSearchParams();
-          if (currency !== undefined) params.append('currency', currency);
-          return queryString + params.toString();
-        },
+    }),
+    deleteTripPlan: builder.mutation({
+      query: tripPlanId => ({
+        url: `/trip-plans/${tripPlanId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      // Update User wishlist
-      updateUserWishlistItem: builder.mutation({
-        query: ({ id, quantity }) => ({
-          url: `/wishlist/${id}`,
-          method: 'PUT',
-          body: { quantity },
-        }),
+    // Booking endpoints
+    getBookings: builder.query({
+      query: () => ({
+        url: '/bookings',
+        method: 'GET',
       }),
-
-      // Delete a User wishlist
-      deleteUserWishlistItem: builder.mutation({
-        query: (id: number) => ({
-          url: `/wishlist/${id}`,
-          method: 'DELETE',
-        }),
+    }),
+    createBooking: builder.mutation({
+      query: data => ({
+        url: '/bookings',
+        method: 'POST',
+        body: data,
       }),
-
-      // Update User
-      updateUser: builder.mutation({
-        query: ({ id, data }: { id: number; data: User }) => ({
-          url: `/users/${id}`,
-          method: 'PUT',
-          body: data,
-        }),
+    }),
+    getBooking: builder.query({
+      query: bookingId => ({
+        url: `/bookings/${bookingId}`,
+        method: 'GET',
       }),
-
-      // Get Currency
-      getCurrencies: builder.query({
-        query: () => ({
-          url: '/currencies',
-          method: 'GET',
-        }),
+    }),
+    updateBooking: builder.mutation({
+      query: ({ bookingId, data }) => ({
+        url: `/bookings/${bookingId}`,
+        method: 'PATCH',
+        body: data,
       }),
-
-      getFaqs: builder.query({
-        query: () => ({
-          url: '/faqs',
-          method: 'GET',
-        }),
+    }),
+    deleteBooking: builder.mutation({
+      query: bookingId => ({
+        url: `/bookings/${bookingId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      createMessage: builder.mutation({
-        query: data => ({
-          url: '/messages',
-          method: 'POST',
-          body: data,
-        }),
+    // Favorite endpoints
+    getFavorites: builder.query({
+      query: () => ({
+        url: '/favorites',
+        method: 'GET',
       }),
-
-      subscribeNewsletter: builder.mutation({
-        query: data => ({
-          url: '/newsLetters/subscribe',
-          method: 'POST',
-          body: data,
-        }),
+    }),
+    createFavorite: builder.mutation({
+      query: data => ({
+        url: '/favorites',
+        method: 'POST',
+        body: data,
       }),
-
-      // Get Products
-      getProducts: builder.query({
-        query: ({ page, limit, currency }) => {
-          const queryString = 'products?';
-          const params = new URLSearchParams();
-          if (page !== undefined) params.append('page', page.toString());
-          if (limit !== undefined) params.append('limit', limit.toString());
-          if (currency !== undefined) params.append('currency', currency);
-          return queryString + params.toString();
-        },
+    }),
+    deleteFavorite: builder.mutation({
+      query: favoriteId => ({
+        url: `/favorites/${favoriteId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      // Get Category Products
-      getCategoryProducts: builder.query({
-        query: categoryId => ({
-          url: `/products/category/${categoryId}`,
-          method: 'GET',
-        }),
+    // Review endpoints
+    createReview: builder.mutation({
+      query: data => ({
+        url: '/reviews',
+        method: 'POST',
+        body: data,
       }),
-
-      // Get Subcategory Products
-      getSubcategoryProducts: builder.query({
-        query: subcategoryId => ({
-          url: `/products/subcategory/${subcategoryId}`,
-          method: 'GET',
-        }),
+    }),
+    updateReview: builder.mutation({
+      query: ({ reviewId, data }) => ({
+        url: `/reviews/${reviewId}`,
+        method: 'PUT',
+        body: data,
       }),
-
-      // Get Subcategories by Category
-      getSubcategoriesByCategory: builder.query({
-        query: categoryId => ({
-          url: `/sub-categories/category/${categoryId}`,
-          method: 'GET',
-        }),
+    }),
+    deleteReview: builder.mutation({
+      query: reviewId => ({
+        url: `/reviews/${reviewId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      // Search Products
-      searchProducts: builder.query({
-        query: ({ query, categoryId, currency = 'Rwf' }) => {
-          const queryString = 'products/search?';
-          const params = new URLSearchParams();
-
-          if (query?.trim()) params.append('query', query.trim());
-          if (categoryId != null) params.append('categoryId', categoryId.toString());
-          params.append('currency', currency);
-
-          return queryString + params.toString();
-        },
+    // Country endpoints
+    getCountries: builder.query({
+      query: () => ({
+        url: '/countries',
+        method: 'GET',
       }),
-
-      // Get Product
-      getProduct: builder.query({
-        query: ({ id, currency = 'Rwf' }) => {
-          const queryString = `products/${id}?`;
-          const params = new URLSearchParams();
-          params.append('currency', currency);
-
-          return queryString + params.toString();
-        },
+    }),
+    createCountry: builder.mutation({
+      query: data => ({
+        url: '/countries',
+        method: 'POST',
+        body: data,
       }),
-
-      // User orders
-      getUserOrders: builder.query({
-        query: () => ({
-          url: '/orders/user',
-          method: 'GET',
-        }),
+    }),
+    getCountry: builder.query({
+      query: countryId => ({
+        url: `/countries/${countryId}`,
+        method: 'GET',
       }),
-
-      // Cancel Order
-      cancelOrder: builder.mutation({
-        query: (id: number) => ({
-          url: `/order/${id}`,
-          method: 'DELETE',
-        }),
+    }),
+    updateCountry: builder.mutation({
+      query: ({ countryId, data }) => ({
+        url: `/countries/${countryId}`,
+        method: 'PATCH',
+        body: data,
       }),
-
-      // Process Payment
-      processPayment: builder.mutation({
-        query: data => ({
-          url: `/payments/process`,
-          method: 'POST',
-          body: data,
-        }),
+    }),
+    deleteCountry: builder.mutation({
+      query: countryId => ({
+        url: `/countries/${countryId}`,
+        method: 'DELETE',
       }),
+    }),
 
-      // Update payment status
-      updatePaymentStatus: builder.mutation({
-        query: ({ id, status }: { id: number; status: string }) => ({
-          url: `/payments/${id}/status`,
-          method: 'PUT',
-          body: { status },
-        }),
+    // Activity endpoints
+    getActivities: builder.query({
+      query: () => ({
+        url: '/activities',
+        method: 'GET',
       }),
+    }),
+    createActivity: builder.mutation({
+      query: data => ({
+        url: '/activities',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    getActivity: builder.query({
+      query: activityId => ({
+        url: `/activities/${activityId}`,
+        method: 'GET',
+      }),
+    }),
+    updateActivity: builder.mutation({
+      query: ({ activityId, data }) => ({
+        url: `/activities/${activityId}`,
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
+    deleteActivity: builder.mutation({
+      query: activityId => ({
+        url: `/activities/${activityId}`,
+        method: 'DELETE',
+      }),
+    }),
 
-      getUserAnalyticsData: builder.query({
-        query: () => ({
-          url: '/analytics/user',
-          method: 'GET',
-        }),
+    // Search endpoints
+    searchDestinations: builder.query({
+      query: query => ({
+        url: '/search',
+        method: 'GET',
+        params: { query },
       }),
-
-      // Get User Addresses
-      getUserAddresses: builder.query({
-        query: () => ({
-          url: '/addresses',
-          method: 'GET',
-        }),
-      }),
-
-      // Create User Address
-      createUserAddress: builder.mutation({
-        query: data => ({
-          url: '/addresses',
-          method: 'POST',
-          body: data,
-        }),
-      }),
-
-      // Update User Address
-      updateUserAddress: builder.mutation({
-        query: ({ id, data }: { id: number; data: Color }) => ({
-          url: `/addresses/${id}`,
-          method: 'PUT',
-          body: data,
-        }),
-      }),
-
-      // Delete User Address
-      deleteUserAddress: builder.mutation({
-        query: (id: number) => ({
-          url: `/addresses/${id}`,
-          method: 'DELETE',
-        }),
-      }),
-    };
-  },
+    }),
+  }),
 });
 
+// Export hooks for usage in components
 export const {
   useLoginMutation,
   useLoginWithGoogleMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
-  useGetCategoriesQuery,
-  useGetCategoryQuery,
-  useGetSubcategoriesQuery,
-  useGetBrandsQuery,
+  useGetUsersQuery,
   useCreateUserMutation,
-  useCreateUserWithGoogleMutation,
-  useGetCurrentUserQuery,
-  useAddToCartMutation,
-  useGetUserCartItemsQuery,
-  useUpdateUserCartItemMutation,
-  useDeleteUserCartItemMutation,
-  useGetUsersCartProductsQuery,
-  useAddToWishlistMutation,
-  useGetUserWishlistItemsQuery,
-  useGetUsersWishlistProductsQuery,
-  useUpdateUserWishlistItemMutation,
-  useDeleteUserWishlistItemMutation,
   useUpdateUserMutation,
-  useGetCurrenciesQuery,
-  useGetProductsQuery,
-  useGetCategoryProductsQuery,
-  useGetSubcategoryProductsQuery,
-  useGetSubcategoriesByCategoryQuery,
-  useSearchProductsQuery,
-  useGetFaqsQuery,
-  useCreateMessageMutation,
-  useSubscribeNewsletterMutation,
-  useGetProductQuery,
-  useProcessPaymentMutation,
-  useUpdatePaymentStatusMutation,
-  useGetUserOrdersQuery,
-  useCancelOrderMutation,
-  useGetUserAnalyticsDataQuery,
-  useCreateUserAddressMutation,
-  useGetUserAddressesQuery,
-  useUpdateUserAddressMutation,
-  useDeleteUserAddressMutation,
+  useDeleteUserMutation,
+  useGetRolesQuery,
+  useGetDestinationsQuery,
+  useCreateDestinationMutation,
+  useGetDestinationQuery,
+  useUpdateDestinationMutation,
+  useDeleteDestinationMutation,
+  useGetTripPlansQuery,
+  useCreateTripPlanMutation,
+  useGetTripPlanQuery,
+  useUpdateTripPlanMutation,
+  useDeleteTripPlanMutation,
+  useGetBookingsQuery,
+  useCreateBookingMutation,
+  useGetBookingQuery,
+  useUpdateBookingMutation,
+  useDeleteBookingMutation,
+  useGetFavoritesQuery,
+  useCreateFavoriteMutation,
+  useDeleteFavoriteMutation,
+  useCreateReviewMutation,
+  useUpdateReviewMutation,
+  useDeleteReviewMutation,
+  useGetCountriesQuery,
+  useCreateCountryMutation,
+  useGetCountryQuery,
+  useUpdateCountryMutation,
+  useDeleteCountryMutation,
+  useGetActivitiesQuery,
+  useCreateActivityMutation,
+  useGetActivityQuery,
+  useUpdateActivityMutation,
+  useDeleteActivityMutation,
+  useSearchDestinationsQuery,
 } = apiSlice;
