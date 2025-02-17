@@ -1,6 +1,7 @@
 import Container from '@/components/Container';
 import DestinationCard from '@/components/destinations/DestinationCard';
 import Empty from '@/components/Empty';
+import Navbar from '@/components/navbar/Navbar';
 import { useGetDestinationsQuery } from '@/redux/api/apiSlice';
 
 const Explore = () => {
@@ -24,7 +25,7 @@ const Explore = () => {
     content = (
       <div
         className='
-          pt-24
+          pt-32
           grid 
           grid-cols-1
           sm:grid-cols-2 
@@ -47,9 +48,12 @@ const Explore = () => {
 
   // Single return statement for all states
   return (
-    <Container>
-      {content}
-    </Container>
+    <>
+      <Navbar />
+      <Container>
+        {content}
+      </Container>
+    </>
   );
 };
 

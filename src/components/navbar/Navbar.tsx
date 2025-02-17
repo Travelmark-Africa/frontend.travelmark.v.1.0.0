@@ -1,11 +1,11 @@
+import { logo } from '@/assets';
 import Container from '../Container';
-import Logo from './Logo';
 import Search from './Search';
 import UserMenu from './UserMenu';
 
 const Navbar: React.FC = () => {
   return (
-    <div className='fixed w-full bg-white z-10 shadow-sm'>
+    <div className='fixed w-full bg-white z-10'>
       <div
         className='
           py-4 
@@ -23,7 +23,14 @@ const Navbar: React.FC = () => {
             md:gap-0
           '
           >
-            <Logo />
+            <img
+              onClick={() => { }}
+              className='hidden md:block cursor-pointer w-[120px] h-auto'
+              src={logo}
+              width={120}
+              height={0}
+              alt='Logo'
+            />
             <Search />
             <UserMenu />
           </div>
