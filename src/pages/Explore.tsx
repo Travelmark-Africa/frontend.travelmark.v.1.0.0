@@ -12,12 +12,13 @@ const Explore = () => {
   const renderDestinationContent = () => {
     if (isLoading) {
       // Only show skeletons for cards, keep header visible
-      const skeletonCards = Array(8).fill(0).map((_, index) => (
-        <DestinationCardSkeleton key={`skeleton-${index}`} />
-      ));
-      
+      const skeletonCards = Array(8)
+        .fill(0)
+        .map((_, index) => <DestinationCardSkeleton key={`skeleton-${index}`} />);
+
       return (
-        <div className='
+        <div
+          className='
           grid 
           grid-cols-1
           sm:grid-cols-2 
@@ -26,7 +27,8 @@ const Explore = () => {
           xl:grid-cols-4
           2xl:grid-cols-4
           gap-8
-        '>
+        '
+        >
           {skeletonCards}
         </div>
       );
@@ -42,7 +44,8 @@ const Explore = () => {
     } else {
       // Render actual destination cards
       return (
-        <div className='
+        <div
+          className='
           grid 
           grid-cols-1
           sm:grid-cols-2 
@@ -51,7 +54,8 @@ const Explore = () => {
           xl:grid-cols-4
           2xl:grid-cols-4
           gap-8
-        '>
+        '
+        >
           {destinations?.data?.destinations?.map((destination: Destination) => (
             <DestinationCard key={destination.id} destination={destination} />
           ))}
@@ -65,23 +69,21 @@ const Explore = () => {
       <Navbar />
       <Container>
         {/* Header Section - Always visible */}
-        <div className="text-center space-y-2 pb-12">
-          <h4 className="text-4xl font-bold pt-32">Explore Amazing Destinations</h4>
-          <p className="text-gray-600 text-md max-w-lg mx-auto">
+        <div className='text-center space-y-2 pb-12'>
+          <h4 className='text-4xl font-bold pt-32'>Explore Amazing Destinations</h4>
+          <p className='text-gray-600 text-md max-w-lg mx-auto'>
             Discover breathtaking locations and plan your next adventure
           </p>
 
           {/* Stats Section - Show loading indicator if needed */}
-          <div className="flex justify-center items-center space-x-4 text-sm text-gray-600 pt-2">
+          <div className='flex justify-center items-center space-x-4 text-sm text-gray-600 pt-2'>
             {isLoading ? (
               <span>Loading destinations...</span>
             ) : isError ? (
-              <span className="text-red-400">Error loading stats</span>
+              <span className='text-red-400'>Error loading stats</span>
             ) : (
               <>
-                <span className="font-semibold">
-                  {destinations?.data?.destinations.length} destinations
-                </span>
+                <span className='font-semibold'>{destinations?.data?.destinations.length} destinations</span>
                 <span>|</span>
                 <span>Updated daily</span>
               </>

@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Search as SearchIcon, CalendarIcon } from 'lucide-react';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, format, parse } from 'date-fns';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -44,6 +44,7 @@ const tourismTags: TourismTag[] = [
 
 const Search = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { data: countries, isLoading } = useGetCountriesQuery({});
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -54,6 +55,47 @@ const Search = () => {
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('');
+
+  // Parse URL parameters on initial load
+  useEffect(() => {
+    if (countries?.data) {
+      const params = new URLSearchParams(location.search);
+
+      // Set country based on name from URL
+      const countryParam = params.get('country');
+      if (countryParam) {
+        const foundCountry = countries.data.find((c: Country) => c.name.toLowerCase() === countryParam.toLowerCase());
+        if (foundCountry) {
+          setCountry(foundCountry.id);
+        }
+      }
+
+      // Set price range if either min or max exists
+      const minPriceParam = params.get('minPrice');
+      const maxPriceParam = params.get('maxPrice');
+      if (minPriceParam || maxPriceParam) {
+        setShowPriceRange(true);
+        if (minPriceParam) setMinPrice(minPriceParam);
+        if (maxPriceParam) setMaxPrice(maxPriceParam);
+      }
+
+      // Set tourism tag
+      const tagParam = params.get('tag');
+      if (tagParam) {
+        setSelectedTag(tagParam);
+      }
+
+      // Set date range
+      const startDateParam = params.get('startDate');
+      const endDateParam = params.get('endDate');
+      if (startDateParam) {
+        setStartDate(parse(startDateParam, 'yyyy-MM-dd', new Date()));
+      }
+      if (endDateParam) {
+        setEndDate(parse(endDateParam, 'yyyy-MM-dd', new Date()));
+      }
+    }
+  }, [location.search, countries]);
 
   const durationLabel = useMemo(() => {
     if (startDate && endDate) {

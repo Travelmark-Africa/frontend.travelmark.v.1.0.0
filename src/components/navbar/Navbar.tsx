@@ -24,9 +24,9 @@ const Navbar: React.FC = () => {
             md:gap-0
           '
           >
-            <Link to="/">
+            <Link to='/'>
               <img
-                onClick={() => { }}
+                onClick={() => {}}
                 className='hidden md:block cursor-pointer w-[120px] h-auto'
                 src={logo1}
                 width={120}

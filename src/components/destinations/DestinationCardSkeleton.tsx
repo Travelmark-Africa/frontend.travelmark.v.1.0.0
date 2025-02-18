@@ -11,10 +11,7 @@ const DestinationCardSkeleton = () => {
 
           {/* Favorite Button placeholder */}
           <div className='absolute top-3 right-3'>
-            <Heart
-
-              className="h-7 w-7 fill-none stroke-white cursor-pointer transition"
-            />
+            <Heart className='h-7 w-7 fill-none stroke-white cursor-pointer transition' />
           </div>
         </div>
 

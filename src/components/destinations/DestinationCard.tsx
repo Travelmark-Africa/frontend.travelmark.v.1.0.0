@@ -89,8 +89,9 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination }) => {
               {destination.images.map((_, idx) => (
                 <div
                   key={idx}
-                  className={`h-[7px] w-[7px] rounded-full transition-all ${idx === imageIndex ? 'bg-white' : 'bg-white/50'
-                    }`}
+                  className={`h-[7px] w-[7px] rounded-full transition-all ${
+                    idx === imageIndex ? 'bg-white' : 'bg-white/50'
+                  }`}
                 />
               ))}
             </div>
@@ -109,15 +110,18 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination }) => {
         <div className='font-semibold text-lg'>
           {destination.name}
           <p className='text-sm'>
-            Region: {" "}
-            <span className='text-primary/80'>{destination.location}</span>
+            Region: <span className='text-primary/80'>{destination.location}</span>
           </p>
         </div>
-        <div className='bg-secondary/10 border-[1px] border-secondary w-fit px-4 py-[1px] rounded-full text-secondary text-xs font-bold'>{destination.tag}</div>
-        {price === 0 ? null : <div className='flex flex-row items-center gap-1'>
-          <div className='font-semibold'>${price.toLocaleString()}</div>
-          <div className='font-light'>per person per day</div>
-        </div>}
+        <div className='bg-secondary/10 border-[1px] border-secondary w-fit px-4 py-[1px] rounded-full text-secondary text-xs font-bold'>
+          {destination.tag}
+        </div>
+        {price === 0 ? null : (
+          <div className='flex flex-row items-center gap-1'>
+            <div className='font-semibold'>${price.toLocaleString()}</div>
+            <div className='font-light'>per person per day</div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -9,9 +9,8 @@ interface User {
   role: string;
 }
 
-export const useAuth = (): { user: User | null; } => {
+export const useAuth = (): { user: User | null } => {
   const { userToken } = useSelector((state: RootState) => state.auth);
-
 
   if (!userToken) {
     return { user: null };
