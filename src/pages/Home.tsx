@@ -15,10 +15,10 @@ const Home = () => {
       </div>
 
       {/* Overlay */}
-      <div className='absolute inset-0 bg-foreground/40' />
+      <div className='absolute inset-0 bg-foreground/40 z-0' />
 
       {/* Logo */}
-      <div className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-10'>
+      <div className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50'>
         <div className='relative h-16 sm:h-24 md:h-28 w-[250px] sm:w-[280px]'>
           <img src={logo2} alt='Travelmark logo' className='object-contain w-full h-full' />
         </div>

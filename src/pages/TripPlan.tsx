@@ -20,7 +20,7 @@ import { cn, handleError } from '@/lib/utils';
 import BlurImage from '@/components/BlurImage';
 
 // Assets
-import { hero1, logo2 } from '@/assets';
+import { hero2, logo2 } from '@/assets';
 
 interface ValidationErrors {
   [key: string]: string | undefined;
@@ -511,7 +511,7 @@ const TripPlan: React.FC = () => {
       {/* Background Image */}
       <div className='absolute inset-0 bg-primary/10'>
         <div className='relative w-full h-full'>
-          <BlurImage src={hero1} alt='Beautiful destination hero image' className='object-cover w-full h-full' />
+          <BlurImage src={hero2} alt='Beautiful destination hero image' className='object-cover w-full h-full' />
         </div>
       </div>
 
@@ -519,7 +519,7 @@ const TripPlan: React.FC = () => {
       <div className='absolute inset-0 bg-foreground/40' />
 
       {/* Logo */}
-      <Link to='/' className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-20'>
+      <Link to='/' className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50'>
         <div className='relative h-16 sm:h-24 md:h-28 w-[250px] sm:w-[280px] transition-transform hover:scale-105'>
           <img src={logo2} alt='Travelmark logo' className='object-contain w-full h-full' />
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Container from '@/components/Container';
 import Navbar from '@/components/navbar/Navbar';
 import DestinationCard from '@/components/destinations/DestinationCard';
@@ -134,7 +134,19 @@ const SearchPage: React.FC = () => {
         </div>
       );
     } else if (!searchResults?.data?.destinations || searchResults.data.destinations.length === 0) {
-      return <Empty description='No destinations found. Try adjusting your search criteria to find more results' />;
+      return (
+        <div>
+          <Empty
+            className='py-0 mt-32 mb-8'
+            description='No destinations found. Try adjusting your search criteria to find more results'
+          />
+          <div className='text-center'>
+            <Link className='bg-primary hover:bg-primary/90 py-3 px-6 rounded-full text-white text-sm' to='/explore'>
+              Go back to Explore
+            </Link>
+          </div>
+        </div>
+      );
     } else {
       // Render actual destination cards
       return (
