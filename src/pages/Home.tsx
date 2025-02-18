@@ -1,4 +1,4 @@
-import { hero1, logo } from '@/assets';
+import { hero1, logo2 } from '@/assets';
 import BlurImage from '@/components/BlurImage';
 import { Button } from '@/components/ui/button';
 import { Mail, Twitter, Instagram, PlaneTakeoff, Globe } from 'lucide-react';
@@ -20,7 +20,7 @@ const Home = () => {
       {/* Logo */}
       <div className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-10'>
         <div className='relative h-16 sm:h-24 md:h-28 w-[250px] sm:w-[280px]'>
-          <img src={logo} alt='Travelmark logo' className='object-contain w-full h-full' />
+          <img src={logo2} alt='Travelmark logo' className='object-contain w-full h-full' />
         </div>
       </div>
 

@@ -1,4 +1,13 @@
-import { HomePage, ExplorePage, DestinationPage, TripPlanPage, AboutPage, ContactPage, SearchPage, NotFoundPage } from '@/pages';
+import {
+  HomePage,
+  ExplorePage,
+  DestinationPage,
+  TripPlanPage,
+  AboutPage,
+  ContactPage,
+  SearchPage,
+  NotFoundPage,
+} from '@/pages';
 
 const routes: RouteObject[] = [
   { path: '/', element: <HomePage /> },
