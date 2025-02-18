@@ -3,11 +3,14 @@ import { useState } from 'react';
 import { useGetDestinationQuery } from '@/redux/api/apiSlice';
 import { Carousel } from 'react-responsive-carousel';
 import Container from '@/components/Container';
+import Navbar from '@/components/navbar/Navbar';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import { Calendar, ChevronLeft, ChevronRight, Star, Users, X } from 'lucide-react';
 import Error from '@/components/Error';
+import { Skeleton } from '@/components/ui/skeleton';
+import BlurImage from '@/components/BlurImage';
 
 interface Destination {
   id: string;
@@ -69,82 +72,141 @@ const Destination = () => {
     });
   };
 
-  if (isLoading)
-    return (
-      <Container>
-        <div className='flex items-center justify-center min-h-screen'>
-          <div className='animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-orange-500'></div>
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className='w-full pt-32'>
+          {/* Skeleton Image Gallery */}
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 h-[600px]'>
+            <div className='md:col-span-2 relative h-full'>
+              <Skeleton className='w-full h-full rounded-lg' />
+            </div>
+            <div className='grid grid-cols-2 gap-4 h-full'>
+              {Array(4)
+                .fill(0)
+                .map((_, index) => (
+                  <Skeleton key={index} className='w-full h-[290px] rounded-md' />
+                ))}
+            </div>
+          </div>
+
+          {/* Skeleton Main Content */}
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+            <div className='lg:col-span-2'>
+              <div className='bg-white p-6 rounded-lg mb-6'>
+                <Skeleton className='h-10 w-3/4 mb-4' />
+                <Skeleton className='h-4 w-full mb-2' />
+                <Skeleton className='h-4 w-full mb-2' />
+                <Skeleton className='h-4 w-3/4 mb-4' />
+                <div className='flex items-center'>
+                  <Skeleton className='h-5 w-24 rounded-md' />
+                </div>
+              </div>
+            </div>
+
+            {/* Skeleton Booking Panel */}
+            <div className='lg:col-span-1'>
+              <div className='bg-white border rounded-lg p-6'>
+                <Skeleton className='h-8 w-1/2 mb-4' />
+                <div className='space-y-4'>
+                  <Skeleton className='h-10 w-full rounded-md' />
+                  <Skeleton className='h-10 w-full rounded-md' />
+                  <Skeleton className='h-10 w-full rounded-md' />
+                  <Skeleton className='h-10 w-full rounded-md' />
+                  <Skeleton className='h-10 w-full rounded-md' />
+                  <Skeleton className='h-24 w-full rounded-md' />
+                  <Skeleton className='h-12 w-full rounded-md' />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </Container>
-    );
+      );
+    }
 
-  if (error) return <Error />;
+    if (error) return <Error />;
 
-  if (!response?.ok || !response?.data)
-    return (
-      <Container>
+    if (!response?.ok || !response?.data) {
+      return (
         <div className='p-8 text-center'>
           <div className='bg-gray-50 p-6 rounded-lg'>
             <h2 className='text-xl font-bold text-gray-700 mb-2'>No destination found</h2>
             <p className='text-gray-600'>This destination is not available.</p>
           </div>
         </div>
-      </Container>
-    );
+      );
+    }
 
-  const destination: Destination = response.data;
-  const displayImages = destination.images.slice(0, 5);
-  const averageRating =
-    destination.reviews.length > 0
-      ? destination.reviews.reduce((acc, review) => acc + review.rating, 0) / destination.reviews.length
-      : 0;
+    const destination: Destination = response.data;
+    const displayImages = destination.images.slice(0, 5);
+    const averageRating =
+      destination.reviews.length > 0
+        ? destination.reviews.reduce((acc, review) => acc + review.rating, 0) / destination.reviews.length
+        : 0;
 
-  return (
-    <Container>
-      <div className='w-full py-6'>
+    return (
+      <div className='w-full pt-32'>
         {/* Image Gallery */}
         {showAllImages ? (
-          <div className='fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4'>
-            <button onClick={() => setShowAllImages(false)} className='absolute top-4 right-4 text-white'>
+          <div className='fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4'>
+            <button
+              onClick={() => setShowAllImages(false)}
+              className='absolute top-4 right-4 text-white cursor-pointer'
+            >
               <X size={24} />
             </button>
-            <Carousel
-              showArrows={true}
-              showThumbs={true}
-              infiniteLoop={true}
-              renderArrowPrev={(onClickHandler, hasPrev) =>
-                hasPrev && (
-                  <button
-                    onClick={onClickHandler}
-                    className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/20 p-2 rounded-r-md hover:bg-white/40 transition'
-                  >
-                    <ChevronLeft size={24} className='text-white' />
-                  </button>
-                )
-              }
-              renderArrowNext={(onClickHandler, hasNext) =>
-                hasNext && (
-                  <button
-                    onClick={onClickHandler}
-                    className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/20 p-2 rounded-l-md hover:bg-white/40 transition'
-                  >
-                    <ChevronRight size={24} className='text-white' />
-                  </button>
-                )
-              }
-              className='w-full max-w-4xl'
-            >
-              {destination.images.map((image: string, index: number) => (
-                <div key={index}>
-                  <img src={image} alt={`${destination.name} ${index + 1}`} className='max-h-[80vh] object-contain' />
-                </div>
-              ))}
-            </Carousel>
+            <div className='max-w-5xl w-full'>
+              <Carousel
+                showArrows={true}
+                showThumbs={true}
+                infiniteLoop={true}
+                thumbWidth={100}
+                selectedItem={0}
+                renderArrowPrev={(onClickHandler, hasPrev) =>
+                  hasPrev && (
+                    <button
+                      onClick={onClickHandler}
+                      className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/20 p-2 rounded-md overflow-hidden hover:bg-white/40 transition'
+                    >
+                      <ChevronLeft size={24} className='text-white' />
+                    </button>
+                  )
+                }
+                renderArrowNext={(onClickHandler, hasNext) =>
+                  hasNext && (
+                    <button
+                      onClick={onClickHandler}
+                      className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/20 p-2 rounded-md overflow-hidden hover:bg-white/40 transition'
+                    >
+                      <ChevronRight size={24} className='text-white' />
+                    </button>
+                  )
+                }
+                renderThumbs={() =>
+                  destination.images.map((image, index) => (
+                    <div key={index} className='h-20 w-full'>
+                      <BlurImage src={image} alt={`thumbnail-${index}`} className='h-full w-full object-cover' />
+                    </div>
+                  ))
+                }
+                className='w-full custom-carousel'
+              >
+                {destination.images.map((image: string, index: number) => (
+                  <div key={index} className='h-[70vh] flex items-center justify-center'>
+                    <BlurImage
+                      src={image}
+                      alt={`${destination.name} ${index + 1}`}
+                      className='max-h-full max-w-full object-contain'
+                    />
+                  </div>
+                ))}
+              </Carousel>
+            </div>
           </div>
         ) : (
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 overflow-hidden rounded-lg shadow-lg h-[600px]'>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 overflow-hidden rounded-lg h-[600px]'>
             <div className='md:col-span-2 relative group h-full'>
-              <img src={displayImages[0]} alt={destination.name} className='w-full h-full object-cover' />
+              <BlurImage src={displayImages[0]} alt={destination.name} className='w-full h-full object-cover' />
               <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end'>
                 <div className='p-4 text-white'>
                   <h3 className='text-xl font-bold'>{destination.name}</h3>
@@ -155,13 +217,17 @@ const Destination = () => {
             <div className='grid grid-cols-2 gap-4 h-full'>
               {displayImages.slice(1).map((image, index) => (
                 <div key={index} className='relative overflow-hidden rounded-md group h-[290px]'>
-                  <img src={image} alt={`${destination.name} ${index + 2}`} className='w-full h-full object-cover' />
+                  <BlurImage
+                    src={image}
+                    alt={`${destination.name} ${index + 2}`}
+                    className='w-full h-full object-cover'
+                  />
                   {index === displayImages.length - 2 && (
                     <div
                       onClick={() => setShowAllImages(true)}
                       className='absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/70 transition-all duration-300'
                     >
-                      <button className='text-white text-lg font-medium'>View all</button>
+                      <button className='text-white text-lg font-medium cursor-pointer'>View all</button>
                     </div>
                   )}
                 </div>
@@ -173,7 +239,7 @@ const Destination = () => {
         {/* Main Content */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           <div className='lg:col-span-2'>
-            <div className='bg-white p-6 rounded-lg shadow-md mb-6'>
+            <div className='bg-white p-6 rounded-lg mb-6'>
               <h1 className='text-3xl font-bold mb-4'>{destination.name}</h1>
               <p className='text-gray-700'>{destination.description}</p>
               <div className='mt-4 flex items-center'>
@@ -186,7 +252,7 @@ const Destination = () => {
 
           {/* Booking Panel */}
           <div className='lg:col-span-1'>
-            <div className='bg-white border rounded-lg p-6 shadow-md sticky top-4'>
+            <div className='bg-white border rounded-lg p-6 sticky top-4'>
               {destination.price > 0 ? (
                 <div className='text-2xl font-bold text-orange-600 mb-4'>
                   {destination.country.code}F {destination.price}
@@ -231,7 +297,7 @@ const Destination = () => {
                   <span>{selectedDate ? selectedDate.toLocaleDateString() : 'Select Date'}</span>
                 </div>
                 {showDatePicker && (
-                  <div className='absolute z-10 mt-1 bg-white shadow-lg rounded-md p-2'>
+                  <div className='absolute z-10 mt-1 bg-white rounded-md p-2'>
                     <DatePicker selected={selectedDate} onChange={handleDateChange} minDate={new Date()} inline />
                   </div>
                 )}
@@ -271,7 +337,41 @@ const Destination = () => {
           </div>
         </div>
       </div>
-    </Container>
+    );
+  };
+
+  return (
+    <>
+      <Navbar />
+      <Container>{renderContent()}</Container>
+      <style>
+        {`
+        .custom-carousel .thumbs-wrapper {
+          margin: 20px 0 0 0 !important;
+          overflow-x: auto !important;
+        }
+        .custom-carousel .thumbs {
+          display: flex !important;
+          justify-content: flex-start !important;
+          padding: 0 !important;
+          transform: none !important;
+        }
+        .custom-carousel .thumb {
+          margin-right: 8px !important;
+          border: 2px solid transparent !important;
+          border-radius: 4px !important;
+          transition: all 0.3s !important;
+          padding: 0 !important;
+        }
+        .custom-carousel .thumb.selected {
+          border: 2px solid #ff7e1d !important;
+        }
+        .custom-carousel .thumb:hover {
+          border-color: #ffaa66 !important;
+        }
+      `}
+      </style>
+    </>
   );
 };
 

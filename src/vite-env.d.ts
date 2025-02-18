@@ -124,3 +124,31 @@ interface User {
   reviews?: Review[];
   favorites?: Favorite[];
 }
+
+interface Activity {
+  id: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface TripPlan {
+  id?: string;
+  userId?: string;
+  name: string;
+  email: string;
+  objective?: string;
+  location: string;
+  startDate?: Date;
+  endDate?: Date;
+  numberOfTravelers: number;
+  status?: 'PLANNING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
+  budget?: number;
+  needAccommodation: 'YES' | 'NO';
+  accommodationDetails?: string;
+  needTransportation: 'YES' | 'NO';
+  transportationDetails?: string;
+  activities: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
