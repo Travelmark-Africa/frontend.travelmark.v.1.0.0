@@ -149,6 +149,8 @@ interface TripPlan {
   needTransportation: 'YES' | 'NO';
   transportationDetails?: string;
   activities: string[];
+  contactPerson: string;
+  contactEmail: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

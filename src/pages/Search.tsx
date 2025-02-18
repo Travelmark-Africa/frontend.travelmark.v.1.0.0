@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Container from '@/components/Container';
 import Navbar from '@/components/navbar/Navbar';
@@ -6,6 +6,7 @@ import DestinationCard from '@/components/destinations/DestinationCard';
 import DestinationCardSkeleton from '@/components/destinations/DestinationCardSkeleton';
 import Empty from '@/components/Empty';
 import { useSearchDestinationsQuery } from '@/redux/api/apiSlice';
+import { skipToken } from '@reduxjs/toolkit/query/react';
 
 // Define interfaces for type safety
 interface SearchParams {
@@ -13,14 +14,9 @@ interface SearchParams {
   tag?: string;
   minPrice?: string;
   maxPrice?: string;
+  name?: string;
+  location?: string;
   [key: string]: string | undefined;
-}
-
-interface SearchResponse {
-  data: {
-    destinations: Destination[];
-    totalCount: number;
-  };
 }
 
 // Define custom error type to avoid using 'any'
@@ -32,19 +28,40 @@ interface ApiError {
 const SearchPage: React.FC = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useState<SearchParams>({});
+  const [hasValidParams, setHasValidParams] = useState(false);
+  const lastSearchRef = useRef<string>('');
+  const [isChangingSearch, setIsChangingSearch] = useState(false);
 
-  // Get search parameters from URL
+  // Extract search parameters from URL
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const params: SearchParams = {};
+    let hasParams = false;
 
-    // Extract all parameters
+    // Extract all parameters that have values
     for (const [key, value] of queryParams.entries()) {
-      params[key] = value;
+      if (value) {
+        params[key] = value;
+        hasParams = true;
+      }
+    }
+
+    // Check if search parameters have changed
+    const currentSearch = JSON.stringify(params);
+    if (currentSearch !== lastSearchRef.current) {
+      // If we had valid params before and they've changed, set changing state
+      if (hasValidParams && lastSearchRef.current) {
+        setIsChangingSearch(true);
+      }
+      lastSearchRef.current = currentSearch;
     }
 
     setSearchParams(params);
-  }, [location.search]);
+    setHasValidParams(hasParams);
+
+    // For debugging
+    console.log('Extracted search params:', params);
+  }, [hasValidParams, location.search]);
 
   // Use the search destinations query with the extracted parameters
   const {
@@ -52,18 +69,23 @@ const SearchPage: React.FC = () => {
     isLoading,
     isError,
     error,
-  } = useSearchDestinationsQuery(searchParams) as {
-    data?: SearchResponse;
-    isLoading: boolean;
-    isError: boolean;
-    error: ApiError | unknown;
-  };
+    isFetching,
+  } = useSearchDestinationsQuery(hasValidParams ? searchParams : skipToken);
+
+  // When fetch completes, reset the changing search state
+  useEffect(() => {
+    if (!isFetching && isChangingSearch) {
+      setIsChangingSearch(false);
+    }
+  }, [isChangingSearch, isFetching]);
 
   // Format search parameters for display
   const formatSearchCriteria = (): string => {
     const parts: string[] = [];
     if (searchParams.country) parts.push(`in ${searchParams.country}`);
     if (searchParams.tag) parts.push(`tagged as ${searchParams.tag}`);
+    if (searchParams.name) parts.push(`named "${searchParams.name}"`);
+    if (searchParams.location) parts.push(`located in ${searchParams.location}`);
     if (searchParams.minPrice && searchParams.maxPrice) {
       parts.push(`between $${searchParams.minPrice} and $${searchParams.maxPrice}`);
     } else if (searchParams.minPrice) {
@@ -75,10 +97,13 @@ const SearchPage: React.FC = () => {
     return parts.length > 0 ? parts.join(', ') : 'matching your criteria';
   };
 
+  // Determine if we should show skeletons - either on initial load or when changing search params
+  const shouldShowSkeletons = isLoading || (isFetching && isChangingSearch);
+
   // Render destination content based on state
   const renderDestinationContent = () => {
-    if (isLoading) {
-      // Only show skeletons for cards, keep header visible
+    if (shouldShowSkeletons) {
+      // Show skeletons for cards, keep header visible
       const skeletonCards = Array(8)
         .fill(0)
         .map((_, index) => <DestinationCardSkeleton key={`skeleton-${index}`} />);
@@ -109,7 +134,7 @@ const SearchPage: React.FC = () => {
         </div>
       );
     } else if (!searchResults?.data?.destinations || searchResults.data.destinations.length === 0) {
-      return <Empty description='No destinations found, Try adjusting your search criteria to find more results' />;
+      return <Empty description='No destinations found. Try adjusting your search criteria to find more results' />;
     } else {
       // Render actual destination cards
       return (
@@ -148,7 +173,7 @@ const SearchPage: React.FC = () => {
 
           {/* Stats Section - Show loading indicator if needed */}
           <div className='flex items-center space-x-4 text-sm text-gray-600 pt-2'>
-            {isLoading ? (
+            {shouldShowSkeletons ? (
               <span>Searching destinations...</span>
             ) : isError ? (
               <span className='text-red-400'>Error loading results</span>

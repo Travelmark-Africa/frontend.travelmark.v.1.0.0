@@ -103,7 +103,7 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, mode }) => {
       await loginWithGoogle({ provider: 'GOOGLE' }).unwrap();
       onClose();
     } catch (error) {
-      console.error('Google auth error:', error);
+      handleError(error);
     }
   };
 

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Check, Loader2 } from 'lucide-react';
 import { useGetActivitiesQuery, useCreateTripPlanMutation } from '@/redux/api/apiSlice';
-import { toast } from 'sonner'; // or 'react-toastify' if you prefer
 
 // Shadcn/ui components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,40 +14,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
+import { cn, handleError } from '@/lib/utils';
 
 // Custom components
 import BlurImage from '@/components/BlurImage';
 
 // Assets
 import { hero1, logo2 } from '@/assets';
-
-// Interfaces
-interface Activity {
-  id: string;
-  title: string;
-}
-
-interface TripPlan {
-  id?: string;
-  userId?: string;
-  name: string;
-  email: string;
-  objective?: string;
-  location: string;
-  startDate?: Date;
-  endDate?: Date;
-  numberOfTravelers: number;
-  status?: 'PLANNING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
-  budget?: number;
-  needAccommodation: 'YES' | 'NO';
-  accommodationDetails?: string;
-  needTransportation: 'YES' | 'NO';
-  transportationDetails?: string;
-  activities: string[]; // Array of activity titles
-  createdAt?: Date;
-  updatedAt?: Date;
-}
 
 interface ValidationErrors {
   [key: string]: string | undefined;
@@ -75,6 +47,8 @@ const TripPlan: React.FC = () => {
     accommodationDetails: '',
     needTransportation: 'NO',
     transportationDetails: '',
+    contactPerson: '',
+    contactEmail: '',
     activities: [],
   });
 
@@ -119,6 +93,14 @@ const TripPlan: React.FC = () => {
           newErrors.budget = 'Budget is required';
         } else if (formData.budget < 0) {
           newErrors.budget = 'Budget must be positive';
+        }
+        if (!formData.contactEmail) {
+          newErrors.contactEmail = 'Contact Email is required';
+        } else if (!validateEmail(formData.email)) {
+          newErrors.contactEmail = 'Invalid email format';
+        }
+        if (formData.contactPerson.length === 0) {
+          newErrors.contactPerson = 'Contact Person is required';
         }
         break;
 
@@ -199,8 +181,7 @@ const TripPlan: React.FC = () => {
           setStep(6); // Move to the confirmation step
         }
       } catch (error) {
-        console.error('Error submitting trip plan:', error);
-        toast.error('Failed to submit trip plan. Please try again.');
+        handleError(error);
       }
     }
   };
@@ -363,30 +344,61 @@ const TripPlan: React.FC = () => {
       case 3:
         return (
           <CardContent className='space-y-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='numberOfTravelers'>Number of Travelers</Label>
-              <Input
-                className='bg-white'
-                id='numberOfTravelers'
-                type='number'
-                min='1'
-                value={formData.numberOfTravelers}
-                onChange={handleInputChange('numberOfTravelers')}
-              />
-              {errors.numberOfTravelers && <p className='text-[13px] text-red-500'>{errors.numberOfTravelers}</p>}
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='contactPerson'>Contact Person</Label>
+                <Input
+                  className='bg-white'
+                  id='contactPerson'
+                  placeholder='Somebody we can contact'
+                  type='text'
+                  value={formData.contactPerson}
+                  onChange={handleInputChange('contactPerson')}
+                />
+                {errors.contactPerson && <p className='text-[13px] text-red-500'>{errors.contactPerson}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label htmlFor='contactEmail'>Contact Email</Label>
+                <Input
+                  className='bg-white'
+                  id='contactEmail'
+                  placeholder='Email for communication ...'
+                  type='email'
+                  value={formData.contactEmail}
+                  onChange={handleInputChange('contactEmail')}
+                />
+                {errors.contactEmail && <p className='text-[13px] text-red-500'>{errors.contactEmail}</p>}
+              </div>
             </div>
-            <div className='space-y-2'>
-              <Label htmlFor='budget'>Budget (USD)</Label>
-              <Input
-                className='bg-white'
-                id='budget'
-                type='number'
-                min='0'
-                step='100'
-                value={formData.budget}
-                onChange={handleInputChange('budget')}
-              />
-              {errors.budget && <p className='text-[13px] text-red-500'>{errors.budget}</p>}
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className='space-y-2'>
+                <Label htmlFor='numberOfTravelers'>Number of Travelers</Label>
+                <Input
+                  className='bg-white'
+                  id='numberOfTravelers'
+                  type='number'
+                  min='1'
+                  value={formData.numberOfTravelers}
+                  onChange={handleInputChange('numberOfTravelers')}
+                />
+                {errors.numberOfTravelers && <p className='text-[13px] text-red-500'>{errors.numberOfTravelers}</p>}
+              </div>
+
+              <div className='space-y-2'>
+                <Label htmlFor='budget'>Budget (USD)</Label>
+                <Input
+                  className='bg-white'
+                  id='budget'
+                  type='number'
+                  min='0'
+                  step='100'
+                  value={formData.budget}
+                  onChange={handleInputChange('budget')}
+                />
+                {errors.budget && <p className='text-[13px] text-red-500'>{errors.budget}</p>}
+              </div>
             </div>
           </CardContent>
         );
@@ -423,7 +435,9 @@ const TripPlan: React.FC = () => {
                     value={formData.accommodationDetails}
                     onChange={handleInputChange('accommodationDetails')}
                   />
-                  {errors.accommodationDetails && <p className='text-[13px] text-red-500'>{errors.accommodationDetails}</p>}
+                  {errors.accommodationDetails && (
+                    <p className='text-[13px] text-red-500'>{errors.accommodationDetails}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -479,8 +493,10 @@ const TripPlan: React.FC = () => {
         return (
           <CardContent className='space-y-4'>
             <div className='text-center'>
-              <h2 className='text-2xl font-bold'>Trip Plan Submitted Successfully!</h2>
-              <p className='text-muted-foreground'>{confirmation}</p>
+              <span className='text-5xl'>👍</span>
+              <h4 className='text-2xl font-bold py-3 text-secondary'>Trip Plan Submitted Successfully!</h4>
+              <p className='text-muted-foreground'>{confirmation} </p>
+              <Button className='mt-4'>Login to access your dashboard</Button>
             </div>
           </CardContent>
         );
@@ -513,24 +529,31 @@ const TripPlan: React.FC = () => {
       <div className='relative min-h-screen flex items-center justify-center container px-4 py-20'>
         <Card className='w-full max-w-2xl bg-background/95 backdrop-blur'>
           <CardHeader>
-            <CardTitle className='font-semibold text-xl'>Plan Your Trip</CardTitle>
-            <CardDescription className='text-sm'>
-              Step {step} of {totalSteps}
-            </CardDescription>
+            {step === totalSteps ? null : (
+              <>
+                <CardTitle className='font-semibold text-xl'>Plan Your Trip</CardTitle>
+                <CardDescription className='text-sm'>
+                  Step {step} of {totalSteps}
+                </CardDescription>
+              </>
+            )}
           </CardHeader>
 
           {renderStep()}
 
           <CardFooter className='flex justify-between'>
-            <Button
-              className='bg-primary/10 hover:bg-primary/20'
-              variant='outline'
-              onClick={handlePrevious}
-              disabled={step === 1}
-            >
-              <ChevronLeft className='mr-2 h-4 w-4' />
-              Previous
-            </Button>
+            {Number(step) === Number(totalSteps) ? null : (
+              <Button
+                className='bg-primary/10 hover:bg-primary/20'
+                variant='outline'
+                onClick={handlePrevious}
+                disabled={Number(step) === 1}
+              >
+                <ChevronLeft className='mr-2 h-4 w-4' />
+                Previous
+              </Button>
+            )}
+
             {step === totalSteps - 1 ? (
               <Button onClick={handleSubmit} disabled={isSubmitting}>
                 {isSubmitting ? (

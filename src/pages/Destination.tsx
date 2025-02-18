@@ -11,6 +11,8 @@ import { Calendar, ChevronLeft, ChevronRight, Star, Users, X } from 'lucide-reac
 import Error from '@/components/Error';
 import { Skeleton } from '@/components/ui/skeleton';
 import BlurImage from '@/components/BlurImage';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface Destination {
   id: string;
@@ -61,7 +63,6 @@ const Destination = () => {
 
   const handleSendEnquiry = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Sending enquiry:', formData);
     alert("Your enquiry has been sent! We'll get back to you soon.");
     setFormData({
       fullName: '',
@@ -258,11 +259,11 @@ const Destination = () => {
                   {destination.country.code}F {destination.price}
                 </div>
               ) : (
-                <div className='text-2xl font-bold text-green-600 mb-4'>Free Entry</div>
+                <h4 className='text-2xl font-bold mb-4'>Fill this form</h4>
               )}
 
               <form onSubmit={handleSendEnquiry} className='space-y-4'>
-                <input
+                <Input
                   type='text'
                   name='fullName'
                   placeholder='Full Name'
@@ -271,7 +272,7 @@ const Destination = () => {
                   onChange={handleInputChange}
                   required
                 />
-                <input
+                <Input
                   type='email'
                   name='email'
                   placeholder='Email'
@@ -280,7 +281,7 @@ const Destination = () => {
                   onChange={handleInputChange}
                   required
                 />
-                <input
+                <Input
                   type='tel'
                   name='phone'
                   placeholder='Phone'
@@ -326,12 +327,12 @@ const Destination = () => {
                   value={formData.message}
                   onChange={handleInputChange}
                 ></textarea>
-                <button
+                <Button
                   type='submit'
-                  className='w-full bg-orange-500 text-white py-3 rounded-md hover:bg-orange-600 transition'
+                  className='py-6 w-full bg-primary text-white rounded-md hover:bg-primary/90 transition'
                 >
                   {destination.price > 0 ? 'Book Now' : 'Request Invoice'}
-                </button>
+                </Button>
               </form>
             </div>
           </div>

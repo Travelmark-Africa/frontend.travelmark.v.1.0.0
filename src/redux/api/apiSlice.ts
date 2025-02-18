@@ -317,11 +317,23 @@ export const apiSlice = createApi({
 
     // Search endpoints
     searchDestinations: builder.query({
-      query: query => ({
-        url: '/search',
-        method: 'GET',
-        params: { query },
-      }),
+      query: searchParams => {
+        // Create a new URLSearchParams object for proper encoding
+        const params = new URLSearchParams();
+
+        // Only add defined parameters to prevent empty queries
+        if (searchParams.country) params.append('country', searchParams.country);
+        if (searchParams.tag) params.append('tag', searchParams.tag);
+        if (searchParams.minPrice !== undefined && searchParams.minPrice !== '')
+          params.append('minPrice', searchParams.minPrice);
+        if (searchParams.maxPrice !== undefined && searchParams.maxPrice !== '')
+          params.append('maxPrice', searchParams.maxPrice);
+        if (searchParams.name) params.append('name', searchParams.name);
+        if (searchParams.location) params.append('location', searchParams.location);
+
+        // Return properly formatted query string
+        return `search?${params.toString()}`;
+      },
     }),
   }),
 });
