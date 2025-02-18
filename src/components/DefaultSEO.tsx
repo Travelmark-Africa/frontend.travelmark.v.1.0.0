@@ -3,57 +3,41 @@ import { Helmet } from 'react-helmet-async';
 const DefaultSEO = () => {
   return (
     <Helmet>
-      <title>DHDealz | Your Ultimate Online Shopping Destination</title>
+      <title>Travelmark | Unforgettable Tours Across Africa and Beyond</title>
       <meta charSet='utf-8' />
       <meta name='viewport' content='width=device-width, initial-scale=1' />
       <meta
         name='description'
-        content='DHDealz - Your premier online shopping destination in Rwanda. Discover amazing deals on electronics, fashion, home goods, and more. Shop with confidence with secure payments and fast delivery. Find the best prices and exclusive offers today!'
+        content='Embark on unforgettable adventures with Travelmark. Explore Rwanda, East Africa, and other top global destinations with our personalized tours and safaris.'
       />
       <meta
         name='keywords'
-        content="DHDealz, online shopping Rwanda, ecommerce Rwanda, online marketplace, shopping deals, 
-        electronics store, fashion store, home appliances, mobile phones, laptops, tablets, 
-        women's fashion, men's fashion, kid's clothing, home decor, kitchen appliances, 
-        beauty products, skincare, makeup, sports equipment, fitness gear, 
-        books, stationery, office supplies, groceries, household items, 
-        furniture, automotive parts, toys, games, baby products, 
-        jewelry, watches, accessories, shoes, bags, 
-        best deals, discounts, sale, clearance, special offers, promotional deals, 
-        fast delivery, secure shopping, online payment, cash on delivery, 
-        product reviews, customer ratings, price comparison, 
-        new arrivals, trending products, popular items, 
-        free shipping, return policy, customer service, 
-        wishlist, shopping cart, track order, 
-        brand products, authentic items, warranty, 
-        seasonal sales, holiday deals, flash sales, 
-        local products, international brands, 
-        gift cards, reward points, loyalty program"
+        content='African tours, Rwanda travel, East Africa safaris, global travel experiences, gorilla trekking, Serengeti safaris, Maasai Mara adventures, Victoria Falls tours, Nile River cruises, Zanzibar beach holidays, cultural experiences, wildlife expeditions, luxury lodges, sustainable tourism, travel consultancy, custom itineraries, international travel packages, world heritage sites, adventure travel, exotic destinations'
       />
 
       {/* Open Graph Tags */}
-      <meta property='og:title' content='DHDealz | Your Ultimate Online Shopping Destination' />
+      <meta property='og:title' content='Travelmark | Unforgettable Tours Across Africa and Beyond' />
       <meta
         property='og:description'
-        content='Discover amazing deals on electronics, fashion, home goods, and more. Shop with confidence with secure payments and fast delivery.'
+        content='Join Travelmark for exclusive tours across Africa and other top destinations worldwide. Experience gorilla trekking, wildlife safaris, and cultural journeys tailored to your interests.'
       />
       <meta property='og:type' content='website' />
       <meta property='og:image' content='/favicon.png' />
-      <meta property='og:site_name' content='DHDealz' />
-      <meta property='og:locale' content='en_RW' />
+      <meta property='og:site_name' content='Travelmark' />
+      <meta property='og:locale' content='en_US' />
 
       {/* Twitter Card Tags */}
       <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:title' content='DHDealz | Your Ultimate Online Shopping Destination' />
+      <meta name='twitter:title' content='Travelmark | Unforgettable Tours Across Africa and Beyond' />
       <meta
         name='twitter:description'
-        content='Discover amazing deals on electronics, fashion, home goods, and more. Shop with confidence with secure payments and fast delivery.'
+        content='Discover the beauty of Africa and beyond with Travelmark. Personalized tours and safaris across Rwanda, East Africa, and other top global destinations.'
       />
       <meta name='twitter:image' content='/favicon.png' />
 
       {/* Additional SEO Meta Tags */}
       <meta name='robots' content='index, follow' />
-      <meta name='author' content='DHDealz' />
+      <meta name='author' content='Travelmark' />
       <meta name='theme-color' content='#ffffff' />
       <meta name='rating' content='general' />
       <meta name='revisit-after' content='7 days' />
@@ -62,12 +46,12 @@ const DefaultSEO = () => {
       {/* Mobile App Tags */}
       <meta name='apple-mobile-web-app-capable' content='yes' />
       <meta name='apple-mobile-web-app-status-bar-style' content='default' />
-      <meta name='apple-mobile-web-app-title' content='DHDealz' />
-      <meta name='application-name' content='DHDealz' />
+      <meta name='apple-mobile-web-app-title' content='Travelmark' />
+      <meta name='application-name' content='Travelmark' />
       <meta name='mobile-web-app-capable' content='yes' />
 
-      {/* Canonical URL - Update this dynamically if needed */}
-      <link rel='canonical' href='https://dhdealz.com' />
+      {/* Canonical URL */}
+      <link rel='canonical' href='https://travelmark.com' />
 
       {/* Additional Links */}
       <link rel='icon' href='/favicon.png' />
