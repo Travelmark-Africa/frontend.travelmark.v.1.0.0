@@ -74,18 +74,13 @@ const Home = () => {
         <div className='flex gap-3'>
           {/* About Us Link */}
           <Link
-            className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500'
+            className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500 flex items-center space-x-5'
             to='/about-us'
           >
-            About Us
-          </Link>
-          {/* Contact Us Link */}
-          <span className='text-white'>|</span>
-          <Link
-            className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500'
-            to='/contact-us'
-          >
-            Contact Us
+            {' '}
+            <span> About Us</span>
+            <span>| </span>
+            <span>Contact Us</span>
           </Link>
         </div>
       </div>

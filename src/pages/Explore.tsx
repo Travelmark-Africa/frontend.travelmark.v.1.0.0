@@ -6,7 +6,7 @@ import Navbar from '@/components/navbar/Navbar';
 import { useGetDestinationsQuery } from '@/redux/api/apiSlice';
 
 const Explore = () => {
-  const { data: destinations, isLoading, isError, error } = useGetDestinationsQuery({});
+  const { data: destinations, isLoading, isError } = useGetDestinationsQuery({});
 
   // Determine the content based on loading state
   const renderDestinationContent = () => {
@@ -33,12 +33,7 @@ const Explore = () => {
         </div>
       );
     } else if (isError) {
-      return (
-        <div className='text-center text-red-500 mt-8'>
-          Error loading destinations:{' '}
-          {'error' in error ? error.error : 'Failed to load destination. Please try again later.'}
-        </div>
-      );
+      return <div className='text-center text-red-500 mt-8'>Failed to load destination. Please try again later.</div>;
     } else if (!destinations?.data?.destinations || destinations?.data?.destinations.length === 0) {
       return <Empty />;
     } else {

@@ -52,20 +52,23 @@ interface Currency {
   exchangeRate: number;
   isDefault: boolean;
 }
+
 interface Destination {
   id: string;
   name: string;
   description?: string;
   location?: string;
-  price?: number;
+  price: number;
   tag?: string;
-  countryId: string;
+  countryId?: string;
   images: string[];
   createdAt: Date;
   updatedAt: Date;
-  country?: Country;
+  country: {
+    code: string;
+  };
   bookings?: Booking[];
-  reviews?: Review[];
+  reviews: { rating: number }[];
   favorites?: Favorite[];
 }
 

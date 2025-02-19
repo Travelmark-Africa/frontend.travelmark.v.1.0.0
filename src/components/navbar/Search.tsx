@@ -150,6 +150,11 @@ const Search = () => {
     handleClose();
   };
 
+  // Function to clear the tag selection
+  const clearTagSelection = () => {
+    setSelectedTag('');
+  };
+
   return (
     <>
       <div
@@ -171,7 +176,7 @@ const Search = () => {
       </div>
 
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className='sm:max-w-xl mx-4 md:mx-auto'>
+        <DialogContent>
           <h4 className='text-xl font-semibold font-body'>Search Properties</h4>
           <div className='grid gap-6 py-2'>
             <div className='space-y-2'>
@@ -271,12 +276,23 @@ const Search = () => {
             </div>
 
             <div className='space-y-2'>
-              <Label htmlFor='tag' className='text-sm font-medium'>
-                Destination Type
-              </Label>
+              <div className='flex justify-between items-center'>
+                <Label htmlFor='tag' className='text-sm font-medium'>
+                  Destination Type
+                </Label>
+                {selectedTag && (
+                  <Button
+                    variant='ghost'
+                    onClick={clearTagSelection}
+                    className='text-xs h-6 px-2 py-0 text-accent hover:text-white bg-accent/10'
+                  >
+                    Clear
+                  </Button>
+                )}
+              </div>
               <Select value={selectedTag} onValueChange={setSelectedTag}>
                 <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select a tag' />
+                  <SelectValue placeholder='Select a tag (optional)' />
                 </SelectTrigger>
                 <SelectContent>
                   {tourismTags.map((tag: TourismTag) => (

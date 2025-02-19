@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useGetDestinationQuery } from '@/redux/api/apiSlice';
 import { Carousel } from 'react-responsive-carousel';
@@ -7,25 +7,12 @@ import Navbar from '@/components/navbar/Navbar';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
-import { Calendar, ChevronLeft, ChevronRight, Star, Users, X } from 'lucide-react';
+import { ArrowLeft, Calendar, ChevronLeft, ChevronRight, Star, Users, X } from 'lucide-react';
 import Error from '@/components/Error';
 import { Skeleton } from '@/components/ui/skeleton';
 import BlurImage from '@/components/BlurImage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
-interface Destination {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  price: number;
-  images: string[];
-  reviews: { rating: number }[];
-  country: {
-    code: string;
-  };
-}
 
 interface FormData {
   fullName: string;
@@ -37,6 +24,7 @@ interface FormData {
 
 const Destination = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { data: response, isLoading, error } = useGetDestinationQuery(id);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
@@ -76,7 +64,7 @@ const Destination = () => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className='w-full pt-32'>
+        <div className='w-full pt-20 md:pt-32'>
           {/* Skeleton Image Gallery */}
           <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 h-[600px]'>
             <div className='md:col-span-2 relative h-full'>
@@ -146,7 +134,7 @@ const Destination = () => {
         : 0;
 
     return (
-      <div className='w-full pt-32'>
+      <div className='w-full pt-20 md:pt-32'>
         {/* Image Gallery */}
         {showAllImages ? (
           <div className='fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4'>
@@ -207,6 +195,12 @@ const Destination = () => {
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 overflow-hidden rounded-lg h-[600px]'>
             <div className='md:col-span-2 relative group h-full'>
+              <Button
+                onClick={() => navigate('/explore')}
+                className='absolute h-10 w-10 top-4 left-4 z-10 bg-white/90 p-2 rounded-full hover:bg-white transition'
+              >
+                <ArrowLeft size={20} className='text-gray-800' />
+              </Button>
               <BlurImage src={displayImages[0]} alt={destination.name} className='w-full h-full object-cover' />
               <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end'>
                 <div className='p-4 text-white'>
@@ -369,6 +363,21 @@ const Destination = () => {
         }
         .custom-carousel .thumb:hover {
           border-color: #ffaa66 !important;
+        }
+
+        @media (max-width: 768px) {
+          .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .grid-cols-2 > div:nth-child(n+3) {
+            display: none;
+          }
+          .view-more-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 16px;
+          }
         }
       `}
       </style>
