@@ -113,7 +113,12 @@ const Destination = () => {
       );
     }
 
-    if (error) return <Error />;
+    if (error)
+      return (
+        <div className='pt-20 md:pt-32'>
+          <Error />
+        </div>
+      );
 
     if (!response?.ok || !response?.data) {
       return (

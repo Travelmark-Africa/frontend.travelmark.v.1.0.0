@@ -49,6 +49,7 @@ const Explore = () => {
           xl:grid-cols-4
           2xl:grid-cols-4
           gap-8
+          mb-20
         '
         >
           {destinations?.data?.destinations?.map((destination: Destination) => (
