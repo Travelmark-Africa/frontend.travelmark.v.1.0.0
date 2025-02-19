@@ -99,7 +99,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary selection:text-secondary;
+    @apply bg-background text-primary antialiased selection:bg-primary selection:text-secondary;
     font-family: var(--font-poppins), sans-serif;
   }
 
@@ -153,3 +153,7 @@
     margin-top: 16px;
   }
 }
+
+.glow {
+    box-shadow: 0 0 15px rgba(244, 162, 97, 0.6);
+ }

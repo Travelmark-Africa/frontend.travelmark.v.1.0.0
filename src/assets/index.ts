@@ -3,3 +3,5 @@ export { default as logo2 } from './logo2.png';
 export { default as hero1 } from './hero1.jpg';
 export { default as hero2 } from './hero2.jpg';
 export { default as googleSVG } from './google.svg';
+export { default as missionImage } from './mission.jpg';
+export { default as team } from './team.jpg';

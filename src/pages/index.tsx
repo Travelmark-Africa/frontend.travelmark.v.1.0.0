@@ -2,7 +2,7 @@ import Home from './Home';
 import Explore from './Explore';
 import Destination from './Destination';
 import TripPlan from './TripPlan';
-import About from './About';
+import About from './about';
 import Contact from './Contact';
 import Search from './Search';
 import NotFound from './NotFound';
