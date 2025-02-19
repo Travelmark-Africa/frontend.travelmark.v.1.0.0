@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useGetDestinationQuery } from '@/redux/api/apiSlice';
 import { Carousel } from 'react-responsive-carousel';
 import Container from '@/components/Container';
@@ -30,6 +30,7 @@ const Destination = () => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [travelerCount, setTravelerCount] = useState<number>(1);
   const [showAllImages, setShowAllImages] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -37,6 +38,16 @@ const Destination = () => {
     travelDate: null,
     message: '',
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -132,7 +143,7 @@ const Destination = () => {
     }
 
     const destination: Destination = response.data;
-    const displayImages = destination.images.slice(0, 5);
+    const displayImages = destination.images.slice(0, isMobile ? 3 : 5);
     const averageRating =
       destination.reviews.length > 0
         ? destination.reviews.reduce((acc, review) => acc + review.rating, 0) / destination.reviews.length
@@ -222,7 +233,15 @@ const Destination = () => {
                     alt={`${destination.name} ${index + 2}`}
                     className='w-full h-full object-cover'
                   />
-                  {index === displayImages.length - 2 && (
+                  {isMobile && index === 1 && (
+                    <div
+                      onClick={() => setShowAllImages(true)}
+                      className='absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/70 transition-all duration-300'
+                    >
+                      <button className='text-white text-lg font-medium cursor-pointer'>View all</button>
+                    </div>
+                  )}
+                  {!isMobile && index === displayImages.length - 2 && (
                     <div
                       onClick={() => setShowAllImages(true)}
                       className='absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/70 transition-all duration-300'
