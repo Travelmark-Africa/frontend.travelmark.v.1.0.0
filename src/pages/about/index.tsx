@@ -1,10 +1,13 @@
+import { lazy } from 'react';
 import Container from '@/components/Container';
 import Navbar from '@/components/navbar/Navbar';
 import Hero from './Hero';
-import Mission from './Mission';
-import OurPresence from './OurPresence';
-import Team from './Team';
-import Footer from './Footer';
+
+// Lazy load components
+const Mission = lazy(() => import('./Mission'));
+const OurPresence = lazy(() => import('./OurPresence'));
+const Team = lazy(() => import('./Team'));
+const Footer = lazy(() => import('./Footer'));
 
 const About = () => {
   return (

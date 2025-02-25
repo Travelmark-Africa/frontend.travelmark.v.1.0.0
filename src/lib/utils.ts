@@ -82,12 +82,14 @@ export const capitalizeInitials = (name: string): string => {
 };
 
 export const formatPrice = (price: number, currency: string) => {
+  const hasDecimal = price % 1 !== 0;
+
   const options: Intl.NumberFormatOptions = {
     style: 'currency',
     currency,
     currencyDisplay: 'code',
-    minimumFractionDigits: currency === 'Rwf' ? 0 : 2,
-    maximumFractionDigits: currency === 'Rwf' ? 0 : 2,
+    minimumFractionDigits: hasDecimal ? 2 : 0,
+    maximumFractionDigits: hasDecimal ? 2 : 0,
   };
 
   return price.toLocaleString('en-US', options);

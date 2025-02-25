@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import BlurImage from '@/components/BlurImage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { formatPrice } from '@/lib/utils';
 
 interface FormData {
   fullName: string;
@@ -274,7 +275,7 @@ const Destination = () => {
             <div className='bg-white border rounded-lg p-6 sticky top-4'>
               {destination.price > 0 ? (
                 <div className='text-2xl font-bold text-orange-600 mb-4'>
-                  {destination.country.code}F {destination.price}
+                  {formatPrice(destination.price, destination.currency.code)}
                 </div>
               ) : (
                 <h4 className='text-2xl font-bold mb-4'>Fill this form</h4>

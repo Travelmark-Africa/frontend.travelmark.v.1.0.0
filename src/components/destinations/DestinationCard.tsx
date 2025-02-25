@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BlurImage from '../BlurImage';
+import { formatPrice } from '@/lib/utils';
 
 interface DestinationCardProps {
   destination: Destination;
@@ -118,8 +119,8 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination }) => {
         </div>
         {price === 0 ? null : (
           <div className='flex flex-row items-center gap-1'>
-            <div className='font-semibold text-[0.9rem]'>
-              {destination.price !== 0 && destination.currency.code} {price.toLocaleString()}
+            <div className='font-semibold text-[0.8rem]'>
+              {destination.price !== 0 && formatPrice(price, destination.currency.code)}
             </div>
             <div className='font-light'>per person per day</div>
           </div>
