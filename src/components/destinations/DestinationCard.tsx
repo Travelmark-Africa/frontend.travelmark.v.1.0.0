@@ -118,7 +118,9 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination }) => {
         </div>
         {price === 0 ? null : (
           <div className='flex flex-row items-center gap-1'>
-            <div className='font-semibold'>${price.toLocaleString()}</div>
+            <div className='font-semibold text-[0.9rem]'>
+              {destination.price !== 0 && destination.currency.code} {price.toLocaleString()}
+            </div>
             <div className='font-light'>per person per day</div>
           </div>
         )}

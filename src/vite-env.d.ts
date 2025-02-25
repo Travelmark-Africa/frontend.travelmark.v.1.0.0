@@ -62,6 +62,7 @@ interface Destination {
   tag?: string;
   countryId?: string;
   images: string[];
+  currency: Currency;
   createdAt: Date;
   updatedAt: Date;
   country: {
