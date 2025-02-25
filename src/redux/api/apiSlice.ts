@@ -315,6 +315,40 @@ export const apiSlice = createApi({
       }),
     }),
 
+    // Currency endpoints
+    getCurrencies: builder.query({
+      query: () => ({
+        url: '/currencies',
+        method: 'GET',
+      }),
+    }),
+    createCurrency: builder.mutation({
+      query: data => ({
+        url: '/currencies',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    getCurrency: builder.query({
+      query: currencyId => ({
+        url: `/currencies/${currencyId}`,
+        method: 'GET',
+      }),
+    }),
+    updateCurrency: builder.mutation({
+      query: ({ currencyId, data }) => ({
+        url: `/currencies/${currencyId}`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+    deleteCurrency: builder.mutation({
+      query: currencyId => ({
+        url: `/currencies/${currencyId}`,
+        method: 'DELETE',
+      }),
+    }),
+
     // Search endpoints
     searchDestinations: builder.query({
       query: searchParams => {
@@ -380,5 +414,10 @@ export const {
   useGetActivityQuery,
   useUpdateActivityMutation,
   useDeleteActivityMutation,
+  useGetCurrenciesQuery,
+  useCreateCurrencyMutation,
+  useGetCurrencyQuery,
+  useUpdateCurrencyMutation,
+  useDeleteCurrencyMutation,
   useSearchDestinationsQuery,
 } = apiSlice;

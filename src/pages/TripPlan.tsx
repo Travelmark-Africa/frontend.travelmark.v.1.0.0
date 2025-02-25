@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Check, Loader2 } from 'lucide-react';
-import { useGetActivitiesQuery, useCreateTripPlanMutation } from '@/redux/api/apiSlice';
+import { useGetActivitiesQuery, useCreateTripPlanMutation, useGetCurrenciesQuery } from '@/redux/api/apiSlice';
 
 // Shadcn/ui components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,6 +43,7 @@ const TripPlan: React.FC = () => {
     endDate: undefined,
     numberOfTravelers: 1,
     budget: 0,
+    currencyId: '',
     needAccommodation: 'NO',
     accommodationDetails: '',
     needTransportation: 'NO',
@@ -55,6 +56,7 @@ const TripPlan: React.FC = () => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [confirmation, setConfirmation] = useState('');
   const { data: activities, isLoading: activitiesLoading } = useGetActivitiesQuery({});
+  const { data: currencies, isLoading: currenciesLoading } = useGetCurrenciesQuery({});
   const [createTripPlan, { isLoading: isSubmitting }] = useCreateTripPlanMutation();
 
   const totalSteps = 6;
@@ -94,9 +96,12 @@ const TripPlan: React.FC = () => {
         } else if (formData.budget < 0) {
           newErrors.budget = 'Budget must be positive';
         }
+        if (!formData.currencyId) {
+          newErrors.currencyId = 'Currency is required';
+        }
         if (!formData.contactEmail) {
           newErrors.contactEmail = 'Contact Email is required';
-        } else if (!validateEmail(formData.email)) {
+        } else if (!validateEmail(formData.contactEmail)) {
           newErrors.contactEmail = 'Invalid email format';
         }
         if (formData.contactPerson.length === 0) {
@@ -178,7 +183,7 @@ const TripPlan: React.FC = () => {
         const res = await createTripPlan(formData).unwrap();
         if (res.ok) {
           setConfirmation(res.message);
-          setStep(6); // Move to the confirmation step
+          setStep(6);
         }
       } catch (error) {
         handleError(error);
@@ -203,7 +208,7 @@ const TripPlan: React.FC = () => {
 
     return (
       <div className='space-y-4'>
-        <div className='flex flex-wrap gap-2 mt-2'>
+        <div className='flex flex-wrap gap-2 mt-2 h-48 overflow-y-auto p-2 border rounded-md'>
           {activities?.data?.map((activity: Activity) => (
             <div
               key={activity.id}
@@ -222,6 +227,38 @@ const TripPlan: React.FC = () => {
         </div>
         {errors.activities && <p className='text-[13px] text-red-500'>{errors.activities}</p>}
       </div>
+    );
+  };
+
+  const renderCurrencySelector = () => {
+    if (currenciesLoading) {
+      return <Skeleton className='h-10 w-full' />;
+    }
+
+    return (
+      <Select
+        value={formData.currencyId}
+        onValueChange={(value: string) => {
+          setFormData({
+            ...formData,
+            currencyId: value,
+          });
+          if (errors.currencyId) {
+            setErrors({ ...errors, currencyId: undefined });
+          }
+        }}
+      >
+        <SelectTrigger className='bg-white'>
+          <SelectValue placeholder='Select currency' />
+        </SelectTrigger>
+        <SelectContent>
+          {currencies?.data?.map((currency: Currency) => (
+            <SelectItem key={currency.id} value={currency.id}>
+              {currency.code}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     );
   };
 
@@ -282,7 +319,7 @@ const TripPlan: React.FC = () => {
               />
               {errors.location && <p className='text-[13px] text-red-500'>{errors.location}</p>}
             </div>
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='space-y-2'>
                 <Label>Start Date</Label>
                 <Popover>
@@ -372,32 +409,82 @@ const TripPlan: React.FC = () => {
               </div>
             </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='numberOfTravelers'>Number of Travelers</Label>
-                <Input
-                  className='bg-white'
-                  id='numberOfTravelers'
-                  type='number'
-                  min='1'
-                  value={formData.numberOfTravelers}
-                  onChange={handleInputChange('numberOfTravelers')}
-                />
-                {errors.numberOfTravelers && <p className='text-[13px] text-red-500'>{errors.numberOfTravelers}</p>}
+            {/* Travel Form Layout Component */}
+            <div className='w-full max-w-4xl mx-auto'>
+              {/* Desktop Layout - Flex row with different widths */}
+              <div className='hidden md:flex md:flex-row md:gap-4 md:items-start'>
+                {/* Number of Travelers - Small */}
+                <div className='w-1/4'>
+                  <label className='block text-sm font-medium mb-1'>Number of Travelers</label>
+                  <Input
+                    type='number'
+                    className='bg-white'
+                    id='numberOfTravelers'
+                    min='1'
+                    value={formData.numberOfTravelers}
+                    onChange={handleInputChange('numberOfTravelers')}
+                  />
+                  {errors.numberOfTravelers && <p className='text-red-500 text-xs mt-1'>{errors.numberOfTravelers}</p>}
+                </div>
+
+                {/* Budget Section with Currency and Amount */}
+                <div className='w-3/4'>
+                  <label className='block text-sm font-medium mb-1'>Budget</label>
+                  <div className='flex items-start gap-2'>
+                    {/* Currency Selector - Medium size */}
+                    <div className='w-2/5'>
+                      {renderCurrencySelector()}
+                      {errors.currencyId && <p className='text-red-500 text-xs mt-1'>{errors.currencyId}</p>}
+                    </div>
+
+                    {/* Amount Input - Normal size */}
+                    <div className='w-3/5'>
+                      <Input
+                        type='number'
+                        className='bg-white'
+                        placeholder='Enter amount'
+                        value={formData.budget}
+                        onChange={handleInputChange('budget')}
+                      />
+                      {errors.budget && <p className='text-red-500 text-xs mt-1'>{errors.budget}</p>}
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className='space-y-2'>
-                <Label htmlFor='budget'>Budget (USD)</Label>
-                <Input
-                  className='bg-white'
-                  id='budget'
-                  type='number'
-                  min='0'
-                  step='100'
-                  value={formData.budget}
-                  onChange={handleInputChange('budget')}
-                />
-                {errors.budget && <p className='text-[13px] text-red-500'>{errors.budget}</p>}
+              {/* Mobile Layout - Stack with currency + travelers in one row */}
+              <div className='md:hidden space-y-4'>
+                <div className='flex flex-row gap-2'>
+                  {/* Number of Travelers */}
+                  <div className='w-1/2'>
+                    <label className='block text-sm font-medium mb-1'>Number of Travelers</label>
+                    <Input
+                      type='number'
+                      className='bg-white'
+                      id='numberOfTravelers'
+                      value={formData.numberOfTravelers}
+                      min='1'
+                      onChange={handleInputChange('budget')}
+                    />
+                    {errors.numberOfTravelers && (
+                      <p className='text-red-500 text-xs mt-1'>{errors.numberOfTravelers}</p>
+                    )}
+                  </div>
+
+                  {/* Currency Selector */}
+                  <div className='w-1/2'>
+                    <label className='block text-sm font-medium mb-1'>Currency</label>
+                    {renderCurrencySelector()}
+                    {errors.currencyId && <p className='text-red-500 text-xs mt-1'>{errors.currencyId}</p>}
+                  </div>
+                </div>
+
+                {/* Amount Input - Full width on its own row */}
+                <div>
+                  <label className='block text-sm font-medium mb-1'>Budget Amount</label>
+                  <Input type='number' className='bg-white' placeholder='Enter amount' />
+                  {errors.budget && <p className='text-red-500 text-xs mt-1'>{errors.budget}</p>}
+                </div>
               </div>
             </div>
           </CardContent>
@@ -486,6 +573,7 @@ const TripPlan: React.FC = () => {
               <Label>Select Activities</Label>
               {renderActivitiesStep()}
             </div>
+            <div className='text-sm text-gray-500 italic'>Scroll to see more activities</div>
           </CardContent>
         );
 

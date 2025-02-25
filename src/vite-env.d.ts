@@ -45,7 +45,7 @@ interface CurrentUser {
 }
 
 interface Currency {
-  id: number;
+  id: string;
   name: string;
   code: string;
   symbol: string;
@@ -62,7 +62,7 @@ interface Destination {
   tag?: string;
   countryId?: string;
   images: string[];
-  currency: Currency;
+  currencyId: string;
   createdAt: Date;
   updatedAt: Date;
   country: {
@@ -148,6 +148,7 @@ interface TripPlan {
   numberOfTravelers: number;
   status?: 'PLANNING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
   budget?: number;
+  currencyId: string;
   needAccommodation: 'YES' | 'NO';
   accommodationDetails?: string;
   needTransportation: 'YES' | 'NO';
