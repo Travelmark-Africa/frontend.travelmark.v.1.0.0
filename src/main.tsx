@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -9,13 +9,17 @@ import { Toaster } from 'sonner';
 import store from '@/redux/store.ts';
 
 import './index.css';
+import AnimatedFaviconLoader from './components/AnimatedFaviconLoader.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <HelmetProvider>
-          <App />
+          {/* Wrap the entire App in Suspense */}
+          <Suspense fallback={<AnimatedFaviconLoader />}>
+            <App />
+          </Suspense>
         </HelmetProvider>
         <Toaster
           toastOptions={{
