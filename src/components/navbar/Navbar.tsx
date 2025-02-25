@@ -7,7 +7,7 @@ import UserMenu from './UserMenu';
 const Navbar: React.FC = () => {
   const location = useLocation();
   return (
-    <div className='fixed w-full bg-white/40 z-10 backdrop-blur-md'>
+    <div className='fixed w-full bg-white/40 backdrop-blur-md z-50'>
       <div className='py-2 sm:py-3 md:py-4 border-b-[1px]'>
         <Container>
           <div className='flex flex-row items-center justify-between gap-2 md:gap-3'>
