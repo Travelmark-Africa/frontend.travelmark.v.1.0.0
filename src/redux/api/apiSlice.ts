@@ -349,6 +349,14 @@ export const apiSlice = createApi({
       }),
     }),
 
+    // Tags endpoints
+    getTags: builder.query({
+      query: () => ({
+        url: '/tags',
+        method: 'GET',
+      }),
+    }),
+
     // Search endpoints
     searchDestinations: builder.query({
       query: searchParams => {
@@ -419,5 +427,6 @@ export const {
   useGetCurrencyQuery,
   useUpdateCurrencyMutation,
   useDeleteCurrencyMutation,
+  useGetTagsQuery,
   useSearchDestinationsQuery,
 } = apiSlice;

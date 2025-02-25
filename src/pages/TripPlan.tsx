@@ -482,7 +482,13 @@ const TripPlan: React.FC = () => {
                 {/* Amount Input - Full width on its own row */}
                 <div>
                   <label className='block text-sm font-medium mb-1'>Budget Amount</label>
-                  <Input type='number' className='bg-white' placeholder='Enter amount' />
+                  <Input
+                    type='number'
+                    className='bg-white'
+                    placeholder='Enter amount'
+                    value={formData.budget}
+                    onChange={handleInputChange('budget')}
+                  />
                   {errors.budget && <p className='text-red-500 text-xs mt-1'>{errors.budget}</p>}
                 </div>
               </div>

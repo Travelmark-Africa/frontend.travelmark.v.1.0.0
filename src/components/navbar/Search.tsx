@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useGetCountriesQuery } from '@/redux/api/apiSlice';
+import { useGetCountriesQuery, useGetTagsQuery } from '@/redux/api/apiSlice';
 
 interface Country {
   id: string;
@@ -19,7 +19,7 @@ interface Country {
 
 interface TourismTag {
   id: string;
-  label: string;
+  name: string;
 }
 
 interface SearchParams {
@@ -31,21 +31,11 @@ interface SearchParams {
   endDate?: string;
 }
 
-const tourismTags: TourismTag[] = [
-  { id: 'popular', label: 'Most Popular' },
-  { id: 'beach', label: 'Beach' },
-  { id: 'mountain', label: 'Mountain' },
-  { id: 'cultural', label: 'Cultural' },
-  { id: 'adventure', label: 'Adventure' },
-  { id: 'wildlife', label: 'Wildlife' },
-  { id: 'historical', label: 'Historical' },
-  { id: 'food', label: 'Food & Cuisine' },
-];
-
 const Search = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data: countries, isLoading } = useGetCountriesQuery({});
+  const { data: countries, isLoading: isLoadingCountries } = useGetCountriesQuery({});
+  const { data: tags, isLoading: isLoadingTags } = useGetTagsQuery({});
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [country, setCountry] = useState<string>('');
@@ -58,7 +48,7 @@ const Search = () => {
 
   // Parse URL parameters on initial load
   useEffect(() => {
-    if (countries?.data) {
+    if (countries?.data && tags?.data) {
       const params = new URLSearchParams(location.search);
 
       // Set country based on name from URL
@@ -95,7 +85,7 @@ const Search = () => {
         setEndDate(parse(endDateParam, 'yyyy-MM-dd', new Date()));
       }
     }
-  }, [location.search, countries]);
+  }, [location.search, countries, tags]);
 
   const durationLabel = useMemo(() => {
     if (startDate && endDate) {
@@ -154,6 +144,8 @@ const Search = () => {
   const clearTagSelection = () => {
     setSelectedTag('');
   };
+
+  const isLoading = isLoadingCountries || isLoadingTags;
 
   return (
     <>
@@ -295,9 +287,9 @@ const Search = () => {
                   <SelectValue placeholder='Select a tag (optional)' />
                 </SelectTrigger>
                 <SelectContent>
-                  {tourismTags.map((tag: TourismTag) => (
-                    <SelectItem key={tag.id} value={tag.id}>
-                      {tag.label}
+                  {tags?.data?.map((tag: TourismTag) => (
+                    <SelectItem key={tag.id} value={tag.name}>
+                      {tag.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
