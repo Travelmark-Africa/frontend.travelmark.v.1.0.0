@@ -50,6 +50,7 @@
    --container-lg-padding: 4rem;
    --container-xl-padding: 5rem;
    --container-2xl-padding: 6rem;
+
 }
 
 
@@ -157,3 +158,11 @@
 .glow {
     box-shadow: 0 0 15px rgba(244, 162, 97, 0.6);
  }
+
+#nprogress .bar {
+  background: var(--secondary) !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--secondary), 0 0 5px var(--secondary) !important;
+}

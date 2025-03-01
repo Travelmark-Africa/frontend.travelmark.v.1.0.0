@@ -120,7 +120,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination }) => {
         {price === 0 ? null : (
           <div className='flex flex-row items-center gap-1'>
             <div className='font-semibold text-[0.8rem]'>
-              {destination.price !== 0 && formatPrice(price, destination.currency.code)}
+              {destination?.price !== 0 && formatPrice(price, destination?.currency?.code)}
             </div>
             <div className='font-light'>per person per day</div>
           </div>

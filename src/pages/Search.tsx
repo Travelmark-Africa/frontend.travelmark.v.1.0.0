@@ -58,9 +58,6 @@ const SearchPage: React.FC = () => {
 
     setSearchParams(params);
     setHasValidParams(hasParams);
-
-    // For debugging
-    console.log('Extracted search params:', params);
   }, [hasValidParams, location.search]);
 
   // Use the search destinations query with the extracted parameters

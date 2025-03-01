@@ -11,13 +11,13 @@ NProgress.configure({
   minimum: 0.1,
   easing: 'ease',
   speed: 500,
-  trickleSpeed: 200
+  trickleSpeed: 200,
 });
 
 const LoadingProgressManager = ({ children }: LoadingProgressManagerProps) => {
   useEffect(() => {
     NProgress.start();
-    
+
     // Complete the progress once children are mounted
     return () => {
       NProgress.done();

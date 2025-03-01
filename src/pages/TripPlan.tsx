@@ -612,15 +612,14 @@ const TripPlan: React.FC = () => {
       {/* Overlay */}
       <div className='absolute inset-0 bg-foreground/40' />
 
-      {/* Logo */}
-      <Link to='/' className='absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 z-50'>
-        <div className='relative h-16 sm:h-24 md:h-28 w-[250px] sm:w-[280px] transition-transform hover:scale-105'>
-          <img src={logo2} alt='Travelmark logo' className='object-contain w-full h-full' />
-        </div>
-      </Link>
-
       {/* Main Content */}
-      <div className='relative min-h-screen flex items-center justify-center container px-4 py-20'>
+      <div className=' min-h-screen flex flex-col items-center justify-center container px-4 py-20 gap-12'>
+        {/* Logo */}
+        <Link to='/'>
+          <div className='relative h-16 sm:h-24 md:h-28 w-[200px] sm:w-[220px] transition-transform hover:scale-[1.01]'>
+            <img src={logo2} alt='Travelmark logo' className='object-contain w-full h-full' />
+          </div>
+        </Link>
         <Card className='w-full max-w-2xl bg-background/95 backdrop-blur'>
           <CardHeader>
             {step === totalSteps ? null : (

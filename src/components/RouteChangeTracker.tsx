@@ -12,16 +12,16 @@ const RouteChangeTracker = (): null => {
     if (nprogessTimeout) {
       clearTimeout(nprogessTimeout);
     }
-    
+
     // Start NProgress
     NProgress.start();
-    
+
     // Set a timeout to ensure NProgress completes
     nprogessTimeout = window.setTimeout(() => {
       NProgress.done();
       nprogessTimeout = null;
     }, 500);
-    
+
     // Cleanup function
     return () => {
       if (nprogessTimeout) {

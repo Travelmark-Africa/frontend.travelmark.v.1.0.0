@@ -7,7 +7,7 @@ import AuthGuard from './authGuard';
 import { getNetworkStatus } from './lib/utils';
 import DefaultSEO from './components/DefaultSEO';
 import AnimatedFaviconLoader from './components/AnimatedFaviconLoader';
-import LoadingProgressManager from './components/LoadingProgressManager';
+// import LoadingProgressManager from './components/LoadingProgressManager';
 import RouteChangeTracker from './components/RouteChangeTracker';
 
 // ScrollToTop component
@@ -42,7 +42,7 @@ const App = () => {
 
   useEffect(() => {
     if (!isReloaded && !isOnline) {
-      toast("You are offline, some content won't be visible", {
+      toast.error("You are offline, some content won't be visible", {
         duration: 2000,
       });
     }
@@ -54,15 +54,9 @@ const App = () => {
       <DefaultSEO />
       <ScrollToTop />
       <RouteChangeTracker />
-      <Suspense 
-        fallback={
-          <LoadingProgressManager>
-            <AnimatedFaviconLoader />
-          </LoadingProgressManager>
-        }
-      >
+      <Suspense fallback={<AnimatedFaviconLoader />}>
         <Routes>
-          {routes.map((route) =>
+          {routes.map(route =>
             route.authRequired ? (
               <Route key={route.path} path={route.path} element={<AuthGuard />}>
                 <Route path={route.path} element={route.element} />

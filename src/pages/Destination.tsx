@@ -275,7 +275,7 @@ const Destination = () => {
             <div className='bg-white border rounded-lg p-6 sticky top-4'>
               {destination.price > 0 ? (
                 <div className='text-2xl font-bold text-orange-600 mb-4'>
-                  {formatPrice(destination.price, destination.currency.code)}
+                  {formatPrice(destination.price, destination?.currency?.code)}
                 </div>
               ) : (
                 <h4 className='text-2xl font-bold mb-4'>Fill this form</h4>

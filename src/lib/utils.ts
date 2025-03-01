@@ -62,7 +62,7 @@ export const formatDateRange = (startDate?: string, endDate?: string) => {
 
 export const handleError = (error: unknown) => {
   if (typeof error === 'object' && error !== null && 'data' in error) {
-    const { data } = error as { data: { message: string; }; };
+    const { data } = error as { data: { message: string } };
     toast.error(data.message || 'Something went wrong', {
       duration: 2000,
     });
@@ -106,17 +106,15 @@ export const formatProductName = (name: string) => {
     .replace(/^-+|-+$/g, '');
 };
 
-export function lazyLoad<T extends ComponentType>(
-  importFunc: () => Promise<{ default: T; }>,
-): LazyExoticComponent<T> {
+export function lazyLoad<T extends ComponentType>(importFunc: () => Promise<{ default: T }>): LazyExoticComponent<T> {
   return lazy(() => {
     NProgress.start();
     return importFunc()
-      .then((result) => {
+      .then(result => {
         NProgress.done();
         return result;
       })
-      .catch((error) => {
+      .catch(error => {
         NProgress.done();
         throw error;
       });
