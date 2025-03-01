@@ -1,7 +1,6 @@
-import { teamMembers } from "@/constants";
+import { teamMembers } from '@/constants';
 
 const Team = () => {
-
   // Determine appropriate grid classes based on number of members
   const getGridClasses = () => {
     const count = teamMembers.length;

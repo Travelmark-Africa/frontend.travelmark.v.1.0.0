@@ -30,19 +30,21 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor = 'bg-white/40 backdrop-blur-md
               <div className='flex space-x-4 md:space-x-6'>
                 <Link
                   to='/about-us'
-                  className={`font-medium transition-all duration-300 ease-in-out ${pathname === '/about-us'
-                    ? 'text-secondary underline underline-offset-4 scale-105'
-                    : 'text-gray-700 hover:text-secondary hover:scale-105'
-                    }`}
+                  className={`font-medium transition-all duration-300 ease-in-out ${
+                    pathname === '/about-us'
+                      ? 'text-secondary underline underline-offset-4 scale-105'
+                      : 'text-gray-700 hover:text-secondary hover:scale-105'
+                  }`}
                 >
                   About Us
                 </Link>
                 <Link
                   to='/contact-us'
-                  className={`font-medium transition-all duration-300 ease-in-out ${pathname === '/contact-us'
-                    ? 'text-secondary underline underline-offset-4 scale-105'
-                    : 'text-gray-700 hover:text-secondary hover:scale-105'
-                    }`}
+                  className={`font-medium transition-all duration-300 ease-in-out ${
+                    pathname === '/contact-us'
+                      ? 'text-secondary underline underline-offset-4 scale-105'
+                      : 'text-gray-700 hover:text-secondary hover:scale-105'
+                  }`}
                 >
                   Contact Us
                 </Link>
@@ -50,8 +52,11 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor = 'bg-white/40 backdrop-blur-md
             )}
 
             {/* Search bar visible on all pages except about-us and contact-us */}
-            <div className={`flex-1 mx-2 md:mx-4 max-w-[350px] md:max-w-[400px] lg:max-w-[500px] transition-opacity duration-500 ease-in-out ${isAboutOrContact ? 'opacity-0 hidden' : 'opacity-100'
-              }`}>
+            <div
+              className={`flex-1 mx-2 md:mx-4 max-w-[350px] md:max-w-[400px] lg:max-w-[500px] transition-opacity duration-500 ease-in-out ${
+                isAboutOrContact ? 'opacity-0 hidden' : 'opacity-100'
+              }`}
+            >
               <Search />
             </div>
 

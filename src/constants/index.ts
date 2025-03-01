@@ -99,7 +99,6 @@ export const faqs = [
   },
 ];
 
-
 export const teamMembers = [
   {
     id: 1,
@@ -120,4 +119,3 @@ export const teamMembers = [
     image: team,
   },
 ];
-
