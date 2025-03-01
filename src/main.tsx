@@ -1,37 +1,50 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import ReactDOM from 'react-dom/client';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import App from './App.tsx';
+import App from './App';
 import { Provider } from 'react-redux';
 import { Toaster } from 'sonner';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
-import store from '@/redux/store.ts';
+import store from '@/redux/store';
 
 import './index.css';
-import AnimatedFaviconLoader from './components/AnimatedFaviconLoader.tsx';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-        <HelmetProvider>
-          {/* Wrap the entire App in Suspense */}
-          <Suspense fallback={<AnimatedFaviconLoader />}>
+// Configure NProgress globally
+NProgress.configure({
+  showSpinner: false,
+  minimum: 0.1,
+  easing: 'ease',
+  speed: 500,
+  trickleSpeed: 200
+});
+
+const root = document.getElementById('root');
+
+if (root) {
+  ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID as string}>
+          <HelmetProvider>
             <App />
-          </Suspense>
-        </HelmetProvider>
-        <Toaster
-          toastOptions={{
-            classNames: {
-              error: 'text-red-600',
-              success: 'text-green-600',
-              warning: 'text-yellow-600',
-              info: 'text-blue-600',
-            },
-          }}
-        />
-      </GoogleOAuthProvider>
-    </Provider>
-  </React.StrictMode>
-);
+          </HelmetProvider>
+          <Toaster
+            toastOptions={{
+              classNames: {
+                error: 'text-red-600',
+                success: 'text-green-600',
+                warning: 'text-yellow-600',
+                info: 'text-blue-600',
+              },
+            }}
+          />
+        </GoogleOAuthProvider>
+      </Provider>
+    </React.StrictMode>
+  );
+} else {
+  console.error('Root element not found');
+}

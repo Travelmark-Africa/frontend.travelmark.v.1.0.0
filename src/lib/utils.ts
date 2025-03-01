@@ -1,3 +1,5 @@
+import { lazy, ComponentType, LazyExoticComponent } from 'react';
+import NProgress from 'nprogress';
 import { format } from 'date-fns';
 import { type ClassValue, clsx } from 'clsx';
 import { toast } from 'sonner';
@@ -60,7 +62,7 @@ export const formatDateRange = (startDate?: string, endDate?: string) => {
 
 export const handleError = (error: unknown) => {
   if (typeof error === 'object' && error !== null && 'data' in error) {
-    const { data } = error as { data: { message: string } };
+    const { data } = error as { data: { message: string; }; };
     toast.error(data.message || 'Something went wrong', {
       duration: 2000,
     });
@@ -103,3 +105,20 @@ export const formatProductName = (name: string) => {
     .replace(/--+/g, '-')
     .replace(/^-+|-+$/g, '');
 };
+
+export function lazyLoad<T extends ComponentType>(
+  importFunc: () => Promise<{ default: T; }>,
+): LazyExoticComponent<T> {
+  return lazy(() => {
+    NProgress.start();
+    return importFunc()
+      .then((result) => {
+        NProgress.done();
+        return result;
+      })
+      .catch((error) => {
+        NProgress.done();
+        throw error;
+      });
+  });
+}
