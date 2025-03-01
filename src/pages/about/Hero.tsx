@@ -13,7 +13,9 @@ const Hero = () => {
   const [arcsData, setArcsData] = useState<ArcData[]>([]);
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
 
+  // Initialize arcs data immediately on component mount
   useEffect(() => {
+    // Pre-generate arcs data so it's ready when the globe loads
     const newArcs = [...Array(15)].map(() => ({
       startLat: (Math.random() - 0.5) * 180,
       startLng: (Math.random() - 0.5) * 360,
@@ -22,7 +24,10 @@ const Hero = () => {
       color: 'rgba(80, 200, 120, 0.8)',
     }));
     setArcsData(newArcs);
+  }, []);
 
+  // Handle globe initialization separately
+  useEffect(() => {
     if (globeRef.current) {
       const controls = globeRef.current.controls();
       if (controls) {
@@ -30,6 +35,19 @@ const Hero = () => {
         controls.autoRotateSpeed = 0.5;
       }
     }
+  }, []);
+
+  // Preload globe textures
+  useEffect(() => {
+    const preloadImages = () => {
+      const earthTexture = new Image();
+      earthTexture.src = '//unpkg.com/three-globe/example/img/earth-blue-marble.jpg';
+
+      const bumpTexture = new Image();
+      bumpTexture.src = '//unpkg.com/three-globe/example/img/earth-topology.png';
+    };
+
+    preloadImages();
   }, []);
 
   return (
@@ -41,7 +59,7 @@ const Hero = () => {
           <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold'>Discover the</h1>
           <h4 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-secondary'>Soul of Africa!</h4>
         </div>
-        <p className=' text-base sm:text-lg'>Crafting unforgettable journeys across the African continent.</p>
+        <p className='text-base sm:text-lg'>Crafting unforgettable journeys across the African continent.</p>
       </div>
 
       {/* Globe - Visible on all screen sizes */}
@@ -63,6 +81,8 @@ const Hero = () => {
             arcDashLength={0.4}
             arcDashGap={0.2}
             arcDashAnimateTime={1500}
+            waitForGlobeReady={false}
+            animateIn={false}
           />
         </div>
       </div>

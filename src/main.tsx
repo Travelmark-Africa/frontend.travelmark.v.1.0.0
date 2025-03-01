@@ -5,9 +5,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import App from './App';
 import { Provider } from 'react-redux';
 import { Toaster } from 'sonner';
-import 'nprogress/nprogress.css';
 
 import store from '@/redux/store';
+
+import 'nprogress/nprogress.css';
 
 import './index.css';
 

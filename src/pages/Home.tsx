@@ -77,10 +77,14 @@ const Home = () => {
             className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500 flex items-center space-x-5'
             to='/about-us'
           >
-            {' '}
-            <span> About Us</span>
-            <span>| </span>
-            <span>Contact Us</span>
+            About Us
+          </Link>
+          <span className='text-white'>| </span>
+          <Link
+            className='text-primary-foreground hover:text-secondary text-sm sm:text-base  transition-all duration-500 flex items-center space-x-5'
+            to='/contact-us'
+          >
+            Contact Us
           </Link>
         </div>
       </div>

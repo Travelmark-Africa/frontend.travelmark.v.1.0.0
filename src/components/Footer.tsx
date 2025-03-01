@@ -2,7 +2,7 @@ import { logo2 } from '@/assets';
 
 const Footer = () => {
   return (
-    <footer className='bg-gray-800 text-white py-12'>
+    <footer className='bg-primary text-white py-12'>
       <div className='max-w-7xl mx-auto px-4'>
         {/* Divider */}
         <div className='py-8 flex items-center justify-center'>
@@ -42,8 +42,8 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className='text-center'>
-          <p className='text-sm text-gray-400 mb-4'>© 2025 Travelmark. All rights reserved.</p>
-          <p className='text-xs text-gray-500 max-w-3xl mx-auto'>
+          <p className='text-sm text-gray-200 mb-4'>© 2025 Travelmark. All rights reserved.</p>
+          <p className='text-xs text-gray-400 max-w-3xl mx-auto'>
             The content and images used on this site are copyright protected and copyrights vests with the respective
             owners. The usage of the content and images on this website is intended to promote the works and no
             endorsement of the artist shall be implied. Unauthorized use is prohibited and punishable by law.

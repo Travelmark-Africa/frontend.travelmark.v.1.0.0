@@ -1,6 +1,6 @@
 import { useEffect, ReactNode } from 'react';
 import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
+import 'nprogress';
 
 interface LoadingProgressManagerProps {
   children: ReactNode;

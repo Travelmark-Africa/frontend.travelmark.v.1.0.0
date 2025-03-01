@@ -1,38 +1,25 @@
-import { team } from '@/assets';
+import { teamMembers } from "@/constants";
 
 const Team = () => {
-  const teamMembers = [
-    {
-      id: 1,
-      name: 'Yves Gahonzire',
-      position: 'CEO & Co-Founder',
-      image: team,
-    },
-    {
-      id: 2,
-      name: 'Yves Gahonzire',
-      position: 'CEO & Co-Founder',
-      image: team,
-    },
-    {
-      id: 3,
-      name: 'Yves Gahonzire',
-      position: 'CEO & Co-Founder',
-      image: team,
-    },
-    {
-      id: 4,
-      name: 'Yves Gahonzire',
-      position: 'CEO & Co-Founder',
-      image: team,
-    },
-    {
-      id: 5,
-      name: 'Yves Gahonzire',
-      position: 'CEO & Co-Founder',
-      image: team,
-    },
-  ];
+
+  // Determine appropriate grid classes based on number of members
+  const getGridClasses = () => {
+    const count = teamMembers.length;
+
+    // Base classes that apply to all scenarios
+    let classes = 'grid gap-8 mb-16 ';
+
+    // Add specific column classes based on team size
+    if (count <= 3) {
+      classes += 'grid-cols-1 md:grid-cols-3 justify-items-center mx-auto max-w-4xl';
+    } else if (count <= 4) {
+      classes += 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-items-center mx-auto max-w-5xl';
+    } else {
+      classes += 'grid-cols-1 md:grid-cols-3 lg:grid-cols-5 max-w-full';
+    }
+
+    return classes;
+  };
 
   return (
     <div className='w-full bg-white py-16 px-4'>
@@ -46,7 +33,7 @@ const Team = () => {
         </p>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16'>
+      <div className={getGridClasses()}>
         {teamMembers.map(member => (
           <div key={member.id} className='flex flex-col items-center text-center'>
             <div className='mb-4 w-48 h-48 rounded-full overflow-hidden border-4 border-[#F4A261] bg-[#FFF0E6]'>

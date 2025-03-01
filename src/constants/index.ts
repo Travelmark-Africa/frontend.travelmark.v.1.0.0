@@ -1,3 +1,4 @@
+import { team } from '@/assets';
 import {
   ShoppingCart,
   Tag,
@@ -97,3 +98,26 @@ export const faqs = [
       'Orders can be modified or cancelled within 1 hour of placement. Please contact our customer service team immediately for assistance with order changes.',
   },
 ];
+
+
+export const teamMembers = [
+  {
+    id: 1,
+    name: 'Yves Gahonzire',
+    position: 'CEO & Co-Founder',
+    image: team,
+  },
+  {
+    id: 2,
+    name: 'Yves Gahonzire',
+    position: 'CEO & Co-Founder',
+    image: team,
+  },
+  {
+    id: 3,
+    name: 'Yves Gahonzire',
+    position: 'CEO & Co-Founder',
+    image: team,
+  },
+];
+
