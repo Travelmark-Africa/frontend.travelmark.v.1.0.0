@@ -159,3 +159,9 @@ interface TripPlan {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+interface FAQ {
+  question: string;
+  answer: string;
+  id: string;
+}

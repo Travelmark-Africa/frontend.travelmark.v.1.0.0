@@ -366,6 +366,14 @@ export const apiSlice = createApi({
       }),
     }),
 
+    // FAQs endpoint
+    getFaqs: builder.query({
+      query: () => ({
+        url: '/faqs',
+        method: 'GET',
+      }),
+    }),
+
     // Search endpoints
     searchDestinations: builder.query({
       query: searchParams => {
@@ -438,5 +446,6 @@ export const {
   useDeleteCurrencyMutation,
   useGetTagsQuery,
   useCreateMessageMutation,
+  useGetFaqsQuery,
   useSearchDestinationsQuery,
 } = apiSlice;
