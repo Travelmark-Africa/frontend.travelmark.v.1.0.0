@@ -26,6 +26,7 @@ const Hero = () => {
     handleSubmit,
     formState: { errors },
     clearErrors,
+    reset,
   } = useForm<FormData>();
 
   const [createMessage, { isLoading: isSubmitting }] = useCreateMessageMutation();
@@ -50,8 +51,12 @@ const Hero = () => {
   const onSubmit = async (data: FormData) => {
     try {
       const res = await createMessage(data).unwrap();
-      if (res.ok) {
+      if (res?.ok) {
         toast.success(res.message);
+        // Reset the form fields after successful submission
+        reset();
+        // Also reset the word count
+        setWordCount(0);
       } else {
         toast.error(res.message);
       }
