@@ -357,6 +357,15 @@ export const apiSlice = createApi({
       }),
     }),
 
+    // Message endpoint
+    createMessage: builder.mutation({
+      query: data => ({
+        url: '/messages',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+
     // Search endpoints
     searchDestinations: builder.query({
       query: searchParams => {
@@ -428,5 +437,6 @@ export const {
   useUpdateCurrencyMutation,
   useDeleteCurrencyMutation,
   useGetTagsQuery,
+  useCreateMessageMutation,
   useSearchDestinationsQuery,
 } = apiSlice;

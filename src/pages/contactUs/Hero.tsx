@@ -5,13 +5,17 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import Container from '@/components/Container';
 import { useState } from 'react';
+import { handleError } from '@/lib/utils';
+import { toast } from 'sonner';
+import { useCreateMessageMutation } from '@/redux/api/apiSlice';
+import { Loader2 } from 'lucide-react';
 
 // Define the form data type
 type FormData = {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  telephone: string;
   subject: string;
   message: string;
 };
@@ -21,22 +25,39 @@ const Hero = () => {
     register,
     handleSubmit,
     formState: { errors },
+    clearErrors,
   } = useForm<FormData>();
+
+  const [createMessage, { isLoading: isSubmitting }] = useCreateMessageMutation();
 
   // State to track word count
   const [wordCount, setWordCount] = useState(0);
   const maxWords = 120;
 
-  // Handle textarea change to count words
+  // Handle textarea change to count words and clear error
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
-    const words = text.trim().split(/\s+/).filter(Boolean).length; // Count words
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
     setWordCount(words);
+
+    // Clear the error for the message field when user types
+    if (errors.message) {
+      clearErrors('message');
+    }
   };
 
   // Handle form submission
-  const onSubmit = (data: FormData) => {
-    console.log(data); // Handle form submission
+  const onSubmit = async (data: FormData) => {
+    try {
+      const res = await createMessage(data).unwrap();
+      if (res.ok) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   return (
@@ -95,6 +116,7 @@ const Hero = () => {
                         <Input
                           placeholder='First name'
                           {...register('firstName', { required: 'First name is required' })}
+                          onChange={() => errors.firstName && clearErrors('firstName')}
                         />
                         {errors.firstName && (
                           <span className='text-red-500 text-sm mt-1'>{errors.firstName.message}</span>
@@ -104,6 +126,7 @@ const Hero = () => {
                         <Input
                           placeholder='Last name'
                           {...register('lastName', { required: 'Last name is required' })}
+                          onChange={() => errors.lastName && clearErrors('lastName')}
                         />
                         {errors.lastName && (
                           <span className='text-red-500 text-sm mt-1'>{errors.lastName.message}</span>
@@ -122,20 +145,28 @@ const Hero = () => {
                               message: 'Invalid email address',
                             },
                           })}
+                          onChange={() => errors.email && clearErrors('email')}
                         />
                         {errors.email && <span className='text-red-500 text-sm mt-1'>{errors.email.message}</span>}
                       </div>
                       <div className='flex flex-col'>
                         <Input
                           placeholder='Phone number'
-                          {...register('phone', { required: 'Phone number is required' })}
+                          {...register('telephone', { required: 'Phone number is required' })}
+                          onChange={() => errors.telephone && clearErrors('telephone')}
                         />
-                        {errors.phone && <span className='text-red-500 text-sm mt-1'>{errors.phone.message}</span>}
+                        {errors.telephone && (
+                          <span className='text-red-500 text-sm mt-1'>{errors.telephone.message}</span>
+                        )}
                       </div>
                     </div>
 
                     <div className='flex flex-col'>
-                      <Input placeholder='Subject' {...register('subject', { required: 'Subject is required' })} />
+                      <Input
+                        placeholder='Subject'
+                        {...register('subject', { required: 'Subject is required' })}
+                        onChange={() => errors.subject && clearErrors('subject')}
+                      />
                       {errors.subject && <span className='text-red-500 text-sm mt-1'>{errors.subject.message}</span>}
                     </div>
                     <div className='flex flex-col'>
@@ -162,8 +193,13 @@ const Hero = () => {
                     </div>
 
                     <div className='pt-2'>
-                      <Button type='submit' className='block mx-auto px-20'>
-                        Submit
+                      <Button
+                        type='submit'
+                        disabled={isSubmitting}
+                        className='mx-auto px-20 flex justify-center items-center'
+                      >
+                        {isSubmitting && <Loader2 className='animate-spin' />}
+                        {isSubmitting ? 'Submiting...' : 'Submit'}
                       </Button>
                       <p className='text-center text-gray-500 text-xs mt-2'>
                         By contacting us, you agree to our{' '}
