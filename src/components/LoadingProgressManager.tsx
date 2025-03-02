@@ -18,8 +18,13 @@ const LoadingProgressManager = ({ children }: LoadingProgressManagerProps) => {
   useEffect(() => {
     NProgress.start();
 
+    const timer = setTimeout(() => {
+      NProgress.done();
+    }, 300);
+
     // Complete the progress once children are mounted
     return () => {
+      clearTimeout(timer);
       NProgress.done();
     };
   }, []);

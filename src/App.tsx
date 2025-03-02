@@ -7,7 +7,7 @@ import AuthGuard from './authGuard';
 import { getNetworkStatus } from './lib/utils';
 import DefaultSEO from './components/DefaultSEO';
 import AnimatedFaviconLoader from './components/AnimatedFaviconLoader';
-// import LoadingProgressManager from './components/LoadingProgressManager';
+import LoadingProgressManager from './components/LoadingProgressManager';
 import RouteChangeTracker from './components/RouteChangeTracker';
 
 // ScrollToTop component
@@ -19,6 +19,15 @@ const ScrollToTop = (): null => {
   }, [pathname]);
 
   return null;
+};
+
+// LazyRoute component to handle individual route suspense
+const LazyRoute = ({ element }: { element: React.ReactNode }) => {
+  return (
+    <Suspense fallback={<AnimatedFaviconLoader />}>
+      <LoadingProgressManager>{element}</LoadingProgressManager>
+    </Suspense>
+  );
 };
 
 // Main App component
@@ -54,19 +63,17 @@ const App = () => {
       <DefaultSEO />
       <ScrollToTop />
       <RouteChangeTracker />
-      <Suspense fallback={<AnimatedFaviconLoader />}>
-        <Routes>
-          {routes.map(route =>
-            route.authRequired ? (
-              <Route key={route.path} path={route.path} element={<AuthGuard />}>
-                <Route path={route.path} element={route.element} />
-              </Route>
-            ) : (
-              <Route key={route.path} path={route.path} element={route.element} />
-            )
-          )}
-        </Routes>
-      </Suspense>
+      <Routes>
+        {routes.map(route =>
+          route.authRequired ? (
+            <Route key={route.path} path={route.path} element={<AuthGuard />}>
+              <Route path={route.path} element={<LazyRoute element={route.element} />} />
+            </Route>
+          ) : (
+            <Route key={route.path} path={route.path} element={<LazyRoute element={route.element} />} />
+          )
+        )}
+      </Routes>
     </Router>
   );
 };

@@ -20,7 +20,7 @@ const RouteChangeTracker = (): null => {
     nprogessTimeout = window.setTimeout(() => {
       NProgress.done();
       nprogessTimeout = null;
-    }, 500);
+    }, 300);
 
     // Cleanup function
     return () => {
