@@ -1,6 +1,6 @@
 import { useEffect, useState, Suspense } from 'react';
 import { toast } from 'sonner';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, useRoutes, useLocation, RouteObject } from 'react-router-dom';
 import routes from './routes';
 
 import AuthGuard from './authGuard';
@@ -21,10 +21,27 @@ const ScrollToTop = (): null => {
   return null;
 };
 
-// LazyRoute component to handle individual route suspense
-const LazyRoute = ({ element }: { element: React.ReactNode }) => {
+// AppRoutes component to handle routes with suspense
+const AppRoutes = () => {
+  const location = useLocation();
+
+  // Prepare routes with proper auth guards
+  const processedRoutes: RouteObject[] = routes.map(route => {
+    if (route.authRequired) {
+      return {
+        path: route.path,
+        element: <AuthGuard />,
+        children: [{ path: '', element: route.element }],
+      };
+    }
+    return { ...route };
+  });
+
+  // This key forces remounting of Suspense when location changes
+  const element = useRoutes(processedRoutes);
+
   return (
-    <Suspense fallback={<AnimatedFaviconLoader />}>
+    <Suspense key={location.pathname} fallback={<AnimatedFaviconLoader />}>
       <LoadingProgressManager>{element}</LoadingProgressManager>
     </Suspense>
   );
@@ -63,17 +80,7 @@ const App = () => {
       <DefaultSEO />
       <ScrollToTop />
       <RouteChangeTracker />
-      <Routes>
-        {routes.map(route =>
-          route.authRequired ? (
-            <Route key={route.path} path={route.path} element={<AuthGuard />}>
-              <Route path={route.path} element={<LazyRoute element={route.element} />} />
-            </Route>
-          ) : (
-            <Route key={route.path} path={route.path} element={<LazyRoute element={route.element} />} />
-          )
-        )}
-      </Routes>
+      <AppRoutes />
     </Router>
   );
 };
