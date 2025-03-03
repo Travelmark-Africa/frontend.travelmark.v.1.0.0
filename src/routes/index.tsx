@@ -15,7 +15,7 @@ const createLazyComponent = (importFn: () => Promise<any>, minDelay = 0) => {
 // Lazy load all the pages
 const HomePage = createLazyComponent(() => import('@/pages/Home'));
 const ExplorePage = createLazyComponent(() => import('@/pages/Explore'));
-const DestinationPage = createLazyComponent(() => import('@/pages/Destination'));
+const DestinationPage = createLazyComponent(() => import('@/pages/destination/Destination'));
 const TripPlanPage = createLazyComponent(() => import('@/pages/TripPlan'));
 const AboutPage = createLazyComponent(() => import('@/pages/about/index'));
 const ContactUsPage = createLazyComponent(() => import('@/pages/contactUs/index'));

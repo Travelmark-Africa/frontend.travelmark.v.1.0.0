@@ -151,12 +151,12 @@ const Search = () => {
     <>
       <div
         onClick={handleOpen}
-        className='border w-full md:w-auto py-1 rounded-full shadow-sm hover:shadow-md transition cursor-pointer bg-transparent'
+        className='border w-full md:w-auto py-1 rounded-full shadow-xs hover:shadow-sm transition cursor-pointer bg-white/50'
       >
         <div className='flex flex-row items-center justify-between px-3 sm:px-4 md:px-5'>
           <div className='text-sm font-semibold truncate max-w-[100px] sm:max-w-[150px]'>{selectedCountryName}</div>
           <div className='hidden sm:flex items-center justify-center'>
-            <div className='mx-2 text-gray-300'>|</div>
+            <div className='mx-2 text-primary'>|</div>
             <div className='text-sm font-semibold px-2 sm:px-3 md:px-4 text-center truncate max-w-[100px] sm:max-w-[150px]'>
               {durationLabel}
             </div>

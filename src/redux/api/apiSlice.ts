@@ -73,6 +73,14 @@ export const apiSlice = createApi({
         method: 'GET',
       }),
     }),
+
+    getCurrentUser: builder.query({
+      query: () => ({
+        url: `/users/me`,
+        method: 'GET',
+      }),
+    }),
+
     createUser: builder.mutation({
       query: data => ({
         url: '/users',
@@ -404,6 +412,7 @@ export const {
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useGetUsersQuery,
+  useGetCurrentUserQuery,
   useCreateUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,

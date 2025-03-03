@@ -7,6 +7,7 @@ interface User {
   token: string;
   name: string;
   role: string;
+  id: string;
 }
 
 export const useAuth = (): { user: User | null } => {
@@ -21,6 +22,7 @@ export const useAuth = (): { user: User | null } => {
     return {
       user: {
         token: userToken,
+        id: decodedToken.id,
         name: decodedToken.name,
         role: decodedToken.role,
       },
