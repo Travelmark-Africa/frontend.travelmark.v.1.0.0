@@ -214,7 +214,7 @@ const TripPlan: React.FC = () => {
               key={activity.id}
               onClick={() => handleActivityToggle(activity.title)}
               className={cn(
-                'flex items-center gap-2 border rounded-lg py-1 px-3 cursor-pointer',
+                'flex items-center gap-2 border rounded-lg py-1 px-3 cursor-pointer h-fit',
                 formData.activities.includes(activity.title)
                   ? 'bg-primary text-sm text-white border-primary'
                   : 'bg-gray-200 text-sm border-gray-400'

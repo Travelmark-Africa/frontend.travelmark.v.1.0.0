@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Calendar as CalendarIcon, Info, Loader2, User, Mail } from 'lucide-react';
 import { formatPrice, handleError } from '@/lib/utils';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,25 +35,24 @@ type FormValues = {
 const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
   const [totalPrice, setTotalPrice] = useState<number>(destination.price);
   const [createBooking, { isLoading: isSubmitting }] = useCreateBookingMutation();
-
-  // Always fetch user data to ensure we have the latest
   const {
     data: currentUser,
     isLoading: isLoadingUser,
     refetch,
-  } = useGetCurrentUserQuery(undefined, {
-    refetchOnMountOrArgChange: true,
-  });
+  } = useGetCurrentUserQuery(
+    {},
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null);
   const [shouldAutoSubmit, setShouldAutoSubmit] = useState(false);
   const [formComplete, setFormComplete] = useState(false);
-  const [isRefetching, setIsRefetching] = useState(false);
 
-  // Get userId safely
   const userId = currentUser?.data?.id;
-  const isLoading = isSubmitting || isLoadingUser || isRefetching;
+  const isLoading = isSubmitting || isLoadingUser;
   const isLoggedIn = !!userId;
 
   const {
@@ -85,69 +83,33 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
   const endDate = watch('endDate');
   const phone = watch('phone');
 
-  // Check if form is complete enough to proceed
   useEffect(() => {
     const hasRequiredFields = !!phone && !!startDate && !!endDate;
     setFormComplete(hasRequiredFields);
   }, [phone, startDate, endDate]);
 
-  // Update user data when currentUser changes
   useEffect(() => {
     if (currentUser?.data) {
       setValue('fullName', currentUser.data.name || '');
       setValue('email', currentUser.data.email || '');
       trigger(['fullName', 'email']);
+    } else {
+      setValue('fullName', '');
+      setValue('email', '');
     }
   }, [currentUser, setValue, trigger]);
 
-  // Calculate total price based on number of travelers
   useEffect(() => {
     if (destination.price > 0) {
       setTotalPrice(destination.price * numberOfTravelers);
     }
   }, [destination.price, numberOfTravelers]);
 
-  // This function runs after authentication dialog closes
-  const closeAuthDialog = useCallback(async () => {
-    // Store the auth mode before closing it
-    const prevMode = authMode;
-
-    // Close dialog first
-    setAuthMode(null);
-    setIsRefetching(true);
-
-    try {
-      // Use a clean promise-based approach with direct async/await
-      const result = await refetch();
-
-      if (result.data?.data?.id) {
-        // We have user data, update form
-        setValue('fullName', result.data.data.name || '');
-        setValue('email', result.data.data.email || '');
-        trigger(['fullName', 'email']);
-
-        // Auto-submit if we were trying to book (login mode)
-        if (prevMode === 'login') {
-          setShouldAutoSubmit(true);
-        }
-
-        toast.success('Successfully signed in!');
-      } else {
-        // No user data found after refetch
-        toast.error('Could not retrieve your profile. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error during refetch:', error);
-      toast.error('Failed to load your profile. Please refresh and try again.');
-    } finally {
-      setIsRefetching(false);
-    }
-  }, [authMode, refetch, setValue, trigger]);
-
   const onSubmit = useCallback(
     async (data: FormValues) => {
       if (!userId) {
         setAuthMode('login');
+        setShouldAutoSubmit(true);
         return;
       }
 
@@ -184,15 +146,23 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
     [createBooking, destination, totalPrice, userId, reset]
   );
 
-  // Handle auto-submission after login if needed
   useEffect(() => {
-    if (shouldAutoSubmit && isLoggedIn && !isLoading) {
+    if (shouldAutoSubmit && isLoggedIn) {
       handleSubmit(onSubmit)();
       setShouldAutoSubmit(false);
     }
-  }, [shouldAutoSubmit, isLoggedIn, isLoading, handleSubmit, onSubmit]);
+  }, [shouldAutoSubmit, isLoggedIn, handleSubmit, onSubmit]);
 
-  // Force form reset when logging out
+  useEffect(() => {
+    const checkUserSession = async () => {
+      if (!currentUser?.data && !isLoadingUser) {
+        await refetch();
+      }
+    };
+
+    checkUserSession();
+  }, [currentUser, isLoadingUser, refetch]);
+
   useEffect(() => {
     if (!isLoggedIn && isDirty) {
       reset({
@@ -231,7 +201,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
       <CardContent>
         <form id='booking-form' onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <div className='grid gap-4'>
-            {/* Name and Email on same row - Always disabled, no required validation */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <div>
                 <Label htmlFor='fullName' className='flex items-center justify-between'>
@@ -244,7 +213,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
                     {...register('fullName')}
                     placeholder={isLoggedIn ? 'Your profile name' : 'Will be filled after login'}
                     disabled={true}
-                    className='pl-9 mt-1'
+                    className='pl-9'
                   />
                   <User className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400' />
                 </div>
@@ -262,14 +231,13 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
                     {...register('email')}
                     placeholder={isLoggedIn ? 'Your profile email' : 'Will be filled after login'}
                     disabled={true}
-                    className='pl-9 mt-1'
+                    className='pl-9'
                   />
                   <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400' />
                 </div>
               </div>
             </div>
 
-            {/* Phone and Number of Travelers on same row */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <div>
                 <Label htmlFor='phone'>Phone Number</Label>
@@ -314,7 +282,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
               </div>
             </div>
 
-            {/* Start and End Date (already on same row) */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
               <div>
                 <Label>Start Date</Label>
@@ -389,7 +356,6 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
               </div>
             </div>
 
-            {/* Special Requests */}
             <div>
               <Label htmlFor='specialRequests'>Special Requests</Label>
               <Textarea
@@ -421,8 +387,18 @@ const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
         </p>
       </CardFooter>
 
-      {/* Auth Dialog */}
-      {authMode && <AuthDialog isOpen={authMode !== null} onClose={closeAuthDialog} mode={authMode} />}
+      {authMode && (
+        <AuthDialog
+          isOpen={true}
+          onClose={() => setAuthMode(null)}
+          mode={authMode}
+          onSuccess={() => {
+            if (shouldAutoSubmit) {
+              handleSubmit(onSubmit)();
+            }
+          }}
+        />
+      )}
     </Card>
   );
 };

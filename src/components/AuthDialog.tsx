@@ -36,9 +36,10 @@ interface AuthDialogProps {
   isOpen: boolean;
   onClose: () => void;
   mode: 'login' | 'signup';
+  onSuccess?: () => void; // Added onSuccess callback prop
 }
 
-const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, mode: initialMode }) => {
+const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, mode: initialMode, onSuccess }) => {
   const [mode, setMode] = useState(initialMode);
 
   const [login, { isLoading: isLoginLoading }] = useLoginMutation();
@@ -71,6 +72,9 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, mode: initialM
         if (res.ok) {
           dispatch(setCredentials(res.token));
           reset();
+          if (onSuccess) {
+            onSuccess(); // Call onSuccess callback if provided
+          }
           onClose();
         }
       } else {
@@ -82,8 +86,12 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, mode: initialM
         };
         const res = await createUser(credentials).unwrap();
         if (res.ok) {
+          dispatch(setCredentials(res.token)); // Set credentials on signup too
           toast.success(res.message);
           reset();
+          if (onSuccess) {
+            onSuccess(); // Call onSuccess callback if provided
+          }
           onClose();
         }
       }
@@ -94,8 +102,14 @@ const AuthDialog: React.FC<AuthDialogProps> = ({ isOpen, onClose, mode: initialM
 
   const handleGoogleAuth = async () => {
     try {
-      await loginWithGoogle({ provider: 'GOOGLE' }).unwrap();
-      onClose();
+      const res = await loginWithGoogle({ provider: 'GOOGLE' }).unwrap();
+      if (res.ok) {
+        dispatch(setCredentials(res.token));
+        if (onSuccess) {
+          onSuccess(); // Call onSuccess callback if provided
+        }
+        onClose();
+      }
     } catch (error) {
       handleError(error);
     }
