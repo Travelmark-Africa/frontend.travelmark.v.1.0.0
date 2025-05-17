@@ -11,7 +11,7 @@ const Empty = ({ description = 'There is no data at the moment!', className }: E
   return (
     <div className={cn('flex flex-col items-center justify-center py-32', className)}>
       <Box size={40} className='text-foreground' />
-      <p className='mt-4 text-sm text-foreground'>{description}</p>
+      <p className='mt-4 text-sm text-foreground text-center'>{description}</p>
     </div>
   );
 };

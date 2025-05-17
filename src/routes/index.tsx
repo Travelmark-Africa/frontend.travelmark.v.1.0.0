@@ -20,6 +20,9 @@ const TripPlanPage = createLazyComponent(() => import('@/pages/TripPlan'));
 const AboutPage = createLazyComponent(() => import('@/pages/about/index'));
 const ContactUsPage = createLazyComponent(() => import('@/pages/contactUs/index'));
 const SearchPage = createLazyComponent(() => import('@/pages/Search'));
+const MyTripsPage = createLazyComponent(() => import('@/pages/myTrips'));
+const FavoritesPage = createLazyComponent(() => import('@/pages/favorites'));
+const MyBookingsPage = createLazyComponent(() => import('@/pages/myBookings'));
 const NotFoundPage = createLazyComponent(() => import('@/pages/NotFound'));
 
 // Define routes with lazy-loaded components
@@ -31,6 +34,9 @@ const routes: RouteObject[] = [
   { path: '/about-us', element: <AboutPage /> },
   { path: '/contact-us', element: <ContactUsPage /> },
   { path: '/search', element: <SearchPage /> },
+  { path: '/my-trip-plans', element: <MyTripsPage /> },
+  { path: '/favorites', element: <FavoritesPage /> },
+  { path: '/my-bookings', element: <MyBookingsPage /> },
   { path: '*', element: <NotFoundPage /> },
 ];
 

@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor = 'bg-white/40 backdrop-blur-md
                   to='/about-us'
                   className={`font-medium transition-all duration-300 ease-in-out ${
                     pathname === '/about-us'
-                      ? 'text-secondary underline underline-offset-4 scale-105'
+                      ? 'text-secondary  scale-105'
                       : 'text-gray-700 hover:text-secondary hover:scale-105'
                   }`}
                 >
@@ -42,7 +42,7 @@ const Navbar: React.FC<NavbarProps> = ({ bgColor = 'bg-white/40 backdrop-blur-md
                   to='/contact-us'
                   className={`font-medium transition-all duration-300 ease-in-out ${
                     pathname === '/contact-us'
-                      ? 'text-secondary underline underline-offset-4 scale-105'
+                      ? 'text-secondary scale-105'
                       : 'text-gray-700 hover:text-secondary hover:scale-105'
                   }`}
                 >
