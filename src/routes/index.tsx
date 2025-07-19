@@ -13,30 +13,21 @@ const createLazyComponent = (importFn: () => Promise<any>, minDelay = 0) => {
 };
 
 // Lazy load all the pages
-const HomePage = createLazyComponent(() => import('@/pages/Home'));
-const ExplorePage = createLazyComponent(() => import('@/pages/Explore'));
-const DestinationPage = createLazyComponent(() => import('@/pages/destination/Destination'));
-const TripPlanPage = createLazyComponent(() => import('@/pages/TripPlan'));
-const AboutPage = createLazyComponent(() => import('@/pages/about/index'));
-const ContactUsPage = createLazyComponent(() => import('@/pages/contactUs/index'));
-const SearchPage = createLazyComponent(() => import('@/pages/Search'));
-const MyTripsPage = createLazyComponent(() => import('@/pages/myTrips'));
-const FavoritesPage = createLazyComponent(() => import('@/pages/favorites'));
-const MyBookingsPage = createLazyComponent(() => import('@/pages/myBookings'));
+const HomePage = createLazyComponent(() => import('@/pages/home'));
+const AboutPage = createLazyComponent(() => import('@/pages/about'));
+const OurServicesPage = createLazyComponent(() => import('@/pages/ourServices'));
+const PortfolioPage = createLazyComponent(() => import('@/pages/portfolio'));
+const ContactUsPage = createLazyComponent(() => import('@/pages/contactUs'));
+
 const NotFoundPage = createLazyComponent(() => import('@/pages/NotFound'));
 
 // Define routes with lazy-loaded components
 const routes: RouteObject[] = [
   { path: '/', element: <HomePage /> },
-  { path: '/explore', element: <ExplorePage /> },
-  { path: '/destination-details/:id', element: <DestinationPage /> },
-  { path: '/design-your-trip', element: <TripPlanPage /> },
   { path: '/about-us', element: <AboutPage /> },
+  { path: '/our-services', element: <OurServicesPage /> },
+  { path: '/portfolio', element: <PortfolioPage /> },
   { path: '/contact-us', element: <ContactUsPage /> },
-  { path: '/search', element: <SearchPage /> },
-  { path: '/my-trip-plans', element: <MyTripsPage /> },
-  { path: '/favorites', element: <FavoritesPage /> },
-  { path: '/my-bookings', element: <MyBookingsPage /> },
   { path: '*', element: <NotFoundPage /> },
 ];
 

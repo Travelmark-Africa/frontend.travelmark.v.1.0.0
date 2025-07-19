@@ -5,10 +5,8 @@ const Team = () => {
   const getGridClasses = () => {
     const count = teamMembers.length;
 
-    // Base classes that apply to all scenarios
     let classes = 'grid gap-8 mb-16 ';
 
-    // Add specific column classes based on team size
     if (count <= 3) {
       classes += 'grid-cols-1 md:grid-cols-3 justify-items-center mx-auto max-w-4xl';
     } else if (count <= 4) {
@@ -24,18 +22,17 @@ const Team = () => {
     <div className='w-full bg-white py-16 px-4'>
       <div className='text-center mb-16'>
         <h1 className='text-4xl font-bold mb-3'>
-          Meet the <span className='text-[#F4A261]'>Architects of Experiences</span>
+          Meet the <span className='text-secondary'>TravelMark Africa Team</span>
         </h1>
-        <p className='text-lg text-gray-700'>
-          We are a power-packed tribe of <span className='text-[#F4A261] font-bold'>800+</span> extraordinarily talented
-          & passionate professionals
+        <p className='text-lg text-gray-700 max-w-2xl mx-auto'>
+          Our diverse team of consultants, strategists, and coordinators is dedicated to shaping Africa’s presence in global business tourism.
         </p>
       </div>
 
       <div className={getGridClasses()}>
         {teamMembers.map(member => (
           <div key={member.id} className='flex flex-col items-center text-center'>
-            <div className='mb-4 w-48 h-48 rounded-full overflow-hidden border-4 border-[#F4A261] bg-[#FFF0E6]'>
+            <div className='mb-4 w-48 h-48 rounded-full overflow-hidden border-4 border-secondary/10 bg-[#FFF0E6]'>
               <img src={member.image} alt={member.name} className='w-full h-full object-cover' />
             </div>
             <h3 className='text-xl font-bold mb-1'>{member.name}</h3>

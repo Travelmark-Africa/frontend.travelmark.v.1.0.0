@@ -1,59 +1,46 @@
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import Container from '@/components/Container';
 
 const OurPresence = () => {
   const regions = [
-    {
-      name: 'East Africa',
-      address: 'Kenya, Tanzania, Uganda, Rwanda, Burundi',
-      number: 1,
-    },
-    {
-      name: 'Southern Africa',
-      address: 'South Africa, Botswana, Zimbabwe, Zambia, Namibia',
-      number: 2,
-    },
-    {
-      name: 'West Africa',
-      address: 'Nigeria, Ghana, Senegal, Ivory Coast, Gambia',
-      number: 3,
-    },
+    { name: 'North Africa', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+    { name: 'West Africa', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+    { name: 'East Africa', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+    { name: 'Central Africa', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+    { name: 'Southern Africa', color: 'bg-rose-50 text-rose-700 border-rose-200' }
   ];
 
   return (
-    <div className='w-full bg-white py-16 px-4'>
-      <div className='max-w-7xl mx-auto'>
-        <h2 className='text-center text-3xl font-bold mb-16'>OUR PRESENCE</h2>
-
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-20'>
-          {regions.map(region => (
-            <div key={region.name} className='flex flex-col items-center text-center'>
-              <div className='mb-4 w-16 h-16 flex items-center justify-center bg-[#F4A261] rounded-full text-white text-2xl font-bold glow'>
-                {region.number}
+    <div className='w-full bg-secondary/5 py-20 px-4'>
+      <Container>
+        <div className='text-center max-w-4xl mx-auto'>
+          
+          {/* Title */}
+          <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-6'>
+            Our <span className='text-primary'>Presence</span>
+          </h2>
+          
+          {/* Subtitle */}
+          <h3 className='text-xl font-semibold text-gray-700 mb-8'>
+            Headquartered in Kigali, Rwanda
+          </h3>
+          
+          {/* Paragraph */}
+          <p className='text-gray-600 text-lg leading-relaxed mb-16 max-w-3xl mx-auto'>
+            TravelMark Africa has a presence across multiple regions including West Africa, 
+            Central Africa, North Africa, and Southern Africa.
+          </p>
+          
+          {/* Region Badges */}
+          <div className='flex flex-wrap justify-center gap-4'>
+            {regions.map(region => (
+              <div key={region.name} className={`${region.color} px-5 py-2 rounded-xl border font-medium shadow-sm`}>
+                {region.name}
               </div>
-              <h4 className='text-xl font-bold mb-2'>{region.name}</h4>
-              <p className='text-gray-600 text-sm px-4'>{region.address}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className='bg-primary rounded-3xl'>
-          <div className='text-center max-w-3xl mx-auto py-10'>
-            <h2 className='text-secondary text-3xl font-bold mb-6'>Discover Africa's Treasures WITH US</h2>
-
-            <p className='text-white mb-8 px-4'>
-              Ready for an unforgettable African adventure? From wildlife safaris to cultural experiences, your perfect
-              journey awaits. Click below to discover our handcrafted tours across the continent.
-            </p>
-
-            <Link to='/explore' className='inline-block'>
-              <Button className='bg-secondary text-white px-8 py-6 rounded-full hover:bg-secondary/90 transition-colors'>
-                Explore Here
-              </Button>
-            </Link>
+            ))}
           </div>
+          
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

@@ -9,6 +9,8 @@ import DefaultSEO from './components/DefaultSEO';
 import AnimatedFaviconLoader from './components/AnimatedFaviconLoader';
 import LoadingProgressManager from './components/LoadingProgressManager';
 import RouteChangeTracker from './components/RouteChangeTracker';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 // ScrollToTop component
 const ScrollToTop = (): null => {
@@ -23,7 +25,6 @@ const ScrollToTop = (): null => {
 
 // AppRoutes component to handle routes with suspense
 const AppRoutes = () => {
-  const location = useLocation();
 
   // Prepare routes with proper auth guards
   const processedRoutes: RouteObject[] = routes.map(route => {
@@ -41,9 +42,7 @@ const AppRoutes = () => {
   const element = useRoutes(processedRoutes);
 
   return (
-    <Suspense key={location.pathname} fallback={<AnimatedFaviconLoader />}>
-      <LoadingProgressManager>{element}</LoadingProgressManager>
-    </Suspense>
+    <LoadingProgressManager>{element}</LoadingProgressManager>
   );
 };
 
@@ -80,7 +79,15 @@ const App = () => {
       <DefaultSEO />
       <ScrollToTop />
       <RouteChangeTracker />
-      <AppRoutes />
+      <Suspense fallback={<AnimatedFaviconLoader />}>
+        <div className='antialiased min-h-screen flex flex-col'>
+          <Navbar />
+          <main className='flex-grow'>
+            <AppRoutes />
+          </main>
+          <Footer />
+        </div>
+      </Suspense>
     </Router>
   );
 };

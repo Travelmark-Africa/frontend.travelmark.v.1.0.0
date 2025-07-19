@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Gilda+Display&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @import "tailwindcss";
 
@@ -84,7 +84,6 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --font-gilda: "Gilda Display", sans-serif;
   --font-poppins: "Poppins", sans-serif;
 
   /* Container */
@@ -106,12 +105,12 @@
     font-family: var(--font-poppins), sans-serif;
   }
 
-  /* Typography */
+  /* Typography - All using Poppins */
   h1,
   h2,
   h3 {
     @apply font-bold tracking-tight;
-    font-family: var(--font-gilda), sans-serif;
+    font-family: var(--font-poppins), sans-serif;
   }
 
   h1 {
@@ -128,14 +127,17 @@
 
   h4 {
     @apply text-xl md:text-2xl lg:text-3xl;
+    font-family: var(--font-poppins), sans-serif;
   }
 
   h5 {
     @apply text-lg md:text-xl lg:text-2xl;
+    font-family: var(--font-poppins), sans-serif;
   }
 
   h6 {
     @apply text-base md:text-lg lg:text-xl;
+    font-family: var(--font-poppins), sans-serif;
   }
 
   .container {

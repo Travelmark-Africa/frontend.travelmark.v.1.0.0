@@ -9,7 +9,7 @@ const NotFound = () => {
         <span className='text-6xl'>🙁</span>
         <h1 className='text-4xl font-bold text-gray-800'>Page Not Found</h1>
         <p className='mt-2 mb-6 text-lg text-gray-600 '>Oops! The page you're looking for doesn't exist.</p>
-        <Button onClick={() => navigate(-1)}>Go Back</Button>
+        <Button hideChevron onClick={() => navigate(-1)}>Go Back</Button>
       </div>
     </div>
   );
