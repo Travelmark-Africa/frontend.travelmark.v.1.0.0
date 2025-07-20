@@ -24,10 +24,10 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white">
       <Container>
         <div className="py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-8 gap-12 lg:gap-8">
 
             {/* Left - Logo & Description */}
-            <div className="lg:col-span-2 space-y-4">
+            <div className="lg:col-span-3 space-y-4">
               <div className="flex items-center">
                 <img src={logo2} alt="TravelMark Africa" className="h-8 w-auto" />
               </div>
@@ -37,7 +37,7 @@ const Footer = () => {
             </div>
 
             {/* Quick Links */}
-            <div className="space-y-4">
+            <div className="lg:col-span-1 space-y-4">
               <h3 className="text-sm font-medium text-gray-300 uppercase tracking-wide">Quick Links</h3>
               <ul className="space-y-3">
                 {quickLinks.map((link) => (
@@ -51,7 +51,7 @@ const Footer = () => {
             </div>
 
             {/* Contact Info */}
-            <div className="space-y-4">
+            <div className="lg:col-span-2 space-y-4">
               <h3 className="text-sm font-medium text-gray-300 uppercase tracking-wide">Get in Touch</h3>
               <div className="space-y-3">
                 <div className="flex items-center text-gray-400">
@@ -73,14 +73,14 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Newsletter & Social */}
-            <div className="space-y-6">
+            {/* Newsletter & Social - Now takes 2 columns */}
+            <div className="lg:col-span-2 space-y-6">
               <div className="space-y-4">
                 <h3 className="text-sm font-medium text-gray-300 uppercase tracking-wide">Stay Connected</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
+                <p className="text-gray-400 text-sm leading-relaxed max-w-md">
                   Get updates on Africa's top MICE and business events.
                 </p>
-                <form className="relative">
+                <form className="relative max-w-md">
                   <input
                     type="email"
                     placeholder="Enter your email"
