@@ -1,5 +1,6 @@
 import { conference, norken, tourism } from '@/assets';
 import Container from '@/components/Container';
+import { CheckCircle } from 'lucide-react';
 
 const ServicesPage = () => {
   const services = [
@@ -75,13 +76,13 @@ const ServicesPage = () => {
   return (
     <div className='w-full bg-white'>
       {/* Header Section */}
-      <div className='bg-gradient-to-br from-primary/10 to-secondary/10 py-24 px-4'>
+      <div className='bg-gradient-to-br from-primary/10 to-secondary/10 pt-24 pb-16 '>
         <Container>
-          <div className='text-center max-w-4xl mx-auto'>
-            <span className='inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full mb-6'>
+          <div className='text-center'>
+            <span className='inline-block px-4 py-2 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4'>
               🛠️ Our Services
             </span>
-            <h1 className='text-4xl font-extrabold text-gray-900 mb-6 leading-tight'>
+            <h1 className='text-4xl font-extrabold text-gray-900 mb-4 leading-tight'>
               Comprehensive <span className='text-primary'>Business Tourism</span> Solutions
             </h1>
             <p className='text-base text-gray-600 leading-relaxed max-w-3xl mx-auto'>
@@ -98,13 +99,13 @@ const ServicesPage = () => {
         const isEven = index % 2 === 0;
 
         return (
-          <div key={service.id} className='py-24 px-4'>
+          <div key={service.id} className='py-16 px-4'>
             <Container>
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${isEven ? '' : 'lg:grid-flow-col-dense'}`}>
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-col-dense'}`}>
 
                 {/* Image Section */}
                 <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-                  <div className='rounded-3xl overflow-hidden shadow-2xl bg-gray-100'>
+                  <div className='rounded-2xl overflow-hidden shadow-xl bg-gray-100'>
                     <img
                       src={service.image}
                       alt={service.imageAlt}
@@ -115,11 +116,11 @@ const ServicesPage = () => {
 
                 {/* Content Section */}
                 <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
-                  <div className='space-y-8'>
+                  <div className='space-y-6'>
 
                     {/* Service Title & Description */}
                     <div>
-                      <h2 className='text-3xl font-extrabold text-gray-900 mb-6 leading-tight'>
+                      <h2 className='text-3xl font-extrabold text-gray-900 mb-4 leading-tight'>
                         {service.title}
                       </h2>
                       <p className='text-base text-gray-600 leading-relaxed'>
@@ -129,15 +130,17 @@ const ServicesPage = () => {
 
                     {/* Sub-services */}
                     <div>
-                      <h3 className='text-lg font-bold text-gray-900 mb-6'>
+                      <h3 className='text-lg font-bold text-gray-900 mb-4'>
                         Sub-services include:
                       </h3>
-                      <div className='space-y-5'>
+                      <div className='space-y-3'>
                         {service.subServices.map((subService, subIndex) => (
-                          <div key={subIndex} className='flex items-start gap-4'>
-                            <div className='w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0'></div>
-                            <div>
-                              <h4 className='font-bold text-gray-900 mb-1 text-base'>
+                          <div key={subIndex} className='flex items-start gap-3 group'>
+                            <div className='mt-0.5 flex-shrink-0'>
+                              <CheckCircle className='w-5 h-5 text-primary group-hover:text-primary/80 transition-colors' />
+                            </div>
+                            <div className='flex-1'>
+                              <h4 className='font-semibold text-gray-900 mb-1 text-base group-hover:text-primary transition-colors'>
                                 {subService.name}
                               </h4>
                               <p className='text-sm text-gray-600 leading-relaxed'>
