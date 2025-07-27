@@ -15,9 +15,9 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const homeStylePages = ['/', '/about-us'];
+  const homeStylePages = ['/', '/about-us', '/our-services'];
 
-  const standardPages = ['/our-services', '/portfolio', '/contact-us'];
+  const standardPages = ['/portfolio', '/contact-us',];
 
   const isHomeStylePage = homeStylePages.includes(currentPath);
   const isStandardPage = standardPages.includes(currentPath) || !isHomeStylePage;

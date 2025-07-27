@@ -4,6 +4,7 @@ export { default as hero1 } from './hero1.jpg';
 export { default as googleSVG } from './google.svg';
 export { default as missionImage } from './missionImage.jpg';
 export { default as team } from './team.jpg';
+export { default as servicesImage } from './servicesImage.avif';
 
 export { default as rcb } from './rcb.png';
 export { default as afp } from './afp.webp';
