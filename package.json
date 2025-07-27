@@ -36,7 +36,6 @@
     "nprogress": "^0.2.0",
     "react": "^19.0.0",
     "react-datepicker": "^8.1.0",
-    "react-day-picker": "^8.10.1",
     "react-dom": "^19.0.0",
     "react-globe.gl": "^2.32.0",
     "react-helmet-async": "^2.0.5",
