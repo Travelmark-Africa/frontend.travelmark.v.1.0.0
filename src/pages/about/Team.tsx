@@ -25,7 +25,8 @@ const Team = () => {
           Meet the <span className='text-secondary'>TravelMark Africa Team</span>
         </h1>
         <p className='text-lg text-gray-700 max-w-2xl mx-auto'>
-          Our diverse team of consultants, strategists, and coordinators is dedicated to shaping Africa’s presence in global business tourism.
+          Our diverse team of consultants, strategists, and coordinators is dedicated to shaping Africa’s presence in
+          global business tourism.
         </p>
       </div>
 

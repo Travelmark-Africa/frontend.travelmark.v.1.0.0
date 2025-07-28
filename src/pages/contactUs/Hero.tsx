@@ -67,8 +67,8 @@ const Hero = () => {
               <div>
                 <h4 className='text-5xl font-bold mb-3'>Let’s Work Together</h4>
                 <p className='text-gray-600 mb-6'>
-                  Whether you’re planning a major summit, developing a MICE strategy, or exploring destination marketing,
-                  our team is here to support you with insight, professionalism, and precision.
+                  Whether you’re planning a major summit, developing a MICE strategy, or exploring destination
+                  marketing, our team is here to support you with insight, professionalism, and precision.
                 </p>
                 <div className='space-y-2'>
                   <p className='text-gray-700'>info@travelmarkafrica.com</p>
@@ -81,7 +81,8 @@ const Hero = () => {
                 <div className='space-y-2'>
                   <h4 className='font-bold text-md'>Event Support & Inquiries</h4>
                   <p className='text-gray-600 text-sm'>
-                    Need help organizing your next conference, exhibition, or business event? Our consultants are ready to advise and assist.
+                    Need help organizing your next conference, exhibition, or business event? Our consultants are ready
+                    to advise and assist.
                   </p>
                 </div>
 
@@ -89,7 +90,8 @@ const Hero = () => {
                 <div className='space-y-2'>
                   <h4 className='font-bold text-md'>Feedback & Ideas</h4>
                   <p className='text-gray-600 text-sm'>
-                    Your thoughts matter. We’re constantly improving our services, and your suggestions help shape our journey across Africa.
+                    Your thoughts matter. We’re constantly improving our services, and your suggestions help shape our
+                    journey across Africa.
                   </p>
                 </div>
               </div>
@@ -178,8 +180,9 @@ const Hero = () => {
                         onChange={handleTextareaChange}
                       />
                       <div
-                        className={`text-right text-sm mt-1 ${wordCount > maxWords ? 'text-red-500 animate-blink' : 'text-gray-400'
-                          }`}
+                        className={`text-right text-sm mt-1 ${
+                          wordCount > maxWords ? 'text-red-500 animate-blink' : 'text-gray-400'
+                        }`}
                       >
                         {wordCount}/{maxWords} words
                       </div>

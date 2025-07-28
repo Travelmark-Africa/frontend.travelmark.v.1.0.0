@@ -1,4 +1,3 @@
-import { hero1 } from '@/assets';
 import BlurImage from '@/components/BlurImage';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/Container';
@@ -11,7 +10,11 @@ const HeroSection = () => {
         {/* Background Image */}
         <div className='absolute inset-0 bg-primary/10'>
           <div className='relative w-full h-full'>
-            <BlurImage src={hero1} alt='Business tourism in Africa' className='object-cover w-full h-full' />
+            <BlurImage
+              src='https://res.cloudinary.com/dsubfxzdx/image/upload/v1752918941/hero1_tsdnpy.jpg'
+              alt='Business tourism in Africa'
+              className='object-cover w-full h-full'
+            />
           </div>
         </div>
 
@@ -29,7 +32,8 @@ const HeroSection = () => {
               </h1>
 
               <p className='text-sm sm:text-base md:text-lg text-white/95 mb-6 md:mb-8 max-w-sm md:max-w-lg drop-shadow-lg'>
-                Event consultation, MICE strategy, and capacity building tailored for Africa’s business tourism potential.
+                Event consultation, MICE strategy, and capacity building tailored for Africa’s business tourism
+                potential.
               </p>
 
               <Button hideChevron={true} className='w-full sm:w-auto'>
@@ -53,7 +57,7 @@ const HeroSection = () => {
               {/* Step 01 - Event Consultation */}
               <div className='bg-black/20 backdrop-blur-md rounded-lg p-4 md:p-6 border border-white/20'>
                 <div className='text-secondary text-xl md:text-2xl font-bold mb-2 md:mb-3'>01</div>
-                <h3 className='text-white font-semibold text-base md:text-lg mb-2'>Event Consultation</h3>
+                {/* <h3 className='text-white font-semibold text-base md:text-lg mb-2'>Event Consultation</h3> */}
                 <p className='text-white/90 text-xs md:text-sm'>
                   From concept to execution, we help design and deliver strategic, impactful events.
                 </p>
@@ -62,7 +66,7 @@ const HeroSection = () => {
               {/* Step 02 - MICE Strategy */}
               <div className='bg-black/20 backdrop-blur-md rounded-lg p-4 md:p-6 border border-white/20'>
                 <div className='text-secondary text-xl md:text-2xl font-bold mb-2 md:mb-3'>02</div>
-                <h3 className='text-white font-semibold text-base md:text-lg mb-2'>MICE Strategy</h3>
+                {/* <h3 className='text-white font-semibold text-base md:text-lg mb-2'>MICE Strategy</h3> */}
                 <p className='text-white/90 text-xs md:text-sm'>
                   We craft MICE plans, market destinations, and manage major business events across Africa.
                 </p>
@@ -71,7 +75,7 @@ const HeroSection = () => {
               {/* Step 03 - Capacity Building */}
               <div className='bg-black/20 backdrop-blur-md rounded-lg p-4 md:p-6 border border-white/20'>
                 <div className='text-secondary text-xl md:text-2xl font-bold mb-2 md:mb-3'>03</div>
-                <h3 className='text-white font-semibold text-base md:text-lg mb-2'>Capacity Building</h3>
+                {/* <h3 className='text-white font-semibold text-base md:text-lg mb-2'>Capacity Building</h3> */}
                 <p className='text-white/90 text-xs md:text-sm'>
                   We empower local talent, foster global partnerships, and promote sustainable tourism.
                 </p>

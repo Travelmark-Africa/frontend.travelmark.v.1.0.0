@@ -25,7 +25,6 @@ const ScrollToTop = (): null => {
 
 // AppRoutes component to handle routes with suspense
 const AppRoutes = () => {
-
   // Prepare routes with proper auth guards
   const processedRoutes: RouteObject[] = routes.map(route => {
     if (route.authRequired) {
@@ -41,9 +40,7 @@ const AppRoutes = () => {
   // This key forces remounting of Suspense when location changes
   const element = useRoutes(processedRoutes);
 
-  return (
-    <LoadingProgressManager>{element}</LoadingProgressManager>
-  );
+  return <LoadingProgressManager>{element}</LoadingProgressManager>;
 };
 
 // Main App component

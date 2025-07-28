@@ -12,7 +12,7 @@ export { default as unt } from './unt.svg';
 export { default as icca } from './icca.svg';
 export { default as ata } from './ata.avif';
 export { default as meetingsAfrica } from './meetingsAfrica.png';
-export { default as nepad } from './nepad.png'
+export { default as nepad } from './nepad.png';
 
 export { default as aboutImage1 } from './aboutImage1.jpg';
 export { default as aboutImage2 } from './aboutImage2.jpg';

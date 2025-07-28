@@ -49,7 +49,6 @@ const OurPartners = () => {
     <div className='py-16 sm:py-24 bg-white'>
       <Container>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start'>
-
           {/* Left Content */}
           <div className='space-y-6'>
             <div>
@@ -63,16 +62,16 @@ const OurPartners = () => {
 
             <div className='space-y-4 text-gray-600 leading-relaxed'>
               <p className='text-lg'>
-                We collaborate with leading institutions across Africa and globally to deliver world-class business tourism experiences.
+                We collaborate with leading institutions across Africa and globally to deliver world-class business
+                tourism experiences.
               </p>
 
               <p>
-                Through these partnerships, we promote African destinations, build capacity, and ensure impactful MICE strategies across the continent.
+                Through these partnerships, we promote African destinations, build capacity, and ensure impactful MICE
+                strategies across the continent.
               </p>
 
-              <p>
-                Together, we’re shaping Africa into a premier hub for meetings, exhibitions, and conferences.
-              </p>
+              <p>Together, we’re shaping Africa into a premier hub for meetings, exhibitions, and conferences.</p>
             </div>
           </div>
 
@@ -94,7 +93,6 @@ const OurPartners = () => {
               ))}
             </div>
           </div>
-
         </div>
       </Container>
     </div>

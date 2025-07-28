@@ -11,15 +11,18 @@ const services = [
     subServices: [
       {
         name: 'Event & Conference Concepts',
-        detail: 'We co-create strong themes, formats, agendas, and delivery frameworks tailored to your audience and outcomes.',
+        detail:
+          'We co-create strong themes, formats, agendas, and delivery frameworks tailored to your audience and outcomes.',
       },
       {
         name: 'Stakeholder Engagement',
-        detail: 'We facilitate engagement with relevant institutions, partners, sponsors, speakers, and attendees across sectors.',
+        detail:
+          'We facilitate engagement with relevant institutions, partners, sponsors, speakers, and attendees across sectors.',
       },
       {
         name: 'Sales Agent Services',
-        detail: 'We actively promote your event, drive ticketing and registration, and coordinate outreach to target participants.',
+        detail:
+          'We actively promote your event, drive ticketing and registration, and coordinate outreach to target participants.',
       },
     ],
     image: conference,
@@ -33,11 +36,13 @@ const services = [
     subServices: [
       {
         name: 'MICE Strategy Development',
-        detail: 'We develop national and city-level frameworks that outline how to grow and sustain MICE as an economic driver.',
+        detail:
+          'We develop national and city-level frameworks that outline how to grow and sustain MICE as an economic driver.',
       },
       {
         name: 'Destination Marketing',
-        detail: 'We promote countries, cities, and venues as competitive MICE hubs through content, campaigns, and partnerships.',
+        detail:
+          'We promote countries, cities, and venues as competitive MICE hubs through content, campaigns, and partnerships.',
       },
       {
         name: 'Event Creation & Management',
@@ -55,7 +60,8 @@ const services = [
     subServices: [
       {
         name: 'Capacity Building & Training',
-        detail: 'We deliver structured training for professionals in events, hospitality, tourism, and support sectors.',
+        detail:
+          'We deliver structured training for professionals in events, hospitality, tourism, and support sectors.',
       },
       {
         name: 'Business Matchmaking',
@@ -63,7 +69,8 @@ const services = [
       },
       {
         name: 'Research & Data Analysis',
-        detail: 'We generate insights and reports to inform policy, investment, and programming decisions in the sector.',
+        detail:
+          'We generate insights and reports to inform policy, investment, and programming decisions in the sector.',
       },
       {
         name: 'Sustainable Tourism Practices',
@@ -93,7 +100,8 @@ const ServicesPage = () => {
               Africa-Ready <span className='text-secondary'>Tourism Solutions</span>
             </h1>
             <p className='text-lg text-white/90 leading-relaxed max-w-3xl mx-auto drop-shadow-md'>
-              We help governments, organizations, and businesses build impactful events, sustainable destinations, and future-ready ecosystems.
+              We help governments, organizations, and businesses build impactful events, sustainable destinations, and
+              future-ready ecosystems.
             </p>
           </div>
         </Container>
@@ -105,8 +113,11 @@ const ServicesPage = () => {
         return (
           <div key={service.id} className='py-16'>
             <Container>
-              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-col-dense'}`}>
-
+              <div
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+                  isEven ? '' : 'lg:grid-flow-col-dense'
+                }`}
+              >
                 {/* Image */}
                 <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                   <div className='rounded-2xl overflow-hidden shadow-xl bg-gray-100'>
@@ -122,12 +133,8 @@ const ServicesPage = () => {
                 <div className={`${isEven ? 'lg:order-2' : 'lg:order-1'}`}>
                   <div className='space-y-6'>
                     <div>
-                      <h2 className='text-2xl font-extrabold text-gray-900 mb-4 leading-tight'>
-                        {service.title}
-                      </h2>
-                      <p className='text-base text-gray-600 leading-relaxed'>
-                        {service.description}
-                      </p>
+                      <h2 className='text-2xl font-extrabold text-gray-900 mb-4 leading-tight'>{service.title}</h2>
+                      <p className='text-base text-gray-600 leading-relaxed'>{service.description}</p>
                     </div>
 
                     <div>
@@ -140,9 +147,7 @@ const ServicesPage = () => {
                               <h4 className='font-semibold text-gray-900 mb-1 text-base group-hover:text-primary transition-colors'>
                                 {sub.name}
                               </h4>
-                              <p className='text-sm text-gray-600 leading-relaxed'>
-                                {sub.detail}
-                              </p>
+                              <p className='text-sm text-gray-600 leading-relaxed'>{sub.detail}</p>
                             </div>
                           </div>
                         ))}
@@ -150,25 +155,24 @@ const ServicesPage = () => {
                     </div>
                   </div>
                 </div>
-
               </div>
             </Container>
-
           </div>
         );
       })}
-      <hr  className='mb-8 mx-24 border-[0.5px] border-secondary/30 rounded-e-full'/>
+      <hr className='mb-8 mx-24 border-[0.5px] border-secondary/30 rounded-e-full' />
       <div className='text-center pb-24'>
         <h2 className='text-2xl font-extrabold text-primary mb-4 leading-tight'>
           Ready to Transform Your Vision Into Reality?
         </h2>
         <p className='text-base text-primary/90 mb-4 max-w-2xl mx-auto leading-relaxed'>
-          Let's discuss how our Africa-ready tourism solutions can elevate your next project. Schedule a consultation with our experts today.
+          Let's discuss how our Africa-ready tourism solutions can elevate your next project. Schedule a consultation
+          with our experts today.
         </p>
         <a
-          href="https://calendly.com/your-calendly-link"
-          target="_blank"
-          rel="noopener noreferrer"
+          href='https://calendly.com/travelmarkafrica/30min'
+          target='_blank'
+          rel='noopener noreferrer'
           className='inline-flex items-center gap-3 px-6 py-2 bg-secondary text-white rounded-xl text-[1rem] hover:bg-secondary/90 transition-all duration-300 transform hover:scale-[1.01]'
         >
           <Calendar className='w-5 h-5' />

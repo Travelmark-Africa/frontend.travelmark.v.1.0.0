@@ -17,7 +17,7 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
 
   const homeStylePages = ['/', '/about-us', '/our-services'];
 
-  const standardPages = ['/portfolio', '/contact-us',];
+  const standardPages = ['/portfolio', '/contact-us'];
 
   const isHomeStylePage = homeStylePages.includes(currentPath);
   const isStandardPage = standardPages.includes(currentPath) || !isHomeStylePage;
@@ -151,14 +151,14 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
               <Link
                 key={item.path}
                 to={item.path}
-                className={`${isActiveRoute(item.path) ? 'text-secondary' : getTextColor()
-                  } ${getHoverTextColor()} font-medium transition-all duration-300 relative group ${isActiveRoute(item.path) ? 'font-semibold' : ''
-                  }`}
+                className={`${
+                  isActiveRoute(item.path) ? 'text-secondary' : getTextColor()
+                } ${getHoverTextColor()} font-medium transition-all duration-300 relative group ${
+                  isActiveRoute(item.path) ? 'font-semibold' : ''
+                }`}
               >
                 {item.label}
-                <span
-                  className='absolute bottom-0 left-0 h-0.5 bg-secondary transition-all duration-300 w-0 group-hover:w-full '
-                ></span>
+                <span className='absolute bottom-0 left-0 h-0.5 bg-secondary transition-all duration-300 w-0 group-hover:w-full '></span>
               </Link>
             ))}
           </div>
@@ -175,7 +175,6 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
           {/* Mobile menu button */}
           <div className='lg:hidden'>
             <Button
-
               variant='ghost'
               hideChevron
               size='icon'
