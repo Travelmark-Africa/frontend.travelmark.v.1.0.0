@@ -5,7 +5,6 @@ import routes from './routes';
 
 import AuthGuard from './authGuard';
 import { getNetworkStatus } from './lib/utils';
-import DefaultSEO from './components/DefaultSEO';
 import AnimatedFaviconLoader from './components/AnimatedFaviconLoader';
 import LoadingProgressManager from './components/LoadingProgressManager';
 import RouteChangeTracker from './components/RouteChangeTracker';
@@ -73,7 +72,6 @@ const App = () => {
 
   return (
     <Router>
-      <DefaultSEO />
       <ScrollToTop />
       <RouteChangeTracker />
       <Suspense fallback={<AnimatedFaviconLoader />}>
