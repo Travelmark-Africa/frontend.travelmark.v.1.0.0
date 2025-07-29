@@ -88,7 +88,9 @@ const ServicesPage = () => {
       {/* Header Section */}
       <div
         className='min-h-[70vh] bg-cover bg-center bg-no-repeat relative flex items-center justify-center py-16 sm:py-24'
-        style={{ backgroundImage: `url("https://res.cloudinary.com/dsubfxzdx/image/upload/v1753733012/servicesImage_xwitvk.avif")` }}
+        style={{
+          backgroundImage: `url("https://res.cloudinary.com/dsubfxzdx/image/upload/v1753733012/servicesImage_xwitvk.avif")`,
+        }}
       >
         <div className='absolute inset-0 bg-black/60'></div>
         <Container className='relative z-10'>
@@ -114,8 +116,9 @@ const ServicesPage = () => {
           <div key={service.id} className='py-16'>
             <Container>
               <div
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-col-dense'
-                  }`}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+                  isEven ? '' : 'lg:grid-flow-col-dense'
+                }`}
               >
                 {/* Image */}
                 <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>

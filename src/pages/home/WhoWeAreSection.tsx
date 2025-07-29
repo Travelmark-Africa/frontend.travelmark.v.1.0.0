@@ -93,7 +93,6 @@ const WhoWeAreSection = () => {
           </div>
         </div>
 
-
         {/* Stats */}
         <div className='mt-6 grid md:grid-cols-3 gap-8 text-center'>
           <div className='p-6'>

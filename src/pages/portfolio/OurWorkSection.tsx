@@ -1,13 +1,13 @@
 import { Globe, Users, Award, MapPin } from 'lucide-react';
 
-const OurWorkSection = ({ portfolioProjects }) => {
-  const defaultProjects = [
+const OurWorkSection = () => {
+  const projects = [
     {
       id: 1,
       title: 'Africa Energy Expo',
       subtitle: 'Powering Partnerships for a Sustainable Future',
       description:
-        "Strategic event consulting for Africa's premier energy conference, connecting stakeholders across renewable energy, oil & gas, and sustainable development sectors.",
+        'Led strategic advisory and event operations for Africa’s flagship energy conference, fostering investment dialogue in renewable energy, oil & gas, and clean technologies.',
       category: 'Event Consulting',
       impact: '500+ Delegates',
       location: 'Kigali, Rwanda',
@@ -20,9 +20,9 @@ const OurWorkSection = ({ portfolioProjects }) => {
     {
       id: 2,
       title: 'International Health Ministerial Summit',
-      subtitle: 'Advancing Healthcare Innovation Across Africa',
+      subtitle: 'Strengthening Health Systems Through Dialogue',
       description:
-        'High-level convening facilitating ministerial dialogue on health systems strengthening, pandemic preparedness, and regional healthcare collaboration.',
+        'Convened over 45 health ministers and sector leaders for a high-level summit on healthcare innovation, policy reform, and cross-border collaboration.',
       category: 'Ministerial Summit',
       impact: '45+ Ministers',
       location: 'Kigali, Rwanda',
@@ -35,9 +35,9 @@ const OurWorkSection = ({ portfolioProjects }) => {
     {
       id: 3,
       title: 'Agro-Food Rwanda Project',
-      subtitle: "Showcasing Africa's Food Security Innovations",
+      subtitle: 'Scaling Agri-Tech and Food Security Solutions',
       description:
-        'Comprehensive agribusiness development initiative highlighting innovative solutions in agricultural technology, food processing, and supply chain optimization.',
+        'Curated a multi-stakeholder initiative spotlighting innovations in agri-processing, food supply chains, and sustainable farming across regional ecosystems.',
       category: 'Development Initiative',
       impact: '200+ Stakeholders',
       location: 'Multiple Regions',
@@ -49,28 +49,26 @@ const OurWorkSection = ({ portfolioProjects }) => {
     },
   ];
 
-  const projects = portfolioProjects || defaultProjects;
-
   return (
     <section className='py-16 md:py-18 px-4 bg-white'>
       <div className='max-w-7xl mx-auto'>
         {/* Header */}
         <div className='text-center mb-12'>
-          <p className='text-base text-primary/70 mb-4'>Featured Projects</p>
+          <p className='text-base text-primary/70 mb-4'>Signature Events</p>
           <h2 className='text-3xl md:text-4xl font-bold text-primary mb-6 leading-snug'>
-            Event Excellence in Action
+            Our Work in Motion
             <br />
-            <span className='text-secondary italic'>Across Africa</span>
+            <span className='text-secondary italic'>Across the Continent</span>
           </h2>
           <p className='text-base text-primary/70 max-w-2xl mx-auto leading-relaxed'>
-            Discover how we've successfully delivered impactful conferences, summits, and exhibitions that drive
-            meaningful connections and business growth across the continent.
+            Explore how we bring strategy and structure to high-level conferences, summits, and exhibitions that elevate
+            Africa’s economic and innovation landscape.
           </p>
         </div>
 
         {/* Projects Grid */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          {projects.map((project, index) => {
+          {projects.map(project => {
             const IconComponent = project.icon;
             return (
               <div
@@ -106,16 +104,13 @@ const OurWorkSection = ({ portfolioProjects }) => {
 
                 {/* Content Section */}
                 <div className='p-6 space-y-4'>
-                  {/* Title */}
                   <div>
                     <h3 className='text-lg font-bold text-primary/90 leading-tight mb-1'>{project.title}</h3>
                     <p className='text-sm text-primary/70 italic'>{project.subtitle}</p>
                   </div>
 
-                  {/* Description */}
                   <p className='text-primary/80 text-[0.87rem] leading-relaxed'>{project.description}</p>
 
-                  {/* Impact Metrics */}
                   <div className='flex items-center justify-between pt-2 border-t border-white/50'>
                     <div className='flex items-center space-x-1'>
                       <Users className='w-4 h-4 text-primary/60' />
