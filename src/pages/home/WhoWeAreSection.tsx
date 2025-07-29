@@ -9,9 +9,9 @@ const WhoWeAreSection = () => {
         {/* Header */}
         <div className='flex justify-between items-center mb-6'>
           <h2 className='text-3xl md:text-4xl font-extrabold text-primary'>Who We Are</h2>
-          <Link to='our-services' className='hidden md:block'>
+          <Link to='about-us' className='hidden md:block'>
             <Button variant='outline' className='transition-all duration-500'>
-              All Services
+              Learn More
             </Button>
           </Link>
         </div>
@@ -83,11 +83,16 @@ const WhoWeAreSection = () => {
         </div>
 
         {/* Mobile CTA */}
-        <div className='md:hidden mt-8 text-center'>
-          <button className='px-8 py-4 bg-secondary text-white rounded-full hover:bg-red-600 transition-colors duration-300'>
-            All Services
-          </button>
+        <div>
+          <div className='mt-8 text-center md:hidden'>
+            <Link to='about-us'>
+              <Button variant='default' className='w-full'>
+                Learn More
+              </Button>
+            </Link>
+          </div>
         </div>
+
 
         {/* Stats */}
         <div className='mt-6 grid md:grid-cols-3 gap-8 text-center'>

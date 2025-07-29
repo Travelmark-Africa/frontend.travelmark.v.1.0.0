@@ -38,12 +38,12 @@ const HeroSection = () => {
 
               <Button hideChevron={true} className='w-full sm:w-auto'>
                 <a
-                  href='https://wa.me/250788357850'
+                  href='https://calendly.com/travelmarkafrica/30min?month=2025-07'
                   target='_blank'
                   rel='noopener noreferrer'
                   className='inline-flex items-center gap-2 px-4 py-2'
                 >
-                  Work With Us
+                  Schedule a meeting
                 </a>
               </Button>
             </div>

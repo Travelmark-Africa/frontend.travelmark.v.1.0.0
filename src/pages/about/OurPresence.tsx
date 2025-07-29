@@ -30,7 +30,7 @@ const OurPresence = () => {
           {/* Region Badges */}
           <div className='flex flex-wrap justify-center gap-4'>
             {regions.map(region => (
-              <div key={region.name} className={`${region.color} px-5 py-2 rounded-xl border font-medium shadow-sm`}>
+              <div key={region.name} className={`${region.color} px-5 py-2 rounded-xl border font-medium`}>
                 {region.name}
               </div>
             ))}
