@@ -1,7 +1,7 @@
 import { Globe, Users, Award, MapPin } from 'lucide-react';
 
-const OurWorkSection = ({ portfolioProjects }) => {
-  const defaultProjects = [
+const OurWorkSection = () => {
+  const projects = [
     {
       id: 1,
       title: 'Africa Energy Expo',
@@ -49,7 +49,6 @@ const OurWorkSection = ({ portfolioProjects }) => {
     },
   ];
 
-  const projects = portfolioProjects || defaultProjects;
 
   return (
     <section className='py-16 md:py-18 px-4 bg-white'>
@@ -70,7 +69,7 @@ const OurWorkSection = ({ portfolioProjects }) => {
 
         {/* Projects Grid */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          {projects.map((project, index) => {
+          {projects.map((project) => {
             const IconComponent = project.icon;
             return (
               <div
