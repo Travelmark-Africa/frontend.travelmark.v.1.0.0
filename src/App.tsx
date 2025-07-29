@@ -1,11 +1,10 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { BrowserRouter as Router, useRoutes, useLocation, RouteObject } from 'react-router-dom';
 import routes from './routes';
 
 import AuthGuard from './authGuard';
 import { getNetworkStatus } from './lib/utils';
-import AnimatedFaviconLoader from './components/AnimatedFaviconLoader';
 import LoadingProgressManager from './components/LoadingProgressManager';
 import RouteChangeTracker from './components/RouteChangeTracker';
 import Navbar from './components/Navbar';
@@ -74,15 +73,13 @@ const App = () => {
     <Router>
       <ScrollToTop />
       <RouteChangeTracker />
-      <Suspense fallback={<AnimatedFaviconLoader />}>
-        <div className='antialiased min-h-screen flex flex-col'>
-          <Navbar />
-          <main className='flex-grow'>
-            <AppRoutes />
-          </main>
-          <Footer />
-        </div>
-      </Suspense>
+      <div className='antialiased min-h-screen flex flex-col'>
+        <Navbar />
+        <main className='flex-grow'>
+          <AppRoutes />
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 };
