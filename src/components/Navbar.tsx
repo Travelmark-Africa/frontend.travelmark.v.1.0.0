@@ -295,7 +295,7 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
                     rel='noopener noreferrer'
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Contact Us →
+                    Contact Us
                   </a>
                 </Button>
               </div>
