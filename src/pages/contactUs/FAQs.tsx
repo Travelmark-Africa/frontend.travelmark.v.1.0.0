@@ -1,38 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { faqs } from '@/constants';
 import { MessageCircle } from 'lucide-react';
-
-const faqs = [
-  {
-    question: 'What services does TravelMark Africa offer?',
-    answer:
-      'We specialize in three core areas: Event Consultation, MICE (Meetings, Incentives, Conferences & Exhibitions) Consultation, and Destination Marketing. Each service is tailored to meet the unique needs of our clients across Africa.',
-  },
-  {
-    question: 'What is MICE consultation?',
-    answer:
-      'MICE stands for Meetings, Incentives, Conferences, and Exhibitions. Our MICE services involve strategic planning, stakeholder engagement, destination marketing, and seamless event execution to support corporate and institutional gatherings.',
-  },
-  {
-    question: 'Do you only operate in Rwanda?',
-    answer:
-      'While we are based in Kigali, Rwanda, TravelMark Africa operates across the continent. We’ve partnered with various organizations to deliver events and consultations throughout Africa.',
-  },
-  {
-    question: 'Can you assist with international conferences?',
-    answer:
-      'Yes. We provide full-scale support for international events, including government and ministerial summits, business expos, and industry-specific gatherings.',
-  },
-  {
-    question: 'How early should I contact you to plan an event?',
-    answer:
-      'For the best results, we recommend reaching out at least 4–6 weeks before your planned event. However, we can accommodate shorter timelines depending on the scope.',
-  },
-  {
-    question: 'Do you help with marketing my event?',
-    answer:
-      'Yes. Through our Destination Marketing service, we help you position your event for maximum visibility and attendance, including digital campaigns and stakeholder outreach.',
-  },
-];
 
 const FAQs = () => {
   return (
@@ -50,8 +18,10 @@ const FAQs = () => {
         <Accordion type='single' collapsible className='w-full'>
           {faqs.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`} className='border-t border-gray-200'>
-              <AccordionTrigger className='text-xl font-medium py-4 font-poppins'>{item.question}</AccordionTrigger>
-              <AccordionContent className='text-gray-600 text-[1.02rem] leading-[1.5] pb-4'>
+              <AccordionTrigger className='text-lg py-4 font-poppins text-primary/90! font-semibold no-underline!'>
+                {item.question}
+              </AccordionTrigger>
+              <AccordionContent className='text-primary text-[1.02rem] leading-[1.5] pb-4'>
                 {item.answer}
               </AccordionContent>
             </AccordionItem>

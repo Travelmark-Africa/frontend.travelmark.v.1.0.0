@@ -1,30 +1,10 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { cards } from '@/constants';
 
 const ModernCardCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const cards = [
-    {
-      category: 'Event Consulting',
-      title: 'Africa Energy Expo – Powering Partnerships for a Sustainable Future',
-      image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753729758/energy_awxxim.png',
-      textColor: 'text-white',
-    },
-    {
-      category: 'High-Level Convenings',
-      title: 'International Health Ministerial Summit Rwanda',
-      image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753730919/ihms_pxivnk.png',
-      textColor: 'text-white',
-    },
-    {
-      category: 'Agribusiness & Development',
-      title: "Agro-Food Rwanda Project – Showcasing Africa's Food Security Innovations",
-      image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753731827/images_1_byjdeg.png',
-      textColor: 'text-white',
-    },
-  ];
 
   const nextSlide = () => {
     setCurrentIndex(prevIndex => (prevIndex + 1) % cards.length);

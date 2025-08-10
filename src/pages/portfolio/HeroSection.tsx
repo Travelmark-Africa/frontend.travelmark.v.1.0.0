@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Award } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { contactLinks } from '@/constants';
 
 const HeroSection = () => {
   const handleCalendlyClick = () => {
-    window.open('https://calendly.com/travelmarkafrica/30min', '_blank');
+    window.open(contactLinks.calendly, '_blank');
   };
 
   return (

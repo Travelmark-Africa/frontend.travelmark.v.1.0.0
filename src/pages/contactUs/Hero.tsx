@@ -10,15 +10,6 @@ import { toast } from 'sonner';
 import { useCreateMessageMutation } from '@/redux/api/apiSlice';
 import { Loader2 } from 'lucide-react';
 
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  telephone: string;
-  subject: string;
-  message: string;
-};
-
 const Hero = () => {
   const {
     register,

@@ -1,86 +1,6 @@
-import { conference, norken, tourism } from '@/assets';
 import Container from '@/components/Container';
+import { contactLinks, servicesDetails } from '@/constants';
 import { Calendar, CheckCircle } from 'lucide-react';
-
-const services = [
-  {
-    id: 1,
-    title: 'Event Consultation',
-    description:
-      'We work with institutions, corporates, and development partners to design and execute impactful events, summits, and conferences. From concept to delivery, we ensure every event is purpose-driven, well-managed, and aligns with your organizational goals.',
-    subServices: [
-      {
-        name: 'Event & Conference Concepts',
-        detail:
-          'We co-create strong themes, formats, agendas, and delivery frameworks tailored to your audience and outcomes.',
-      },
-      {
-        name: 'Stakeholder Engagement',
-        detail:
-          'We facilitate engagement with relevant institutions, partners, sponsors, speakers, and attendees across sectors.',
-      },
-      {
-        name: 'Sales Agent Services',
-        detail:
-          'We actively promote your event, drive ticketing and registration, and coordinate outreach to target participants.',
-      },
-    ],
-    image: conference,
-    imageAlt: 'Event consultation and conference planning',
-  },
-  {
-    id: 2,
-    title: 'MICE Strategy',
-    description:
-      'Our MICE (Meetings, Incentives, Conferences, and Exhibitions) service supports governments, bureaus, and institutions in positioning destinations for high-value business tourism. We build actionable MICE plans and help deliver standout events.',
-    subServices: [
-      {
-        name: 'MICE Strategy Development',
-        detail:
-          'We develop national and city-level frameworks that outline how to grow and sustain MICE as an economic driver.',
-      },
-      {
-        name: 'Destination Marketing',
-        detail:
-          'We promote countries, cities, and venues as competitive MICE hubs through content, campaigns, and partnerships.',
-      },
-      {
-        name: 'Event Creation & Management',
-        detail: 'We design, launch, and deliver high-quality events aligned with destination positioning strategies.',
-      },
-    ],
-    image: tourism,
-    imageAlt: 'MICE consultation and destination marketing',
-  },
-  {
-    id: 3,
-    title: 'Capacity & Sustainability',
-    description:
-      'We invest in people, partnerships, and practices to strengthen Africa’s business tourism ecosystem. Our focus areas include training, research, partnerships, and promoting responsible, inclusive growth across the sector.',
-    subServices: [
-      {
-        name: 'Capacity Building & Training',
-        detail:
-          'We deliver structured training for professionals in events, hospitality, tourism, and support sectors.',
-      },
-      {
-        name: 'Business Matchmaking',
-        detail: 'We create platforms for African businesses to meet international buyers, partners, and collaborators.',
-      },
-      {
-        name: 'Research & Data Analysis',
-        detail:
-          'We generate insights and reports to inform policy, investment, and programming decisions in the sector.',
-      },
-      {
-        name: 'Sustainable Tourism Practices',
-        detail: 'We support eco-conscious policies, ethical supply chains, and green event management approaches.',
-      },
-    ],
-    image: norken,
-    imageAlt: 'Capacity building and sustainability training',
-  },
-];
 
 const ServicesPage = () => {
   return (
@@ -110,7 +30,7 @@ const ServicesPage = () => {
       </div>
 
       {/* Service Sections */}
-      {services.map((service, index) => {
+      {servicesDetails.map((service, index) => {
         const isEven = index % 2 === 0;
         return (
           <div key={service.id} className='py-16'>
@@ -172,7 +92,7 @@ const ServicesPage = () => {
           with our experts today.
         </p>
         <a
-          href='https://calendly.com/travelmarkafrica/30min'
+          href={contactLinks.calendly}
           target='_blank'
           rel='noopener noreferrer'
           className='inline-flex items-center gap-3 px-6 py-2 bg-secondary text-white rounded-xl text-[1rem] hover:bg-secondary/90 transition-all duration-300 transform hover:scale-[1.01]'

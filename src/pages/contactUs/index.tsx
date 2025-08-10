@@ -5,10 +5,10 @@ const FAQs = lazy(() => import('./FAQs'));
 
 const ContactUs = () => {
   return (
-    <>
+    <main>
       <Hero />
       <FAQs />
-    </>
+    </main>
   );
 };
 

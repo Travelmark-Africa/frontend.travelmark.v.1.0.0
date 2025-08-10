@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
+import { contactLinks } from '@/constants';
 import { Calendar, MessageCircle } from 'lucide-react';
 
 const CallToAction = () => {
   const handleCalendlyClick = () => {
-    window.open('https://calendly.com/travelmarkafrica/30min', '_blank');
+    window.open(contactLinks.calendly, '_blank');
   };
 
   const handleWhatsAppClick = () => {
-    window.open('https://wa.me/250788357850', '_blank');
+    window.open(contactLinks.whatsapp, '_blank');
   };
 
   return (

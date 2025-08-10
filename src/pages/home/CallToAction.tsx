@@ -1,24 +1,22 @@
 import { Button } from '@/components/ui/button';
 import { Calendar, MessageCircle } from 'lucide-react';
+import { contactLinks } from '@/constants'; // Import the contact links
 
 const CallToAction = () => {
   const handleCalendlyClick = () => {
-    window.open('https://calendly.com/travelmarkafrica/30min', '_blank');
+    window.open(contactLinks.calendly, '_blank');
   };
 
   const handleWhatsAppClick = () => {
-    window.open('https://wa.me/250788357850', '_blank');
+    window.open(contactLinks.whatsapp, '_blank');
   };
 
   return (
     <section className='py-16 px-6 bg-white min-h-[60vh] flex items-center justify-center' id='cta-section'>
       <div className='max-w-3xl mx-auto text-center'>
-        {/* Tagline */}
-        <p className='text-base text-primary/70 mb-4'>Strategy. Events. Growth.</p>
-
         {/* Main Heading */}
         <h1 className='text-3xl md:text-4xl font-bold text-primary mb-8 leading-snug'>
-          Unlock Your Country’s <br />
+          Unlock Your Country's <br />
           Business Potential <span className='text-secondary italic'>with Us</span>
         </h1>
 
@@ -42,7 +40,7 @@ const CallToAction = () => {
 
         {/* Subtitle */}
         <p className='text-primary/70 mt-6 text-base'>
-          Let’s build strong strategies, impactful events, and skilled ecosystems across Africa.
+          Let's build strong strategies, impactful events, and skilled ecosystems across Africa.
         </p>
       </div>
     </section>

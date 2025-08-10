@@ -1,104 +1,230 @@
-import { team } from '@/assets';
+import { Calendar, Award, Star, Users, Globe, MapPin } from 'lucide-react';
 import {
-  ShoppingCart,
-  Tag,
-  Shirt,
-  Smartphone,
-  Laptop,
-  Tv,
-  Headphones,
-  Watch,
-  Sofa,
-  Bed,
-  Package,
-  Gift,
-  Camera,
-  Gamepad,
-  Globe,
-  Phone,
-  CreditCard,
-  ShoppingBag,
-  FastForward,
-  Car,
-  Dumbbell,
-  Star,
-} from 'lucide-react';
+  team,
+  conference,
+  norken,
+  tourism,
+  aboutImage1,
+  aboutImage2,
+  aboutImage3,
+  afp,
+  icca,
+  meetingsAfrica,
+  nepad,
+  rcb,
+  unt,
+} from '@/assets';
 
-// Icons for eCommerce categories
-export const ecommerceIcons = [
-  { name: 'Beauty & Fragrance', icon: Star },
-  { name: 'Health & Nutrition', icon: FastForward },
-  { name: 'Automotive', icon: Car },
-  { name: 'Interior Design', icon: Sofa },
-  { name: 'Sports & Fitness', icon: Dumbbell },
-  { name: 'Fashion', icon: Shirt },
-  { name: 'Electronics', icon: Smartphone },
-  { name: 'Jewelry & Watches', icon: Watch },
-  { name: 'Laptops', icon: Laptop },
-  { name: 'Televisions', icon: Tv },
-  { name: 'Headphones', icon: Headphones },
-  { name: 'Furniture', icon: Sofa },
-  { name: 'Bedding', icon: Bed },
-  { name: 'Home Appliances', icon: Package },
-  { name: 'Kitchenware', icon: Package },
-  { name: 'Tools', icon: Package },
-  { name: 'Bags', icon: ShoppingBag },
-  { name: 'Shoes', icon: Tag },
-  { name: 'Bicycles', icon: Package },
-  { name: 'Books', icon: Tag },
-  { name: 'Music', icon: Gamepad },
-  { name: 'Gifts', icon: Gift },
-  { name: 'Cameras', icon: Camera },
-  { name: 'Video Games', icon: Gamepad },
-  { name: 'Groceries', icon: Package },
-  { name: 'Beverages', icon: Package },
-  { name: 'Global', icon: Globe },
-  { name: 'Contact', icon: Phone },
-  { name: 'Payment', icon: CreditCard },
-  { name: 'Shopping Cart', icon: ShoppingCart },
-  { name: 'Discount', icon: Tag },
-];
-
-// routes
-export const hideNavbarFooterRoutes = [
-  '/auth/login',
-  '/auth/signup',
-  '/auth/forgot-password',
-  '/auth/reset-password',
-  '/auth/register',
-  '/privacy-and-policy',
-  '/dashboard',
-  '/orders',
-  '/addresses',
-  '/settings',
-];
-
-// local storage constant
-export const CURRENCY_STORAGE_KEY = 'dhdealz_preferredCurrency';
-
-export const faqs = [
+/********************************
+ * Home Page
+ ********************************/
+// Hero Section
+export const stepCards = [
   {
-    question: 'How do I track my order?',
-    answer:
-      'Once your order ships, you\'ll receive a tracking number via email. You can also track your order in real-time by logging into your account and visiting the "Order History" section.',
+    id: '01',
+    description: 'From concept to execution, we help design and deliver strategic, impactful events.',
   },
   {
-    question: 'What is your return policy?',
-    answer:
-      'We offer hassle-free returns within 30 days of delivery. Items must be unworn, with original tags attached. We provide free return shipping labels for all domestic orders.',
+    id: '02',
+    description: 'We craft MICE plans, market destinations, and manage major business events across Africa.',
   },
   {
-    question: 'Do you ship internationally?',
-    answer:
-      'Yes! We ship to over 50 countries worldwide. International shipping times typically range from 7-14 business days, depending on the destination.',
-  },
-  {
-    question: 'How can I change or cancel my order?',
-    answer:
-      'Orders can be modified or cancelled within 1 hour of placement. Please contact our customer service team immediately for assistance with order changes.',
+    id: '03',
+    description: 'We empower local talent, foster global partnerships, and promote sustainable tourism.',
   },
 ];
 
+// Contact Links
+export const contactLinks = {
+  calendly: 'https://calendly.com/travelmarkafrica/30min',
+  whatsapp: 'https://wa.me/250788357850',
+};
+
+// Project Cardse
+export const cards = [
+  {
+    category: 'Event Consulting',
+    title: 'Africa Energy Expo – Powering Partnerships for a Sustainable Future',
+    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753729758/energy_awxxim.png',
+    textColor: 'text-white',
+  },
+  {
+    category: 'High-Level Convenings',
+    title: 'International Health Ministerial Summit Rwanda',
+    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753730919/ihms_pxivnk.png',
+    textColor: 'text-white',
+  },
+  {
+    category: 'Agribusiness & Development',
+    title: "Agro-Food Rwanda Project – Showcasing Africa's Food Security Innovations",
+    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753731827/images_1_byjdeg.png',
+    textColor: 'text-white',
+  },
+];
+
+// Who We Are Section - Service cards data
+export const serviceCards = [
+  {
+    id: 1,
+    image: aboutImage1,
+    alt: 'Event consultation and planning',
+    title: 'Event Consultation',
+    description: 'From concept to coordination, we design experiences that reflect purpose and professionalism.',
+  },
+  {
+    id: 2,
+    image: aboutImage2,
+    alt: 'MICE strategy and destination marketing',
+    title: 'MICE Consultation',
+    description: 'We support national and regional efforts to grow Meetings, Incentives, Conferences, and Exhibitions.',
+  },
+  {
+    id: 3,
+    image: aboutImage3,
+    alt: 'Training session in Africa',
+    title: 'Capacity & Sustainability',
+    description: 'We train professionals, enable partnerships, and promote responsible growth in tourism.',
+  },
+];
+
+// Who We Are Section - Stats data
+export const stats = [
+  {
+    id: 1,
+    value: '5',
+    label: 'African Regions Covered',
+  },
+  {
+    id: 2,
+    value: '10+',
+    label: 'Events Led & Coordinated',
+  },
+  {
+    id: 3,
+    value: 'Global',
+    label: 'Event Footprint',
+  },
+];
+
+// Why Choose Us Section - Features data array
+export const features: Feature[] = [
+  {
+    id: 1,
+    icon: Award,
+    title: 'Deep Regional Expertise',
+    description:
+      'With teams across Africa, we bring localized knowledge, cultural fluency, and regional market insights into every project we deliver.',
+  },
+  {
+    id: 2,
+    icon: Calendar,
+    title: 'Tailored Strategies',
+    description:
+      'No one-size-fits-all. Every country, institution, or event gets a custom roadmap based on its unique goals, audience, and strengths.',
+  },
+  {
+    id: 3,
+    icon: Users,
+    title: 'Reliable Local Networks',
+    description:
+      'We work with vetted vendors, suppliers, and facilitators in every region—ensuring quality delivery with zero guesswork or delays.',
+  },
+  {
+    id: 4,
+    icon: Star,
+    title: 'End-to-End Execution',
+    description:
+      'From strategy and planning to on-site coordination and post-event review—we stay with you every step of the journey.',
+  },
+];
+
+/********************************
+ *  About Us Page
+ ********************************/
+// Our Services Section
+export const services = [
+  {
+    id: 1,
+    title: 'Event Consultation Services',
+    description:
+      'Expert guidance in designing and implementing impactful events and conferences tailored to your unique objectives and strategic goals.',
+    category: 'Event Planning',
+    color: 'bg-gradient-to-br from-red-50 to-red-100',
+    accent: 'text-red-600',
+    icon: Calendar,
+  },
+  {
+    id: 2,
+    title: 'MICE Consultation Services',
+    description:
+      'Helping countries and institutions establish or scale up their MICE capabilities to boost business tourism profile and economic development.',
+    category: 'MICE Development',
+    color: 'bg-gradient-to-br from-blue-50 to-blue-100',
+    accent: 'text-blue-600',
+    icon: MapPin,
+  },
+  {
+    id: 3,
+    title: 'Capacity Building & Sustainability Support',
+    description:
+      'Strengthening the business tourism ecosystem through professional development, training programs and sustainable tourism practices.',
+    category: 'Capacity Building',
+    color: 'bg-gradient-to-br from-green-50 to-green-100',
+    accent: 'text-green-600',
+    icon: Users,
+  },
+];
+
+// Partners Section
+export const partners = [
+  {
+    id: 1,
+    name: 'Rwanda Convention Bureau (RCB)',
+    logo: rcb,
+    website: 'https://rcb.rw',
+  },
+  {
+    id: 2,
+    name: 'Africa Tourism Partners',
+    logo: afp,
+    website: 'https://africatourismpartners.com',
+  },
+  {
+    id: 3,
+    name: 'UNWTO',
+    logo: unt,
+    website: 'https://www.unwto.org',
+  },
+  {
+    id: 4,
+    name: 'ICCA',
+    logo: icca,
+    website: 'https://www.iccaworld.org',
+  },
+  {
+    id: 6,
+    name: 'NEPAD (AUDA)',
+    logo: nepad,
+    website: 'https://www.nepad.org',
+  },
+  {
+    id: 7,
+    name: 'Meetings Africa',
+    logo: meetingsAfrica,
+    website: 'https://www.meetingsafrica.co.za',
+  },
+];
+
+// Our Presence Section
+export const regions = [
+  { name: 'North Africa', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+  { name: 'West Africa', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+  { name: 'East Africa', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  { name: 'Central Africa', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+  { name: 'Southern Africa', color: 'bg-rose-50 text-rose-700 border-rose-200' },
+];
+
+// Team Section
 export const teamMembers = [
   {
     id: 1,
@@ -117,5 +243,173 @@ export const teamMembers = [
     name: 'Yves Gahonzire',
     position: 'CEO & Co-Founder',
     image: team,
+  },
+];
+
+/********************************
+ * Services Page
+ ********************************/
+
+export const servicesDetails = [
+  {
+    id: 1,
+    title: 'Event Consultation',
+    description:
+      'We work with institutions, corporates, and development partners to design and execute impactful events, summits, and conferences. From concept to delivery, we ensure every event is purpose-driven, well-managed, and aligns with your organizational goals.',
+    subServices: [
+      {
+        name: 'Event & Conference Concepts',
+        detail:
+          'We co-create strong themes, formats, agendas, and delivery frameworks tailored to your audience and outcomes.',
+      },
+      {
+        name: 'Stakeholder Engagement',
+        detail:
+          'We facilitate engagement with relevant institutions, partners, sponsors, speakers, and attendees across sectors.',
+      },
+      {
+        name: 'Sales Agent Services',
+        detail:
+          'We actively promote your event, drive ticketing and registration, and coordinate outreach to target participants.',
+      },
+    ],
+    image: conference,
+    imageAlt: 'Event consultation and conference planning',
+  },
+  {
+    id: 2,
+    title: 'MICE Strategy',
+    description:
+      'Our MICE (Meetings, Incentives, Conferences, and Exhibitions) service supports governments, bureaus, and institutions in positioning destinations for high-value business tourism. We build actionable MICE plans and help deliver standout events.',
+    subServices: [
+      {
+        name: 'MICE Strategy Development',
+        detail:
+          'We develop national and city-level frameworks that outline how to grow and sustain MICE as an economic driver.',
+      },
+      {
+        name: 'Destination Marketing',
+        detail:
+          'We promote countries, cities, and venues as competitive MICE hubs through content, campaigns, and partnerships.',
+      },
+      {
+        name: 'Event Creation & Management',
+        detail: 'We design, launch, and deliver high-quality events aligned with destination positioning strategies.',
+      },
+    ],
+    image: tourism,
+    imageAlt: 'MICE consultation and destination marketing',
+  },
+  {
+    id: 3,
+    title: 'Capacity & Sustainability',
+    description:
+      'We invest in people, partnerships, and practices to strengthen Africa’s business tourism ecosystem. Our focus areas include training, research, partnerships, and promoting responsible, inclusive growth across the sector.',
+    subServices: [
+      {
+        name: 'Capacity Building & Training',
+        detail:
+          'We deliver structured training for professionals in events, hospitality, tourism, and support sectors.',
+      },
+      {
+        name: 'Business Matchmaking',
+        detail: 'We create platforms for African businesses to meet international buyers, partners, and collaborators.',
+      },
+      {
+        name: 'Research & Data Analysis',
+        detail:
+          'We generate insights and reports to inform policy, investment, and programming decisions in the sector.',
+      },
+      {
+        name: 'Sustainable Tourism Practices',
+        detail: 'We support eco-conscious policies, ethical supply chains, and green event management approaches.',
+      },
+    ],
+    image: norken,
+    imageAlt: 'Capacity building and sustainability training',
+  },
+];
+
+export const faqs = [
+  {
+    question: 'What services does TravelMark Africa offer?',
+    answer:
+      'We specialize in three core areas: Event Consultation, MICE (Meetings, Incentives, Conferences & Exhibitions) Consultation, and Destination Marketing. Each service is tailored to meet the unique needs of our clients across Africa.',
+  },
+  {
+    question: 'What is MICE consultation?',
+    answer:
+      'MICE stands for Meetings, Incentives, Conferences, and Exhibitions. Our MICE services involve strategic planning, stakeholder engagement, destination marketing, and seamless event execution to support corporate and institutional gatherings.',
+  },
+  {
+    question: 'Do you only operate in Rwanda?',
+    answer:
+      'While we are based in Kigali, Rwanda, TravelMark Africa operates across the continent. We’ve partnered with various organizations to deliver events and consultations throughout Africa.',
+  },
+  {
+    question: 'Can you assist with international conferences?',
+    answer:
+      'Yes. We provide full-scale support for international events, including government and ministerial summits, business expos, and industry-specific gatherings.',
+  },
+  {
+    question: 'How early should I contact you to plan an event?',
+    answer:
+      'For the best results, we recommend reaching out at least 4–6 weeks before your planned event. However, we can accommodate shorter timelines depending on the scope.',
+  },
+  {
+    question: 'Do you help with marketing my event?',
+    answer:
+      'Yes. Through our Destination Marketing service, we help you position your event for maximum visibility and attendance, including digital campaigns and stakeholder outreach.',
+  },
+];
+
+/********************************
+ * Portfolio Page
+ ********************************/
+export const projects = [
+  {
+    id: 1,
+    title: 'Africa Energy Expo',
+    subtitle: 'Powering Partnerships for a Sustainable Future',
+    description:
+      'Led strategic advisory and event operations for Africa’s flagship energy conference, fostering investment dialogue in renewable energy, oil & gas, and clean technologies.',
+    category: 'Event Consulting',
+    impact: '500+ Delegates',
+    location: 'Kigali, Rwanda',
+    year: '2024',
+    color: 'bg-gradient-to-br from-orange-50 to-red-100',
+    accent: 'text-orange-600',
+    icon: Globe,
+    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753729758/energy_awxxim.png',
+  },
+  {
+    id: 2,
+    title: 'International Health Ministerial Summit',
+    subtitle: 'Strengthening Health Systems Through Dialogue',
+    description:
+      'Convened over 45 health ministers and sector leaders for a high-level summit on healthcare innovation, policy reform, and cross-border collaboration.',
+    category: 'Ministerial Summit',
+    impact: '45+ Ministers',
+    location: 'Kigali, Rwanda',
+    year: '2024',
+    color: 'bg-gradient-to-br from-blue-50 to-indigo-100',
+    accent: 'text-blue-600',
+    icon: Users,
+    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753730919/ihms_pxivnk.png',
+  },
+  {
+    id: 3,
+    title: 'Agro-Food Rwanda Project',
+    subtitle: 'Scaling Agri-Tech and Food Security Solutions',
+    description:
+      'Curated a multi-stakeholder initiative spotlighting innovations in agri-processing, food supply chains, and sustainable farming across regional ecosystems.',
+    category: 'Development Initiative',
+    impact: '200+ Stakeholders',
+    location: 'Multiple Regions',
+    year: '2024',
+    color: 'bg-gradient-to-br from-green-50 to-emerald-100',
+    accent: 'text-green-600',
+    icon: Award,
+    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753731827/images_1_byjdeg.png',
   },
 ];

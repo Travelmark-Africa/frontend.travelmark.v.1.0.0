@@ -72,6 +72,19 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
     return () => window.removeEventListener('scroll', throttledHandleScroll);
   }, [handleScroll]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'About Us', path: '/about-us' },
@@ -121,131 +134,176 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
   };
 
   return (
-    <nav
-      className={`
-        ${isFixed ? 'fixed' : 'relative'} 
-        top-0 left-0 right-0 z-50 
-        transition-all duration-300 ease-in-out
-        ${getBgColor()}
-        ${isHidden ? '-translate-y-full' : 'translate-y-0'}
-        ${className}
-      `}
-    >
-      <Container>
-        <div className='flex items-center justify-between h-16 lg:h-20'>
-          {/* Logo */}
-          <div className='flex-shrink-0'>
-            <Link to='/' className='flex items-center'>
-              <img
-                src={getCurrentLogo()}
-                alt='Travelmark Logo'
-                className='h-12 lg:h-16 w-auto transition-all duration-300'
-                loading='eager'
-              />
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className='hidden lg:flex items-center space-x-8'>
-            {navItems.map(item => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`${
-                  isActiveRoute(item.path) ? 'text-secondary' : getTextColor()
-                } ${getHoverTextColor()} font-medium transition-all duration-300 relative group ${
-                  isActiveRoute(item.path) ? 'font-semibold' : ''
-                }`}
-              >
-                {item.label}
-                <span className='absolute bottom-0 left-0 h-0.5 bg-secondary transition-all duration-300 w-0 group-hover:w-full '></span>
-              </Link>
-            ))}
-          </div>
-
-          {/* Contact Us Button - Desktop */}
-          <div className='hidden lg:block'>
-            <Link to='/contact-us'>
-              <Button size='sm' className='!text-[0.875rem]'>
-                Contact Us
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className='lg:hidden'>
-            <Button
-              variant='ghost'
-              hideChevron
-              size='icon'
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`${getTextColor()} ${getHoverTextColor()} hover:bg-transparent transition-colors duration-300 p-2`}
-              aria-label='Toggle menu'
-            >
-              {isMobileMenuOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
-            </Button>
-          </div>
-        </div>
-      </Container>
-
-      {/* Mobile Navigation Menu */}
-      <div
+    <>
+      <nav
         className={`
-          lg:hidden absolute top-full left-0 right-0 
-          bg-white backdrop-blur-md shadow-sm
+          ${isFixed ? 'fixed' : 'relative'} 
+          top-0 left-0 right-0 z-50 
           transition-all duration-300 ease-in-out
-          ${isMobileMenuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'}
+          ${getBgColor()}
+          ${isHidden ? '-translate-y-full' : 'translate-y-0'}
+          ${className}
         `}
       >
         <Container>
-          <div className='py-6 space-y-4'>
+          <div className='flex items-center justify-between h-16 lg:h-20'>
+            {/* Logo */}
+            <div className='flex-shrink-0'>
+              <Link to='/' className='flex items-center'>
+                <img
+                  src={getCurrentLogo()}
+                  alt='Travelmark Logo'
+                  className='h-12 lg:h-16 w-auto transition-all duration-300'
+                  loading='eager'
+                />
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className='hidden lg:flex items-center space-x-8'>
+              {navItems.map(item => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`${
+                    isActiveRoute(item.path) ? 'text-secondary' : getTextColor()
+                  } ${getHoverTextColor()} font-medium transition-all duration-300 relative group ${
+                    isActiveRoute(item.path) ? 'font-semibold' : ''
+                  }`}
+                >
+                  {item.label}
+                  <span className='absolute bottom-0 left-0 h-0.5 bg-secondary transition-all duration-300 w-0 group-hover:w-full '></span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Contact Us Button - Desktop */}
+            <div className='hidden lg:block'>
+              <Link to='/contact-us'>
+                <Button size='sm' className='!text-[0.875rem]'>
+                  Contact Us
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className='lg:hidden'>
+              <Button
+                variant='ghost'
+                hideChevron
+                size='icon'
+                onClick={() => setIsMobileMenuOpen(true)}
+                className={`${getTextColor()} ${getHoverTextColor()} hover:bg-transparent transition-colors duration-300 p-2 relative z-[60]`}
+                aria-label='Toggle menu'
+              >
+                <Menu className='h-6 w-6' />
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </nav>
+
+      {/* Modern Full-Screen Mobile Menu */}
+      <div
+        className={`
+          lg:hidden fixed inset-0 z-[55] 
+          transition-all duration-500 ease-out
+          ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}
+        `}
+      >
+        {/* Backdrop */}
+        <div
+          className={`
+            absolute inset-0 bg-black/60 backdrop-blur-sm
+            transition-all duration-500 ease-out
+            ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}
+          `}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
+        {/* Menu Panel */}
+        <div
+          className={`
+            absolute right-0 top-0 h-full w-full max-w-sm
+            bg-gradient-to-br from-white via-white to-gray-50
+            shadow-2xl backdrop-blur-xl border-l border-white/20
+            transition-all duration-500 ease-out
+            ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+          `}
+        >
+          {/* Menu Header */}
+          <div className='flex items-center justify-between p-6 border-b border-gray-100'>
+            <img src={logo1} alt='Travelmark Logo' className='h-12 w-auto' loading='eager' />
+            <Button
+              variant='ghost'
+              size='icon'
+              hideChevron
+              onClick={() => setIsMobileMenuOpen(false)}
+              className='text-gray-600 hover:text-secondary hover:bg-gray-100 transition-colors duration-300'
+              aria-label='Close menu'
+            >
+              <X className='h-6 w-6' />
+            </Button>
+          </div>
+
+          {/* Navigation Items */}
+          <div className='pt-6 pb-4'>
             {navItems.map((item, index) => (
               <Link
                 key={item.path}
                 to={item.path}
                 className={`
-                  block w-full text-left text-primary hover:text-secondary 
-                  font-medium py-3 px-4 rounded-lg hover:bg-secondary/10
-                  transition-all duration-300
-                  ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-                  ${isActiveRoute(item.path) ? 'font-semibold bg-secondary/10 text-secondary' : ''}
+                  block w-full py-3 px-6 relative border-b border-gray-100/30
+                  font-medium text-base transition-all duration-300 active:scale-95
+                  ${isActiveRoute(item.path) ? 'text-secondary font-semibold' : 'text-gray-700'}
+                  ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}
                 `}
                 style={{
-                  transitionDelay: isMobileMenuOpen ? `${index * 50}ms` : '0ms',
+                  transitionDelay: isMobileMenuOpen ? `${index * 80 + 150}ms` : '0ms',
                 }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
               </Link>
             ))}
+          </div>
 
-            {/* Mobile Contact Button */}
-            <div className='pt-4 border-t border-gray-200'>
-              <Button
-                asChild
-                className={`
-                  w-full bg-secondary hover:bg-secondary/90 text-primary 
-                  font-semibold px-6 py-3 rounded-lg transition-all duration-300
-                  ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
-                `}
-                style={{
-                  transitionDelay: isMobileMenuOpen ? `${navItems.length * 50}ms` : '0ms',
-                }}
-              >
-                <a
-                  href='https://wa.me/250788357850'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  onClick={() => setIsMobileMenuOpen(false)}
+          {/* Contact Section */}
+          <div className='px-6 py-8 mt-auto border-t border-gray-100'>
+            <div
+              className={`
+              space-y-4 transition-all duration-500
+              ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}
+            `}
+              style={{
+                transitionDelay: isMobileMenuOpen ? `${navItems.length * 80 + 300}ms` : '0ms',
+              }}
+            >
+              <div className='text-center'>
+                <h3 className='text-sm font-medium text-gray-500 uppercase tracking-wider mb-4'>
+                  Ready to get started?
+                </h3>
+                <Button
+                  asChild
+                  className='w-full bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary 
+                           text-white font-semibold py-4 px-6 rounded-2xl shadow-lg active:scale-95 
+                           transition-all duration-300 text-base'
                 >
-                  Contact Us
-                </a>
-              </Button>
+                  <a
+                    href='https://wa.me/250788357850'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Contact Us →
+                  </a>
+                </Button>
+              </div>
             </div>
           </div>
-        </Container>
+        </div>
       </div>
-    </nav>
+    </>
   );
 };
 

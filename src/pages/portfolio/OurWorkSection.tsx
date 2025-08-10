@@ -1,54 +1,7 @@
-import { Globe, Users, Award, MapPin } from 'lucide-react';
+import { projects } from '@/constants';
+import { Users, MapPin } from 'lucide-react';
 
 const OurWorkSection = () => {
-  const projects = [
-    {
-      id: 1,
-      title: 'Africa Energy Expo',
-      subtitle: 'Powering Partnerships for a Sustainable Future',
-      description:
-        'Led strategic advisory and event operations for Africa’s flagship energy conference, fostering investment dialogue in renewable energy, oil & gas, and clean technologies.',
-      category: 'Event Consulting',
-      impact: '500+ Delegates',
-      location: 'Kigali, Rwanda',
-      year: '2024',
-      color: 'bg-gradient-to-br from-orange-50 to-red-100',
-      accent: 'text-orange-600',
-      icon: Globe,
-      image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753729758/energy_awxxim.png',
-    },
-    {
-      id: 2,
-      title: 'International Health Ministerial Summit',
-      subtitle: 'Strengthening Health Systems Through Dialogue',
-      description:
-        'Convened over 45 health ministers and sector leaders for a high-level summit on healthcare innovation, policy reform, and cross-border collaboration.',
-      category: 'Ministerial Summit',
-      impact: '45+ Ministers',
-      location: 'Kigali, Rwanda',
-      year: '2024',
-      color: 'bg-gradient-to-br from-blue-50 to-indigo-100',
-      accent: 'text-blue-600',
-      icon: Users,
-      image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753730919/ihms_pxivnk.png',
-    },
-    {
-      id: 3,
-      title: 'Agro-Food Rwanda Project',
-      subtitle: 'Scaling Agri-Tech and Food Security Solutions',
-      description:
-        'Curated a multi-stakeholder initiative spotlighting innovations in agri-processing, food supply chains, and sustainable farming across regional ecosystems.',
-      category: 'Development Initiative',
-      impact: '200+ Stakeholders',
-      location: 'Multiple Regions',
-      year: '2024',
-      color: 'bg-gradient-to-br from-green-50 to-emerald-100',
-      accent: 'text-green-600',
-      icon: Award,
-      image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753731827/images_1_byjdeg.png',
-    },
-  ];
-
   return (
     <section className='py-16 md:py-18 px-4 bg-white'>
       <div className='max-w-7xl mx-auto'>

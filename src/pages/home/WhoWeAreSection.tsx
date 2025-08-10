@@ -1,5 +1,5 @@
-import { aboutImage1, aboutImage2, aboutImage3 } from '@/assets';
 import { Button } from '@/components/ui/button';
+import { serviceCards, stats } from '@/constants';
 import { Link } from 'react-router-dom';
 
 const WhoWeAreSection = () => {
@@ -27,59 +27,18 @@ const WhoWeAreSection = () => {
 
         {/* Service Cards */}
         <div className='grid md:grid-cols-3 gap-8'>
-          {/* 1. Event Consultation Services */}
-          <div className='group relative h-96'>
-            <div className='h-full rounded-2xl overflow-hidden bg-gray-200 relative'>
-              <img
-                src={aboutImage1}
-                alt='Event consultation and planning'
-                className='absolute inset-0 object-cover w-full h-full'
-              />
-              <div className='absolute inset-0 bg-black/60 group-hover:opacity-60 transition-opacity duration-300 z-10' />
-              <div className='absolute bottom-0 left-0 right-0 p-6 text-white z-20'>
-                <h3 className='text-2xl font-bold mb-2'>Event Consultation</h3>
-                <p className='text-white/90 text-sm'>
-                  From concept to coordination, we design experiences that reflect purpose and professionalism.
-                </p>
+          {serviceCards.map(card => (
+            <div key={card.id} className='group relative h-96'>
+              <div className='h-full rounded-2xl overflow-hidden bg-gray-200 relative'>
+                <img src={card.image} alt={card.alt} className='absolute inset-0 object-cover w-full h-full' />
+                <div className='absolute inset-0 bg-black/60 group-hover:opacity-60 transition-opacity duration-300 z-10' />
+                <div className='absolute bottom-0 left-0 right-0 p-6 text-white z-20'>
+                  <h3 className='text-2xl font-bold mb-2'>{card.title}</h3>
+                  <p className='text-white/90 text-sm'>{card.description}</p>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* 2. MICE Consultation Services */}
-          <div className='group relative h-96'>
-            <div className='h-full rounded-2xl overflow-hidden bg-gray-200 relative'>
-              <img
-                src={aboutImage2}
-                alt='MICE strategy and destination marketing'
-                className='absolute inset-0 object-cover w-full h-full'
-              />
-              <div className='absolute inset-0 bg-black/60 group-hover:opacity-60 transition-opacity duration-300 z-10' />
-              <div className='absolute bottom-0 left-0 right-0 p-6 text-white z-20'>
-                <h3 className='text-2xl font-bold mb-2'>MICE Consultation</h3>
-                <p className='text-white/90 text-sm'>
-                  We support national and regional efforts to grow Meetings, Incentives, Conferences, and Exhibitions.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* 3. Capacity Building & Sustainability */}
-          <div className='group relative h-96'>
-            <div className='h-full rounded-2xl overflow-hidden bg-gray-200 relative'>
-              <img
-                src={aboutImage3}
-                alt='Training session in Africa'
-                className='absolute inset-0 object-cover w-full h-full'
-              />
-              <div className='absolute inset-0 bg-black/60 group-hover:opacity-60 transition-opacity duration-300 z-10' />
-              <div className='absolute bottom-0 left-0 right-0 p-6 text-white z-20'>
-                <h3 className='text-2xl font-bold mb-2'>Capacity & Sustainability</h3>
-                <p className='text-white/90 text-sm'>
-                  We train professionals, enable partnerships, and promote responsible growth in tourism.
-                </p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Mobile CTA */}
@@ -95,18 +54,12 @@ const WhoWeAreSection = () => {
 
         {/* Stats */}
         <div className='mt-6 grid md:grid-cols-3 gap-8 text-center'>
-          <div className='p-6'>
-            <div className='text-4xl font-bold text-secondary mb-2'>5</div>
-            <div className='text-primary/80'>African Regions Covered</div>
-          </div>
-          <div className='p-6'>
-            <div className='text-4xl font-bold text-secondary mb-2'>10+</div>
-            <div className='text-primary/80'>Events Led & Coordinated</div>
-          </div>
-          <div className='p-6'>
-            <div className='text-4xl font-bold text-secondary mb-2'>Global</div>
-            <div className='text-primary/80'>Event Footprint</div>
-          </div>
+          {stats.map(stat => (
+            <div key={stat.id} className='p-6'>
+              <div className='text-4xl font-bold text-secondary mb-2'>{stat.value}</div>
+              <div className='text-primary/80'>{stat.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

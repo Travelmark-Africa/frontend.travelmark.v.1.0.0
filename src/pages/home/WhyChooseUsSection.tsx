@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Calendar, Award, Star, Users } from 'lucide-react';
+import { features } from '@/constants';
 
 const WhyChooseUs = () => {
   const handleGetStarted = () => {
@@ -10,6 +10,21 @@ const WhyChooseUs = () => {
         block: 'start',
       });
     }
+  };
+
+  // Helper function to render feature cards
+  const renderFeatureCard = (feature: Feature) => {
+    const IconComponent = feature.icon;
+
+    return (
+      <div key={feature.id} className='flex flex-col'>
+        <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
+          <IconComponent className='w-6 h-6 text-secondary' />
+        </div>
+        <h3 className='text-lg font-bold text-primary mb-3'>{feature.title}</h3>
+        <p className='text-primary/70 leading-relaxed text-[1rem]'>{feature.description}</p>
+      </div>
+    );
   };
 
   return (
@@ -46,61 +61,13 @@ const WhyChooseUs = () => {
           {/* Right Column - Features Grid */}
           <div className='grid grid-cols-1 gap-8'>
             {/* First Row - Two columns */}
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              {/* Deep Regional Expertise */}
-              <div className='flex flex-col'>
-                <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
-                  <Award className='w-6 h-6 text-secondary' />
-                </div>
-                <h3 className='text-lg font-bold text-primary mb-3'>Deep Regional Expertise</h3>
-                <p className='text-primary/70 leading-relaxed text-[1rem]'>
-                  With teams across Africa, we bring localized knowledge, cultural fluency, and regional market insights
-                  into every project we deliver.
-                </p>
-              </div>
-
-              {/* Tailored Strategies */}
-              <div className='flex flex-col'>
-                <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
-                  <Calendar className='w-6 h-6 text-secondary' />
-                </div>
-                <h3 className='text-lg font-bold text-primary mb-3'>Tailored Strategies</h3>
-                <p className='text-primary/70 leading-relaxed text-[1rem]'>
-                  No one-size-fits-all. Every country, institution, or event gets a custom roadmap based on its unique
-                  goals, audience, and strengths.
-                </p>
-              </div>
-            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>{features.slice(0, 2).map(renderFeatureCard)}</div>
 
             {/* Separator Line */}
             <div className='border-t border-secondary/40'></div>
 
             {/* Second Row - Two columns */}
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              {/* Reliable Local Networks */}
-              <div className='flex flex-col'>
-                <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
-                  <Users className='w-6 h-6 text-secondary' />
-                </div>
-                <h3 className='text-lg font-bold text-primary mb-3'>Reliable Local Networks</h3>
-                <p className='text-primary/70 leading-relaxed text-[1rem]'>
-                  We work with vetted vendors, suppliers, and facilitators in every region—ensuring quality delivery
-                  with zero guesswork or delays.
-                </p>
-              </div>
-
-              {/* End-to-End Support */}
-              <div className='flex flex-col'>
-                <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
-                  <Star className='w-6 h-6 text-secondary' />
-                </div>
-                <h3 className='text-lg font-bold text-primary mb-3'>End-to-End Execution</h3>
-                <p className='text-primary/70 leading-relaxed text-[1rem]'>
-                  From strategy and planning to on-site coordination and post-event review—we stay with you every step
-                  of the journey.
-                </p>
-              </div>
-            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>{features.slice(2, 4).map(renderFeatureCard)}</div>
           </div>
         </div>
       </div>

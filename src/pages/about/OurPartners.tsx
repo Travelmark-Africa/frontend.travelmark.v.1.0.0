@@ -1,46 +1,7 @@
-import { afp, icca, meetingsAfrica, nepad, rcb, unt } from '@/assets';
 import Container from '@/components/Container';
+import { partners } from '@/constants';
 
 const OurPartners = () => {
-  const partners = [
-    {
-      id: 1,
-      name: 'Rwanda Convention Bureau (RCB)',
-      logo: rcb,
-      website: 'https://rcb.rw',
-    },
-    {
-      id: 2,
-      name: 'Africa Tourism Partners',
-      logo: afp,
-      website: 'https://africatourismpartners.com',
-    },
-    {
-      id: 3,
-      name: 'UNWTO',
-      logo: unt,
-      website: 'https://www.unwto.org',
-    },
-    {
-      id: 4,
-      name: 'ICCA',
-      logo: icca,
-      website: 'https://www.iccaworld.org',
-    },
-    {
-      id: 6,
-      name: 'NEPAD (AUDA)',
-      logo: nepad,
-      website: 'https://www.nepad.org',
-    },
-    {
-      id: 7,
-      name: 'Meetings Africa',
-      logo: meetingsAfrica,
-      website: 'https://www.meetingsafrica.co.za',
-    },
-  ];
-
   const handlePartnerClick = (website: string) => {
     window.open(website, '_blank', 'noopener,noreferrer');
   };

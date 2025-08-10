@@ -1,14 +1,7 @@
 import Container from '@/components/Container';
+import { regions } from '@/constants';
 
 const OurPresence = () => {
-  const regions = [
-    { name: 'North Africa', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-    { name: 'West Africa', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-    { name: 'East Africa', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-    { name: 'Central Africa', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-    { name: 'Southern Africa', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-  ];
-
   return (
     <div className='w-full bg-secondary/5 py-20 px-4'>
       <Container>
