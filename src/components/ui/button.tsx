@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Loader2 } from 'lucide-react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -13,7 +13,7 @@ const buttonVariants = cva(
         default: 'bg-secondary text-white hover:bg-secondary/80',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-secondary text-secondary bg-secondary/10 hover:bg-secondary hover:text-white',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-gray-200 hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
@@ -35,17 +35,37 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   hideChevron?: boolean;
+  isLoading?: boolean;
+  loadingText?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, hideChevron = false, children, ...props }, ref) => {
+  (
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      hideChevron = false,
+      isLoading,
+      loadingText,
+      children,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'button';
 
+    // Disable button when loading or explicitly disabled
+    const isDisabled = disabled || isLoading;
+
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={isDisabled} {...props}>
         <span className='flex items-center gap-2'>
-          {children}
-          {!hideChevron && (
+          {isLoading && <Loader2 className='w-4 h-4 animate-spin' />}
+          {isLoading && loadingText ? loadingText : children}
+          {!hideChevron && !isLoading && (
             <ChevronRight className='w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:scale-110' />
           )}
         </span>
@@ -57,12 +77,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 const ButtonDemo = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading2, setIsLoading2] = React.useState(false);
+
+  const handleLoadingDemo = () => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 3000);
+  };
+
+  const handleLoadingDemo2 = () => {
+    setIsLoading2(true);
+    setTimeout(() => setIsLoading2(false), 2000);
+  };
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-8 flex items-center justify-center'>
       <div className='space-y-6'>
         <Button>Get Started</Button>
         <Button size='lg'>Large Action</Button>
         <Button hideChevron>No Arrow</Button>
+        <Button isLoading={isLoading} loadingText='Processing...' onClick={handleLoadingDemo}>
+          Click to Load
+        </Button>
+        <Button isLoading={isLoading2} onClick={handleLoadingDemo2}>
+          Loading without custom text
+        </Button>
+        <Button variant='outline' isLoading={true} loadingText='Saving...'>
+          Save Changes
+        </Button>
       </div>
     </div>
   );

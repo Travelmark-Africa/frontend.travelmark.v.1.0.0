@@ -1,10 +1,29 @@
-import { useAuth } from '../hooks/useAuth';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 
-const AuthGuard = () => {
-  const { user } = useAuth();
+interface ProtectedRouteProps {
+  redirectPath?: string;
+}
 
-  return user ? <Outlet /> : <Navigate to='/auth/login' replace />;
-};
+export default function ProtectedRoute({ redirectPath = '/auth/login' }: ProtectedRouteProps) {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
 
-export default AuthGuard;
+  if (!isAuthenticated) {
+    return <Navigate to={redirectPath} state={{ from: location }} replace />;
+  }
+
+  return <Outlet />;
+}
+
+export function PublicOnlyRoute({ redirectPath = '/dashboard' }: ProtectedRouteProps) {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (isAuthenticated) {
+    const from = location.state?.from?.pathname || redirectPath;
+    return <Navigate to={from} replace />;
+  }
+
+  return <Outlet />;
+}

@@ -61,16 +61,20 @@ export const formatDateRange = (startDate?: string, endDate?: string) => {
 };
 
 export const handleError = (error: unknown) => {
+  let errorMessage = 'Something went wrong';
+
   if (typeof error === 'object' && error !== null && 'data' in error) {
     const { data } = error as { data: { message: string } };
-    toast.error(data.message || 'Something went wrong', {
-      duration: 2000,
-    });
-  } else {
-    toast.error('Something went wrong', {
-      duration: 2000,
-    });
+    errorMessage = data.message || 'Something went wrong';
+  } else if (error instanceof Error) {
+    errorMessage = error.message;
+  } else if (typeof error === 'string') {
+    errorMessage = error;
   }
+
+  toast.error(errorMessage, {
+    duration: 2000,
+  });
 };
 
 export const capitalizeInitials = (name: string): string => {
@@ -120,3 +124,51 @@ export function lazyLoad<T extends ComponentType>(importFunc: () => Promise<{ de
       });
   });
 }
+
+// Cloudinary utils
+export interface ImageUploadStatus {
+  file: File;
+  progress: number;
+  status: 'pending' | 'uploading' | 'completed' | 'error';
+  url?: string;
+  error?: string;
+}
+
+export const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+export const validateFileSize = (file: File): boolean => {
+  return file.size <= MAX_FILE_SIZE;
+};
+
+export const uploadToCloudinary = async (file: File, onProgress?: (progress: number) => void): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', import.meta.env.VITE_APP_CLOUDINARY_UPLOAD_PRESET!);
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener('progress', e => {
+      if (e.lengthComputable && onProgress) {
+        const percentComplete = (e.loaded / e.total) * 100;
+        onProgress(percentComplete);
+      }
+    });
+
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        resolve(data.secure_url);
+      } else {
+        reject({ description: 'Failed to upload image' });
+      }
+    });
+
+    xhr.addEventListener('error', () => {
+      reject({ description: 'Network error during upload' });
+    });
+
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_APP_CLOUDINARY_CLOUD_NAME}/image/upload`);
+    xhr.send(formData);
+  });
+};

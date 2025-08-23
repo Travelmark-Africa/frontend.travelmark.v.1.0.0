@@ -36,3 +36,41 @@ interface FormData {
   subject: string;
   message: string;
 }
+
+
+interface SubService {
+  subServiceTitle: string;
+  subServiceDescription: string;
+}
+
+interface Service {
+  [x: string]: Key | null | undefined;
+  $id: string;
+  serviceName: string;
+  serviceTitle: string;
+  serviceSummary: string;
+  serviceDescription: string;
+  category: string;
+  iconIdentifier: string;
+  mediaThumbnailUrl?: string;
+  mediaThumbnailAlt?: string;
+  mediaBannerUrl?: string;
+  mediaBannerAlt?: string;
+  subServicesJson?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface ServiceFormData {
+  serviceName: string;
+  serviceTitle: string;
+  serviceSummary: string;
+  serviceDescription: string;
+  category: string;
+  iconIdentifier: string;
+  mediaThumbnailUrl: string;
+  mediaThumbnailAlt: string;
+  mediaBannerUrl: string;
+  mediaBannerAlt: string;
+  subServices: SubService[];
+}

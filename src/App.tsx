@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { BrowserRouter as Router, useRoutes, useLocation, RouteObject } from 'react-router-dom';
+import { BrowserRouter as Router, useRoutes, useLocation } from 'react-router-dom';
 import routes from './routes';
-
-import AuthGuard from './authGuard';
 import { getNetworkStatus } from './lib/utils';
 import LoadingProgressManager from './components/LoadingProgressManager';
 import RouteChangeTracker from './components/RouteChangeTracker';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-// ScrollToTop component
-const ScrollToTop = (): null => {
+function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -19,55 +16,54 @@ const ScrollToTop = (): null => {
   }, [pathname]);
 
   return null;
-};
+}
 
-// AppRoutes component to handle routes with suspense
-const AppRoutes = () => {
-  // Prepare routes with proper auth guards
-  const processedRoutes: RouteObject[] = routes.map(route => {
-    if (route.authRequired) {
-      return {
-        path: route.path,
-        element: <AuthGuard />,
-        children: [{ path: '', element: route.element }],
-      };
-    }
-    return { ...route };
-  });
-
-  // This key forces remounting of Suspense when location changes
-  const element = useRoutes(processedRoutes);
-
+function AppRoutes() {
+  const element = useRoutes(routes);
   return <LoadingProgressManager>{element}</LoadingProgressManager>;
-};
+}
 
-// Main App component
-const App = () => {
+function useNetworkStatus() {
   const [isOnline, setIsOnline] = useState<boolean>(getNetworkStatus());
-  const [isReloaded, setIsReloaded] = useState<boolean>(true);
+  const [hasShownOfflineToast, setHasShownOfflineToast] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleNetworkChange = (): void => {
-      setIsOnline(getNetworkStatus());
-    };
-
-    window.addEventListener('offline', handleNetworkChange);
-    window.addEventListener('online', handleNetworkChange);
-
-    return () => {
-      window.removeEventListener('offline', handleNetworkChange);
-      window.removeEventListener('online', handleNetworkChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isReloaded && !isOnline) {
-      toast.error("You are offline, some content won't be visible", {
+    function handleOnline() {
+      setIsOnline(true);
+      setHasShownOfflineToast(false);
+      toast.success("You're back online!", {
         duration: 2000,
       });
     }
-    setIsReloaded(false);
-  }, [isReloaded, isOnline]);
+
+    function handleOffline() {
+      setIsOnline(false);
+      if (!hasShownOfflineToast) {
+        toast.error("You are offline, some content won't be visible", {
+          duration: 2000,
+        });
+        setHasShownOfflineToast(true);
+      }
+    }
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    if (!isOnline && !hasShownOfflineToast) {
+      handleOffline();
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, [isOnline, hasShownOfflineToast]);
+
+  return isOnline;
+}
+
+export default function App() {
+  const isOnline = useNetworkStatus();
 
   return (
     <Router>
@@ -79,9 +75,14 @@ const App = () => {
           <AppRoutes />
         </main>
         <Footer />
+
+        {/* Network status indicator */}
+        {!isOnline && (
+          <div className='fixed bottom-4 left-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50'>
+            <span className='text-sm'>No internet connection</span>
+          </div>
+        )}
       </div>
     </Router>
   );
-};
-
-export default App;
+}

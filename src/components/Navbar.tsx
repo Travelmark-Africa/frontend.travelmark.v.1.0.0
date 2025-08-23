@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { logo1, logo2 } from '@/assets';
 import { Link, useLocation } from 'react-router-dom';
 import Container from '@/components/Container';
+import { hideFooterOrNavbarRoutes } from '@/constants';
 
 const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className = '' }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,6 +15,9 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
   // Use React Router's useLocation hook instead of manual path tracking
   const location = useLocation();
   const currentPath = location.pathname;
+
+  // Check if current route should hide navbar
+  const shouldHideNavbar = hideFooterOrNavbarRoutes.some(route => currentPath.includes(route));
 
   const homeStylePages = ['/', '/about-us', '/our-services'];
 
@@ -36,14 +40,10 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
 
     // Simple hide/show logic: hide on any scroll down, show only when at top
     if (currentScrollY > lastScrollY && currentScrollY > 50) {
-      // Scrolling down - hide navbar
       setIsHidden(true);
     } else if (currentScrollY <= 10) {
-      // At the very top - show navbar
       setIsHidden(false);
     }
-    // Note: Removed the "show on scroll up" behavior
-
     setLastScrollY(currentScrollY);
   }, [lastScrollY, isHomeStylePage]);
 
@@ -52,7 +52,7 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
     setIsOutOfHero(false);
     setIsHidden(false);
     setLastScrollY(0);
-    setIsMobileMenuOpen(false); // Close mobile menu on route change
+    setIsMobileMenuOpen(false);
   }, [currentPath]);
 
   useEffect(() => {
@@ -132,6 +132,11 @@ const Navbar = ({ backgroundColor = 'bg-transparent', isFixed = true, className 
   const isActiveRoute = (path: string) => {
     return currentPath === path;
   };
+
+  // Don't render navbar if on restricted routes
+  if (shouldHideNavbar) {
+    return null;
+  }
 
   return (
     <>
