@@ -8,13 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,7 +29,7 @@ import {
   Minus,
   Image as ImageIcon,
   Camera,
-  ChevronLeft
+  ChevronLeft,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDateWithOrdinal, handleError } from '@/lib/utils';
@@ -49,17 +43,8 @@ import {
   useUpdateServiceMutation,
   useDeleteServiceMutation,
 } from '@/hooks/useServicesQuery';
-import {
-  uploadToCloudinary,
-  validateFileSize,
-  ImageUploadStatus
-} from '@/lib/utils';
-import {
-  SERVICE_CATEGORIES,
-  SERVICE_ICONS,
-  getIconComponent,
-  truncateText
-} from '@/constants';
+import { uploadToCloudinary, validateFileSize, ImageUploadStatus } from '@/lib/utils';
+import { SERVICE_CATEGORIES, SERVICE_ICONS, getIconComponent, truncateText } from '@/constants';
 
 const ServicesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -119,21 +104,10 @@ const ServicesPage: React.FC = () => {
   const watchedIconIdentifier = watch('iconIdentifier');
 
   // Navigation helpers
-  const navigateToList = () => {
-    navigate('/dashboard/services');
-  };
-
-  const navigateToCreate = () => {
-    navigate('/dashboard/services?view=create');
-  };
-
-  const navigateToEdit = (id: string) => {
-    navigate(`/dashboard/services?view=edit&id=${id}`);
-  };
-
-  const navigateToView = (id: string) => {
-    navigate(`/dashboard/services?view=details&id=${id}`);
-  };
+  const navigateToList = () => navigate('/dashboard/services');
+  const navigateToCreate = () => navigate('/dashboard/services?view=create');
+  const navigateToEdit = (id: string) => navigate(`/dashboard/services?view=edit&id=${id}`);
+  const navigateToView = (id: string) => navigate(`/dashboard/services?view=details&id=${id}`);
 
   const resetForm = useCallback((): void => {
     reset({
@@ -162,7 +136,6 @@ const ServicesPage: React.FC = () => {
       if (service) {
         setSelectedService(service);
 
-        // Populate form for editing
         if (view === 'edit') {
           let parsedSubServices: SubService[];
           try {
@@ -199,6 +172,12 @@ const ServicesPage: React.FC = () => {
     }
   }, [serviceId, services?.data, view, reset, resetForm]);
 
+  // Icon Component Helper
+  const renderIcon = (iconName: string, className: string = 'w-5 h-5') => {
+    const IconComponent = getIconComponent(iconName);
+    return <IconComponent className={className} />;
+  };
+
   // Loading skeleton component
   const TableSkeleton = () => (
     <Table>
@@ -214,7 +193,9 @@ const ServicesPage: React.FC = () => {
       <TableBody>
         {[...Array(5)].map((_, i) => (
           <TableRow key={i}>
-            <TableCell><Skeleton className='h-4 w-8' /></TableCell>
+            <TableCell>
+              <Skeleton className='h-4 w-8' />
+            </TableCell>
             <TableCell>
               <div className='flex items-center gap-3'>
                 <Skeleton className='h-12 w-12 rounded' />
@@ -230,7 +211,9 @@ const ServicesPage: React.FC = () => {
             <TableCell className='hidden lg:table-cell'>
               <Skeleton className='h-4 w-24' />
             </TableCell>
-            <TableCell><Skeleton className='h-4 w-24' /></TableCell>
+            <TableCell>
+              <Skeleton className='h-4 w-24' />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -276,15 +259,11 @@ const ServicesPage: React.FC = () => {
         });
 
         if (type === 'thumbnail') {
-          setThumbnailUploadStatus(prev =>
-            prev ? { ...prev, status: 'completed', url, progress: 100 } : null
-          );
+          setThumbnailUploadStatus(prev => (prev ? { ...prev, status: 'completed', url, progress: 100 } : null));
           setUploadedThumbnailUrl(url);
           setValue('mediaThumbnailUrl', url);
         } else {
-          setBannerUploadStatus(prev =>
-            prev ? { ...prev, status: 'completed', url, progress: 100 } : null
-          );
+          setBannerUploadStatus(prev => (prev ? { ...prev, status: 'completed', url, progress: 100 } : null));
           setUploadedBannerUrl(url);
           setValue('mediaBannerUrl', url);
         }
@@ -293,13 +272,9 @@ const ServicesPage: React.FC = () => {
       } catch (error) {
         handleError(error);
         if (type === 'thumbnail') {
-          setThumbnailUploadStatus(prev =>
-            prev ? { ...prev, status: 'error', error: 'Upload failed' } : null
-          );
+          setThumbnailUploadStatus(prev => (prev ? { ...prev, status: 'error', error: 'Upload failed' } : null));
         } else {
-          setBannerUploadStatus(prev =>
-            prev ? { ...prev, status: 'error', error: 'Upload failed' } : null
-          );
+          setBannerUploadStatus(prev => (prev ? { ...prev, status: 'error', error: 'Upload failed' } : null));
         }
         toast.error(`Failed to upload ${file.name}`);
       }
@@ -328,8 +303,8 @@ const ServicesPage: React.FC = () => {
   // Form submission
   const onSubmit = async (data: ServiceFormData): Promise<void> => {
     try {
-      const validSubServices = data.subServices.filter(sub =>
-        sub.subServiceTitle.trim() && sub.subServiceDescription.trim()
+      const validSubServices = data.subServices.filter(
+        sub => sub.subServiceTitle.trim() && sub.subServiceDescription.trim()
       );
 
       const payload = {
@@ -410,72 +385,68 @@ const ServicesPage: React.FC = () => {
     width = 'w-24',
     height = 'h-24',
   }) => (
-      <div className='space-y-3'>
-        <Label className='text-sm font-medium text-primary/80'>{label}</Label>
-        <div className='flex items-start gap-4'>
-          <div className='relative'>
-            <input
-              type='file'
-              accept='image/*'
-              onChange={onImageSelect}
-              className='absolute inset-0 opacity-0 cursor-pointer z-10'
-              disabled={uploadStatus?.status === 'uploading'}
-            />
-            <div className={`${width} ${height} rounded border overflow-hidden bg-gray-200 flex items-center justify-center hover:border-primary transition-colors cursor-pointer relative group`}>
-              {uploadedUrl || watchedUrl ? (
-                <img
-                  src={uploadedUrl || watchedUrl}
-                  alt={altTextValue || 'Upload preview'}
-                  className='w-full h-full object-cover'
-                />
-              ) : (
-                <ImageIcon className='w-8 h-8 text-primary/50' />
-              )}
+    <div className='space-y-3'>
+      <Label className='text-sm font-medium text-primary/80'>{label}</Label>
+      <div className='flex items-start gap-4'>
+        <div className='relative'>
+          <input
+            type='file'
+            accept='image/*'
+            onChange={onImageSelect}
+            className='absolute inset-0 opacity-0 cursor-pointer z-10'
+            disabled={uploadStatus?.status === 'uploading'}
+          />
+          <div
+            className={`${width} ${height} rounded border overflow-hidden bg-gray-200 flex items-center justify-center hover:border-primary transition-colors cursor-pointer relative group`}
+          >
+            {uploadedUrl || watchedUrl ? (
+              <img
+                src={uploadedUrl || watchedUrl}
+                alt={altTextValue || 'Upload preview'}
+                className='w-full h-full object-cover'
+              />
+            ) : (
+              <ImageIcon className='w-8 h-8 text-primary/50' />
+            )}
 
-              {uploadStatus?.status === 'uploading' && (
-                <div className='absolute inset-0 bg-white/80 flex items-center justify-center'>
-                  <div className='text-center'>
-                    <Loader2 className='w-6 h-6 text-primary animate-spin mx-auto mb-1' />
-                    <div className='text-xs text-primary'>{Math.round(uploadStatus.progress)}%</div>
-                  </div>
+            {uploadStatus?.status === 'uploading' && (
+              <div className='absolute inset-0 bg-white/80 flex items-center justify-center'>
+                <div className='text-center'>
+                  <Loader2 className='w-6 h-6 text-primary animate-spin mx-auto mb-1' />
+                  <div className='text-xs text-primary'>{Math.round(uploadStatus.progress)}%</div>
                 </div>
-              )}
-
-              {(uploadedUrl || watchedUrl) && uploadStatus?.status !== 'uploading' && (
-                <div className='absolute inset-0 opacity-0 group-hover:opacity-50 bg-black transition-opacity flex items-center justify-center'>
-                  <Camera className='w-6 h-6 text-white' />
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {(uploadedUrl || watchedUrl) && uploadStatus?.status !== 'uploading' && (
-              <button
-                type='button'
-                onClick={onRemove}
-                className='absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 z-20 shadow-md'
-              >
-                <X className='w-3 h-3' />
-              </button>
+              <div className='absolute inset-0 opacity-0 group-hover:opacity-50 bg-black transition-opacity flex items-center justify-center'>
+                <Camera className='w-6 h-6 text-white' />
+              </div>
             )}
           </div>
 
-          <div className='flex-1 space-y-2'>
-            <Input
-              placeholder='Alt text'
-              value={altTextValue}
-              onChange={(e) => onAltTextChange(e.target.value)}
-            />
-            <p className='text-xs text-gray-500'>Click the image area to upload. PNG, JPG (max 10MB)</p>
-            {uploadStatus?.status === 'error' && (
-              <p className='text-xs text-red-500'>Upload failed. Please try again.</p>
-            )}
-          </div>
+          {(uploadedUrl || watchedUrl) && uploadStatus?.status !== 'uploading' && (
+            <button
+              type='button'
+              onClick={onRemove}
+              className='absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 z-20 shadow-md'
+            >
+              <X className='w-3 h-3' />
+            </button>
+          )}
+        </div>
+
+        <div className='flex-1 space-y-2'>
+          <Input placeholder='Alt text' value={altTextValue} onChange={e => onAltTextChange(e.target.value)} />
+          <p className='text-xs text-gray-500'>Click the image area to upload. PNG, JPG (max 10MB)</p>
+          {uploadStatus?.status === 'error' && <p className='text-xs text-red-500'>Upload failed. Please try again.</p>}
         </div>
       </div>
-    );
+    </div>
+  );
 
   // Service form component
-  const ServiceForm: React.FC<{ isEdit?: boolean; }> = ({ isEdit = false }) => (
+  const ServiceForm: React.FC<{ isEdit?: boolean }> = ({ isEdit = false }) => (
     <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
       {/* Basic Information */}
       <div className='space-y-4'>
@@ -497,14 +468,14 @@ const ServicesPage: React.FC = () => {
               })}
               className={errors.serviceName ? '!border-red-500' : ''}
             />
-            {errors.serviceName && (
-              <p className='text-red-500 text-xs'>{errors.serviceName.message}</p>
-            )}
+            {errors.serviceName && <p className='text-red-500 text-xs'>{errors.serviceName.message}</p>}
           </div>
 
           {/* Category */}
           <div className='space-y-2'>
-            <Label>Category <span className='text-red-500'>*</span></Label>
+            <Label>
+              Category <span className='text-red-500'>*</span>
+            </Label>
             <Controller
               name='category'
               control={control}
@@ -515,7 +486,7 @@ const ServicesPage: React.FC = () => {
                     <SelectValue placeholder='Select a category' />
                   </SelectTrigger>
                   <SelectContent>
-                    {SERVICE_CATEGORIES.map((category) => (
+                    {SERVICE_CATEGORIES.map(category => (
                       <SelectItem key={category} value={category}>
                         {category}
                       </SelectItem>
@@ -524,9 +495,7 @@ const ServicesPage: React.FC = () => {
                 </Select>
               )}
             />
-            {errors.category && (
-              <p className='text-red-500 text-xs'>{errors.category.message}</p>
-            )}
+            {errors.category && <p className='text-red-500 text-xs'>{errors.category.message}</p>}
           </div>
         </div>
 
@@ -544,17 +513,17 @@ const ServicesPage: React.FC = () => {
             })}
             className={errors.serviceTitle ? '!border-red-500' : ''}
           />
-          {errors.serviceTitle && (
-            <p className='text-red-500 text-xs'>{errors.serviceTitle.message}</p>
-          )}
+          {errors.serviceTitle && <p className='text-red-500 text-xs'>{errors.serviceTitle.message}</p>}
         </div>
 
         {/* Icon Selection */}
         <div className='space-y-2'>
-          <Label>Icon <span className='text-red-500'>*</span></Label>
+          <Label>
+            Icon <span className='text-red-500'>*</span>
+          </Label>
           <div className='flex items-center gap-3'>
             <div className='w-12 h-12 bg-gray-200 rounded flex items-center justify-center border'>
-              {getIconComponent(watchedIconIdentifier)}
+              {renderIcon(watchedIconIdentifier)}
             </div>
             <Controller
               name='iconIdentifier'
@@ -565,10 +534,10 @@ const ServicesPage: React.FC = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {SERVICE_ICONS.map((icon) => (
+                    {SERVICE_ICONS.map(icon => (
                       <SelectItem key={icon} value={icon}>
                         <div className='flex items-center gap-2'>
-                          {getIconComponent(icon)}
+                          {renderIcon(icon, 'w-4 h-4')}
                           {icon}
                         </div>
                       </SelectItem>
@@ -595,9 +564,7 @@ const ServicesPage: React.FC = () => {
             className={`resize-none ${errors.serviceSummary ? '!border-red-500' : ''}`}
             rows={3}
           />
-          {errors.serviceSummary && (
-            <p className='text-red-500 text-xs'>{errors.serviceSummary.message}</p>
-          )}
+          {errors.serviceSummary && <p className='text-red-500 text-xs'>{errors.serviceSummary.message}</p>}
         </div>
 
         {/* Service Description */}
@@ -615,9 +582,7 @@ const ServicesPage: React.FC = () => {
             className={`resize-none ${errors.serviceDescription ? '!border-red-500' : ''}`}
             rows={5}
           />
-          {errors.serviceDescription && (
-            <p className='text-red-500 text-xs'>{errors.serviceDescription.message}</p>
-          )}
+          {errors.serviceDescription && <p className='text-red-500 text-xs'>{errors.serviceDescription.message}</p>}
         </div>
       </div>
 
@@ -632,9 +597,9 @@ const ServicesPage: React.FC = () => {
           uploadedUrl={uploadedThumbnailUrl}
           watchedUrl={watchedThumbnailUrl}
           altTextValue={watch('mediaThumbnailAlt')}
-          onImageSelect={(e) => handleImageSelection(e, 'thumbnail')}
+          onImageSelect={e => handleImageSelection(e, 'thumbnail')}
           onRemove={() => removeImage('thumbnail')}
-          onAltTextChange={(value) => setValue('mediaThumbnailAlt', value)}
+          onAltTextChange={value => setValue('mediaThumbnailAlt', value)}
         />
 
         {/* Banner Image */}
@@ -644,9 +609,9 @@ const ServicesPage: React.FC = () => {
           uploadedUrl={uploadedBannerUrl}
           watchedUrl={watchedBannerUrl}
           altTextValue={watch('mediaBannerAlt')}
-          onImageSelect={(e) => handleImageSelection(e, 'banner')}
+          onImageSelect={e => handleImageSelection(e, 'banner')}
           onRemove={() => removeImage('banner')}
-          onAltTextChange={(value) => setValue('mediaBannerAlt', value)}
+          onAltTextChange={value => setValue('mediaBannerAlt', value)}
           width='w-32'
           height='h-20'
         />
@@ -660,6 +625,7 @@ const ServicesPage: React.FC = () => {
             type='button'
             variant='outline'
             size='sm'
+            hideChevron
             onClick={() => append({ subServiceTitle: '', subServiceDescription: '' })}
             className='flex items-center gap-1'
           >
@@ -677,10 +643,10 @@ const ServicesPage: React.FC = () => {
                   <Button
                     type='button'
                     variant='ghost'
-                    hideChevron
                     size='sm'
+                    hideChevron
                     onClick={() => remove(index)}
-                    className='text-red-500 hover:text-red-700 !hover:bg-red-50 p-1'
+                    className='text-red-500 hover:text-red-700 hover:bg-red-50 p-1'
                   >
                     <Minus className='w-4 h-4' />
                   </Button>
@@ -709,11 +675,15 @@ const ServicesPage: React.FC = () => {
                       required: 'Sub-service description is required',
                       maxLength: { value: 1000, message: 'Description must not exceed 1000 characters' },
                     })}
-                    className={`resize-none ${errors.subServices?.[index]?.subServiceDescription ? '!border-red-500' : ''}`}
+                    className={`resize-none ${
+                      errors.subServices?.[index]?.subServiceDescription ? '!border-red-500' : ''
+                    }`}
                     rows={3}
                   />
                   {errors.subServices?.[index]?.subServiceDescription && (
-                    <p className='text-red-500 text-xs mt-1'>{errors.subServices[index]?.subServiceDescription?.message}</p>
+                    <p className='text-red-500 text-xs mt-1'>
+                      {errors.subServices[index]?.subServiceDescription?.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -727,12 +697,12 @@ const ServicesPage: React.FC = () => {
         <Button
           type='button'
           variant='outline'
-          hideChevron
           size='sm'
+          hideChevron
           onClick={navigateToList}
           disabled={isSubmitting || isUploading}
         >
-          <X className='w-4 h-4' />
+          <X className='w-4 h-4 ' />
           Cancel
         </Button>
         <Button
@@ -744,12 +714,12 @@ const ServicesPage: React.FC = () => {
         >
           {isSubmitting ? (
             <>
-              <Loader2 className='w-4 h-4 animate-spin' />
+              <Loader2 className='w-4 h-4 animate-spin ' />
               {isEdit ? 'Updating...' : 'Creating...'}
             </>
           ) : (
             <>
-              {isEdit ? <Edit3 className='w-4 h-4 mr-2' /> : <Plus className='w-4 h-4 mr-2' />}
+              {isEdit ? <Edit3 className='w-4 h-4 ' /> : <Plus className='w-4 h-4 ' />}
               {isEdit ? 'Update Service' : 'Create Service'}
             </>
           )}
@@ -762,23 +732,15 @@ const ServicesPage: React.FC = () => {
   if (view === 'create') {
     return (
       <DashboardLayout>
-        <div className='space-y-6'>
-          {/* Header */}
+        <div className='space-y-6 py-4'>
           <div className='flex items-center gap-4'>
-            <Button
-              variant='ghost'
-              size='sm'
-              hideChevron
-              onClick={navigateToList}
-              className='flex items-center gap-2'
-            >
-              <ChevronLeft className='w-4 h-4' />
+            <Button variant='ghost' size='sm' hideChevron onClick={navigateToList}>
+              <ChevronLeft className='w-4 h-4 ' />
               Back to Services
             </Button>
             <h3 className='font-bold text-xl text-primary'>Create New Service</h3>
           </div>
 
-          {/* Create Form */}
           <Card>
             <CardContent>
               <ServiceForm />
@@ -792,23 +754,15 @@ const ServicesPage: React.FC = () => {
   if (view === 'edit' && selectedService) {
     return (
       <DashboardLayout>
-        <div className='space-y-6'>
-          {/* Header */}
+        <div className='space-y-6 py-4'>
           <div className='flex items-center gap-4'>
-            <Button
-              variant='ghost'
-              size='sm'
-              hideChevron
-              onClick={navigateToList}
-              className='flex items-center gap-2'
-            >
-              <ChevronLeft className='w-4 h-4' />
+            <Button variant='ghost' size='sm' hideChevron onClick={navigateToList}>
+              <ChevronLeft className='w-4 h-4 ' />
               Back to Services
             </Button>
             <h3 className='font-bold text-xl text-primary'>Edit Service</h3>
           </div>
 
-          {/* Edit Form */}
           <Card>
             <CardContent>
               <ServiceForm isEdit={true} />
@@ -822,30 +776,18 @@ const ServicesPage: React.FC = () => {
   if (view === 'details' && selectedService) {
     return (
       <DashboardLayout>
-        <div className='space-y-6'>
-          {/* Header */}
+        <div className='space-y-6 py-4'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-4'>
-              <Button
-                variant='ghost'
-                hideChevron
-                size='sm'
-                onClick={navigateToList}
-                className='flex items-center gap-2 hover:bg-gray-200!'
-              >
-                <ChevronLeft className='w-4 h-4' />
+              <Button variant='ghost' size='sm' hideChevron onClick={navigateToList}>
+                <ChevronLeft className='w-4 h-4 ' />
                 Back to Services
               </Button>
               <h3 className='font-bold text-xl text-primary'>Service Details</h3>
             </div>
             <div className='flex items-center gap-2'>
-              <Button
-                variant='outline'
-                size='sm'
-                hideChevron
-                onClick={() => navigateToEdit(selectedService.$id)}
-              >
-                <Edit className='w-4 h-4' />
+              <Button variant='outline' size='sm' hideChevron onClick={() => navigateToEdit(selectedService.$id)}>
+                <Edit className='w-4 h-4 ' />
                 Edit Service
               </Button>
               <Button
@@ -853,15 +795,14 @@ const ServicesPage: React.FC = () => {
                 size='sm'
                 hideChevron
                 onClick={() => handleDelete(selectedService)}
-                className='text-red-600 hover:text-red-700 !hover:bg-red-50'
+                className='text-red-600 hover:text-red-700 hover:bg-red-50'
               >
-                <Trash2 className='w-4 h-4' />
+                <Trash2 className='w-4 h-4 ' />
                 Delete
               </Button>
             </div>
           </div>
 
-          {/* Service Details */}
           <Card>
             <CardContent className='p-6'>
               <div className='space-y-6'>
@@ -875,7 +816,7 @@ const ServicesPage: React.FC = () => {
                         className='w-full h-full object-cover rounded'
                       />
                     ) : (
-                      getIconComponent(selectedService.iconIdentifier)
+                      renderIcon(selectedService.iconIdentifier, 'w-6 h-6')
                     )}
                   </div>
                   <div className='flex-1 min-w-0'>
@@ -975,19 +916,12 @@ const ServicesPage: React.FC = () => {
   // Default list view
   return (
     <DashboardLayout>
-      <div className='space-y-6'>
+      <div className='space-y-6 py-4'>
         {/* Header */}
         <div className='flex justify-between items-center'>
-          <h3 className='font-bold text-xl text-primary'>
-            Services ({services?.data?.length || 0})
-          </h3>
-          <Button
-            onClick={navigateToCreate}
-            size='sm'
-            hideChevron
-            className='bg-primary hover:bg-primary/90'
-          >
-            <Plus className='w-4 h-4' />
+          <h3 className='font-bold text-xl text-primary'>Services ({services?.data?.length || 0})</h3>
+          <Button onClick={navigateToCreate} size='sm' hideChevron className='bg-primary hover:bg-primary/90'>
+            <Plus className='w-4 h-4 ' />
             Add Service
           </Button>
         </div>
@@ -1005,20 +939,21 @@ const ServicesPage: React.FC = () => {
               </div>
             ) : !services?.data?.length ? (
               <div className='p-6'>
-                <Empty
-                  description='No services found. Create your first service to get started.'
-                />
+                <Empty description='No services found. Create your first service to get started.' />
               </div>
             ) : (
               <div className='overflow-x-auto p-4'>
                 <Table>
                   <TableHeader>
-                    
                     <TableRow>
                       <TableHead className='w-16 font-semibold text-primary/80'>SN</TableHead>
                       <TableHead className='min-w-[280px] font-semibold text-primary/80'>Service</TableHead>
-                      <TableHead className='hidden md:table-cell min-w-[120px] font-semibold text-primary/80'>Category</TableHead>
-                      <TableHead className='hidden lg:table-cell min-w-[140px] font-semibold text-primary/80'>Created At</TableHead>
+                      <TableHead className='hidden md:table-cell min-w-[120px] font-semibold text-primary/80'>
+                        Category
+                      </TableHead>
+                      <TableHead className='hidden lg:table-cell min-w-[140px] font-semibold text-primary/80'>
+                        Created At
+                      </TableHead>
                       <TableHead className='w-16 font-semibold text-primary/80'>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -1036,12 +971,14 @@ const ServicesPage: React.FC = () => {
                                   className='w-full h-full object-cover rounded'
                                 />
                               ) : (
-                                getIconComponent(service.iconIdentifier)
+                                renderIcon(service.iconIdentifier)
                               )}
                             </div>
                             <div className='min-w-0 flex-1'>
                               <div className='font-medium text-primary truncate'>{service.serviceName}</div>
-                              <div className='text-sm text-gray-500 truncate'>{truncateText(service.serviceSummary, 60)}</div>
+                              <div className='text-sm text-gray-500 truncate'>
+                                {truncateText(service.serviceSummary, 60)}
+                              </div>
                             </div>
                           </div>
                         </TableCell>
@@ -1056,25 +993,25 @@ const ServicesPage: React.FC = () => {
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant='ghost' hideChevron size='sm' className='h-8 w-8 p-0'>
+                              <Button variant='ghost' size='sm' hideChevron className='h-8 w-8 p-0'>
                                 <span className='sr-only'>Open menu</span>
                                 <MoreVertical className='h-4 w-4' />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align='end'>
                               <DropdownMenuItem onClick={() => navigateToView(service.$id)}>
-                                <Eye className='h-4 w-4' />
+                                <Eye className='h-4 w-4 ' />
                                 View Details
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => navigateToEdit(service.$id)}>
-                                <Edit className='h-4 w-4' />
+                                <Edit className='h-4 w-4 ' />
                                 Edit Service
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => handleDelete(service)}
                                 className='text-red-600 focus:text-red-600'
                               >
-                                <Trash2 className='h-4 w-4' />
+                                <Trash2 className='h-4 w-4 ' />
                                 Delete Service
                               </DropdownMenuItem>
                             </DropdownMenuContent>

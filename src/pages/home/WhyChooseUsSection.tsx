@@ -1,5 +1,13 @@
 import { Button } from '@/components/ui/button';
-import { features } from '@/constants';
+import { features, getIconComponent } from '@/constants';
+
+// Define the Feature type based on your updated structure
+interface Feature {
+  id: number;
+  iconName: string;
+  title: string;
+  description: string;
+}
 
 const WhyChooseUs = () => {
   const handleGetStarted = () => {
@@ -14,7 +22,7 @@ const WhyChooseUs = () => {
 
   // Helper function to render feature cards
   const renderFeatureCard = (feature: Feature) => {
-    const IconComponent = feature.icon;
+    const IconComponent = getIconComponent(feature.iconName);
 
     return (
       <div key={feature.id} className='flex flex-col'>

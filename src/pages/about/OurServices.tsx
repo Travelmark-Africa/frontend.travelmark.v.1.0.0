@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { services } from '@/constants';
+import { services, getIconComponent } from '@/constants';
 import { Link } from 'react-router-dom';
 
 const OurServices = () => {
@@ -17,7 +17,7 @@ const OurServices = () => {
         {/* Services Grid */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {services.map(service => {
-            const IconComponent = service.icon;
+            const IconComponent = getIconComponent(service.iconName);
             return (
               <div key={service.id} className={`${service.color} rounded-2xl p-6 h-full flex flex-col`}>
                 {/* Unique category badge */}

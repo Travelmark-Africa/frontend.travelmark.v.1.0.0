@@ -19,7 +19,6 @@ export class AuthService {
   /**
    * Login with email and password for the pre-existing user
    */
-
   async login(email: string, password: string): Promise<Models.Session> {
     console.log(email, password);
     return await this.account.createEmailPasswordSession(email, password);
@@ -37,10 +36,26 @@ export class AuthService {
   }
 
   /**
-   * Logout current session
+   * Logout current session - with proper error handling
    */
   async logout(): Promise<void> {
-    await this.account.deleteSession('current');
+    try {
+      // First check if we have an active session
+      const sessions = await this.account.listSessions();
+      if (sessions.sessions.length > 0) {
+        // Delete current session if exists
+        await this.account.deleteSession('current');
+      }
+    } catch {
+      // If checking sessions or deleting current session fails, try to delete all sessions
+      try {
+        await this.account.deleteSessions();
+      } catch (deleteAllError) {
+        // If both fail, the user is likely already logged out
+        console.warn('Session cleanup failed - user likely already logged out:', deleteAllError);
+        // Don't throw error as this might be expected behavior
+      }
+    }
   }
 
   /**

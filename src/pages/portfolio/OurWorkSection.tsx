@@ -1,4 +1,4 @@
-import { projects } from '@/constants';
+import { projects, getIconComponent } from '@/constants';
 import { Users, MapPin } from 'lucide-react';
 
 const OurWorkSection = () => {
@@ -15,14 +15,14 @@ const OurWorkSection = () => {
           </h2>
           <p className='text-base text-primary/70 max-w-2xl mx-auto leading-relaxed'>
             Explore how we bring strategy and structure to high-level conferences, summits, and exhibitions that elevate
-            Africa’s economic and innovation landscape.
+            Africa's economic and innovation landscape.
           </p>
         </div>
 
         {/* Projects Grid */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
           {projects.map(project => {
-            const IconComponent = project.icon;
+            const IconComponent = getIconComponent(project.iconName); // Use helper function
             return (
               <div
                 key={project.id}

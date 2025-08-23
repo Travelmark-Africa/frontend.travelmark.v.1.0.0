@@ -7,8 +7,7 @@ import Container from '@/components/Container';
 import { useState } from 'react';
 import { handleError } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useCreateMessageMutation } from '@/redux/api/apiSlice';
-import { Loader2 } from 'lucide-react';
+import { useCreateMessageMutation, MessageFormData } from '@/hooks/useMessagesQuery';
 
 const Hero = () => {
   const {
@@ -17,9 +16,9 @@ const Hero = () => {
     formState: { errors },
     clearErrors,
     reset,
-  } = useForm<FormData>();
+  } = useForm<MessageFormData>();
 
-  const [createMessage, { isLoading: isSubmitting }] = useCreateMessageMutation();
+  const createMessageMutation = useCreateMessageMutation();
   const [wordCount, setWordCount] = useState(0);
   const maxWords = 120;
 
@@ -33,15 +32,15 @@ const Hero = () => {
     }
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: MessageFormData) => {
     try {
-      const res = await createMessage(data).unwrap();
-      if (res?.ok) {
-        toast.success(res.message);
+      const result = await createMessageMutation.mutateAsync(data);
+      if (result?.ok) {
+        toast.success(result.message);
         reset();
         setWordCount(0);
       } else {
-        toast.error(res.message);
+        toast.error(result.message);
       }
     } catch (error) {
       handleError(error);
@@ -56,9 +55,9 @@ const Hero = () => {
             {/* Left Column */}
             <div className='space-y-8 flex flex-col justify-center'>
               <div>
-                <h4 className='text-5xl font-bold mb-3'>Let’s Work Together</h4>
+                <h4 className='text-5xl font-bold mb-3'>Let's Work Together</h4>
                 <p className='text-gray-600 mb-6'>
-                  Whether you’re planning a major summit, developing a MICE strategy, or exploring destination
+                  Whether you're planning a major summit, developing a MICE strategy, or exploring destination
                   marketing, our team is here to support you with insight, professionalism, and precision.
                 </p>
                 <div className='space-y-2'>
@@ -81,7 +80,7 @@ const Hero = () => {
                 <div className='space-y-2'>
                   <h4 className='font-bold text-md'>Feedback & Ideas</h4>
                   <p className='text-gray-600 text-sm'>
-                    Your thoughts matter. We’re constantly improving our services, and your suggestions help shape our
+                    Your thoughts matter. We're constantly improving our services, and your suggestions help shape our
                     journey across Africa.
                   </p>
                 </div>
@@ -160,7 +159,7 @@ const Hero = () => {
                     <div className='flex flex-col'>
                       <Textarea
                         rows={6}
-                        placeholder='Briefly tell us about your event, challenge, or consultation request. We’ll respond promptly.'
+                        placeholder="Briefly tell us about your event, challenge, or consultation request. We' ll respond promptly."
                         {...register('message', {
                           required: 'Message is required',
                           validate: value => {
@@ -184,11 +183,12 @@ const Hero = () => {
                       <Button
                         type='submit'
                         size='sm'
-                        disabled={isSubmitting}
+                        disabled={createMessageMutation.isPending}
+                        isLoading={createMessageMutation.isPending}
+                        loadingText='Submitting...'
                         className='mx-auto px-10 flex justify-center items-center'
                       >
-                        {isSubmitting && <Loader2 className='animate-spin' />}
-                        {isSubmitting ? 'Submitting...' : 'Submit'}
+                        Submit
                       </Button>
                       <p className='text-center text-gray-500 text-xs mt-2'>
                         By contacting us, you agree to our{' '}

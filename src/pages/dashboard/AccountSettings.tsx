@@ -94,7 +94,7 @@ const AccountSettings = () => {
 
   return (
     <Layout>
-      <div className='max-w-4xl py-7'>
+      <div className='max-w-4xl py-4'>
         <div className='mb-8'>
           <h3 className='text-xl font-bold text-gray-900'>Account Settings</h3>
           <p className='text-gray-600 mt-2'>Manage your account information and security settings</p>

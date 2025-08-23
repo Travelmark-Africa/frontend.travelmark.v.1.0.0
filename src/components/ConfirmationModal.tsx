@@ -45,9 +45,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       <AlertDialogContent className='sm:max-w-[425px]'>
         <AlertDialogHeader>
           <AlertDialogTitle className='flex items-center gap-2'>
-            {type === 'destructive' && (
-              <AlertTriangle className='w-5 h-5 text-red-500' />
-            )}
+            {type === 'destructive' && <AlertTriangle className='w-5 h-5 text-red-500' />}
             {title}
           </AlertDialogTitle>
           <AlertDialogDescription className='text-sm text-gray-600 leading-relaxed'>
@@ -56,11 +54,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         </AlertDialogHeader>
 
         <AlertDialogFooter className='flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2'>
-          <AlertDialogCancel
-            onClick={onClose}
-            disabled={isLoading}
-            className='mt-3 sm:mt-0 h-9'
-          >
+          <AlertDialogCancel onClick={onClose} disabled={isLoading} className='mt-3 sm:mt-0 h-9'>
             {cancelText}
           </AlertDialogCancel>
 
@@ -69,8 +63,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
             disabled={isLoading}
             className={cn(
               'min-w-[100px]',
-              type === 'destructive' &&
-              'bg-red-200 text-red-800 hover:bg-red-300 focus:ring-red-500 h-9'
+              type === 'destructive' && 'bg-red-200 text-red-800 hover:bg-red-300 focus:ring-red-500 h-9'
             )}
           >
             {isLoading ? (

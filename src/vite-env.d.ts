@@ -37,7 +37,6 @@ interface FormData {
   message: string;
 }
 
-
 interface SubService {
   subServiceTitle: string;
   subServiceDescription: string;
@@ -73,4 +72,17 @@ interface ServiceFormData {
   mediaBannerUrl: string;
   mediaBannerAlt: string;
   subServices: SubService[];
+}
+
+interface FAQ {
+  $id?: string;
+  question: string;
+  answer: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface FAQFormData {
+  question: string;
+  answer: string;
 }

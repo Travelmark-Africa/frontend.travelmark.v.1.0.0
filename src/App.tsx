@@ -23,6 +23,27 @@ function AppRoutes() {
   return <LoadingProgressManager>{element}</LoadingProgressManager>;
 }
 
+function AppContent() {
+  const isOnline = useNetworkStatus();
+
+  return (
+    <div className='antialiased min-h-screen flex flex-col'>
+      <Navbar />
+      <main className='flex-grow'>
+        <AppRoutes />
+      </main>
+      <Footer />
+
+      {/* Network status indicator */}
+      {!isOnline && (
+        <div className='fixed bottom-4 left-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50'>
+          <span className='text-sm'>No internet connection</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function useNetworkStatus() {
   const [isOnline, setIsOnline] = useState<boolean>(getNetworkStatus());
   const [hasShownOfflineToast, setHasShownOfflineToast] = useState<boolean>(false);
@@ -63,26 +84,11 @@ function useNetworkStatus() {
 }
 
 export default function App() {
-  const isOnline = useNetworkStatus();
-
   return (
     <Router>
       <ScrollToTop />
       <RouteChangeTracker />
-      <div className='antialiased min-h-screen flex flex-col'>
-        <Navbar />
-        <main className='flex-grow'>
-          <AppRoutes />
-        </main>
-        <Footer />
-
-        {/* Network status indicator */}
-        {!isOnline && (
-          <div className='fixed bottom-4 left-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50'>
-            <span className='text-sm'>No internet connection</span>
-          </div>
-        )}
-      </div>
+      <AppContent />
     </Router>
   );
 }

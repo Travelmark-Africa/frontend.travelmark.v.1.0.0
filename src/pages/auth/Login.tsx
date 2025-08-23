@@ -11,6 +11,11 @@ import { toast } from 'sonner';
 import { handleError } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
 
+interface LoginFormInputs {
+  email: string;
+  password: string;
+}
+
 const LoginPage = () => {
   const {
     register,
@@ -20,20 +25,19 @@ const LoginPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { login, isLoading } = useAuth();
+  const { login, isAuthenticating } = useAuth(); // Use isAuthenticating instead of isLoading
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {
       const session = await login(data.email, data.password);
 
-      // Check if session exists to determine if login was successful
       if (session) {
         navigate('/dashboard');
       } else {
-        toast.error('Authentication failed.');
+        toast.error('Invalid credentials. Please try again.');
       }
     } catch (error) {
-      console.log(error);
+      console.error('Login error:', error);
       handleError(error);
     }
   };
@@ -66,6 +70,7 @@ const LoginPage = () => {
                     type='email'
                     placeholder='Enter your email'
                     className='border-border focus:border-primary focus:ring-primary'
+                    disabled={isAuthenticating}
                     {...register('email', {
                       required: 'Email is required',
                       pattern: {
@@ -87,6 +92,7 @@ const LoginPage = () => {
                       placeholder='Enter your password'
                       type={showPassword ? 'text' : 'password'}
                       className='border-border focus:border-primary focus:ring-primary'
+                      disabled={isAuthenticating}
                       {...register('password', {
                         required: 'Password is required',
                         minLength: {
@@ -98,7 +104,8 @@ const LoginPage = () => {
                     <button
                       type='button'
                       onClick={() => setShowPassword(!showPassword)}
-                      className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors'
+                      disabled={isAuthenticating}
+                      className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors disabled:opacity-50'
                     >
                       {showPassword ? <EyeOff className='h-4 w-4' /> : <Eye className='h-4 w-4' />}
                     </button>
@@ -108,9 +115,9 @@ const LoginPage = () => {
 
                 <Button
                   type='submit'
-                  isLoading={isLoading}
+                  isLoading={isAuthenticating}
                   loadingText='Logging you in...'
-                  disabled={isLoading}
+                  disabled={isAuthenticating}
                   hideChevron
                 >
                   Login
