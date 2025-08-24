@@ -2,7 +2,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { AppwriteService } from '@/appwrite/utils';
 import { DATABASES, COLLECTIONS } from '@/appwrite/config';
 
-// TanStack Query hooks for Services
 export const useGetServicesQuery = () => {
   return useQuery({
     queryKey: ['services'],

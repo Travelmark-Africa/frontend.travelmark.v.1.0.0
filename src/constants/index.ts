@@ -24,6 +24,7 @@ import {
   TrendingUp,
   CheckCircle,
   ArrowRight,
+  HelpCircle,
 } from 'lucide-react';
 import {
   team,
@@ -382,17 +383,19 @@ export const hideFooterOrNavbarRoutes = ['/auth/login', '/dashboard'];
 export const navLinks = [
   { href: '/dashboard/settings', label: 'Company Settings', iconName: 'Settings' },
   { href: '/dashboard/services', label: 'Services', iconName: 'ClipboardList' },
-  { href: '/dashboard/uniqueness', label: 'Why Choose Us', iconName: 'Star' },
-  { href: '/dashboard/portfolio', label: 'Portfolio', iconName: 'Briefcase' },
+  { href: '/dashboard/projects', label: 'Projects', iconName: 'Briefcase' },
+  { href: '/dashboard/unique-selling-points', label: 'Unique Selling Points', iconName: 'Star' },
   { href: '/dashboard/partners', label: 'Partners', iconName: 'Handshake' },
-  { href: '/dashboard/presence', label: 'Global Presence', iconName: 'Globe' },
-  { href: '/dashboard/team', label: 'Our Team', iconName: 'Users' },
+  { href: '/dashboard/regions', label: 'Regions', iconName: 'Globe' },
+  { href: '/dashboard/team', label: 'Team Members', iconName: 'Users' },
   { href: '/dashboard/contacts', label: 'Contacts', iconName: 'Phone' },
+  { href: '/dashboard/subscribers', label: 'Subscribers', iconName: 'Users' },
+  { href: '/dashboard/faqs', label: 'FAQs', iconName: 'HelpCircle' },
   { href: '/dashboard/account-settings', label: 'Account Settings', iconName: 'UserCog' },
 ];
 
 // Services constants
-export const SERVICE_CATEGORIES = [
+export const CATEGORIES = [
   'Event Planning',
   'Consulting',
   'Digital Services',
@@ -401,7 +404,7 @@ export const SERVICE_CATEGORIES = [
   'Other',
 ] as const;
 
-export const SERVICE_ICONS = [
+export const ICONS = [
   'Settings',
   'Calendar',
   'Users',
@@ -427,6 +430,7 @@ export const SERVICE_ICONS = [
   'Handshake',
   'Phone',
   'UserCog',
+  'HelpCircle',
 ] as const;
 
 export const getIconComponent = (iconName: string) => {
@@ -456,6 +460,7 @@ export const getIconComponent = (iconName: string) => {
     TrendingUp,
     CheckCircle,
     ArrowRight,
+    HelpCircle,
   };
 
   return icons[iconName] || Settings;

@@ -172,3 +172,17 @@ export const uploadToCloudinary = async (file: File, onProgress?: (progress: num
     xhr.send(formData);
   });
 };
+
+// Get relative time
+export const getRelativeTime = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+
+  if (diffInHours < 1) return 'Just now';
+  if (diffInHours < 24) return `${diffInHours}h ago`;
+  if (diffInHours < 48) return 'Yesterday';
+  if (diffInHours < 168) return `${Math.floor(diffInHours / 24)}d ago`;
+
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+};

@@ -1,18 +1,7 @@
-// hooks/useMessagesQuery.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { AppwriteService } from '@/appwrite/utils';
 import { DATABASES, COLLECTIONS } from '@/appwrite/config';
 
-export interface MessageFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  telephone: string;
-  subject: string;
-  message: string;
-}
-
-// TanStack Query hooks for Messages
 export const useGetMessagesQuery = () => {
   return useQuery({
     queryKey: ['messages'],

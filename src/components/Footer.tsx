@@ -1,8 +1,12 @@
-import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, Loader2 } from 'lucide-react';
 import Container from '@/components/Container';
 import { logo2 } from '@/assets';
 import { Link, useLocation } from 'react-router-dom';
 import { hideFooterOrNavbarRoutes } from '@/constants';
+import { useCreateSubscriptionMutation } from '@/hooks/useSubscriptionsQuery';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { handleError } from '@/lib/utils';
 
 // Type definition for icon props
 interface IconProps {
@@ -28,12 +32,21 @@ const LinkedInIcon = ({ className }: IconProps) => (
   </svg>
 );
 
-const Footer = () => {
+const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
 
   // Check if current route should hide footer
   const shouldHideFooter = hideFooterOrNavbarRoutes.some(route => location.pathname.includes(route));
+
+  // Newsletter subscription form
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SubscriptionFormData>();
+  const createSubscriptionMutation = useCreateSubscriptionMutation();
 
   const quickLinks = [
     { name: 'Home', href: '/' },
@@ -48,6 +61,21 @@ const Footer = () => {
     { name: 'Twitter', icon: TwitterIcon, href: 'https://twitter.com/travelmarkafrica' },
     { name: 'LinkedIn', icon: LinkedInIcon, href: 'https://linkedin.com/company/travelmarkafrica' },
   ];
+
+  // Handle newsletter subscription
+  const onSubscribe = async (data: SubscriptionFormData) => {
+    try {
+      const result = await createSubscriptionMutation.mutateAsync(data);
+      if (result?.ok) {
+        toast.success(result.message);
+        reset(); // Clear the form
+      } else {
+        toast.error(result.message || 'Failed to subscribe');
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   // Don't render footer if on restricted routes
   if (shouldHideFooter) {
@@ -138,19 +166,34 @@ const Footer = () => {
               <p className='text-gray-400 text-sm leading-relaxed'>
                 Get updates on Africa's top MICE and business events.
               </p>
-              <form className='relative'>
-                <input
-                  type='email'
-                  placeholder='Enter your email'
-                  className='w-full pl-4 pr-12 py-3 rounded-full bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary focus:border-transparent text-sm'
-                  required
-                />
-                <button
-                  type='submit'
-                  className='absolute right-2 top-1/2 transform -translate-y-1/2 bg-secondary hover:bg-secondary/90 text-primary rounded-full p-2 transition-colors'
-                >
-                  <ArrowRight className='h-4 w-4' />
-                </button>
+              <form onSubmit={handleSubmit(onSubscribe)} className='space-y-3'>
+                <div className='relative'>
+                  <input
+                    type='email'
+                    placeholder='Enter your email'
+                    {...register('email', {
+                      required: 'Email is required',
+                      pattern: {
+                        value: /^\S+@\S+$/i,
+                        message: 'Invalid email address',
+                      },
+                    })}
+                    disabled={createSubscriptionMutation.isPending}
+                    className='w-full pl-4 pr-12 py-3 rounded-full bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary focus:border-transparent text-sm disabled:opacity-50 disabled:cursor-not-allowed'
+                  />
+                  <button
+                    type='submit'
+                    disabled={createSubscriptionMutation.isPending}
+                    className='absolute right-2 top-1/2 transform -translate-y-1/2 bg-secondary hover:bg-secondary/90 text-primary rounded-full p-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                  >
+                    {createSubscriptionMutation.isPending ? (
+                      <Loader2 className='h-4 w-4 animate-spin' />
+                    ) : (
+                      <ArrowRight className='h-4 w-4' />
+                    )}
+                  </button>
+                </div>
+                {errors.email && <p className='text-red-400 text-xs mt-1'>{errors.email.message}</p>}
               </form>
             </div>
           </div>

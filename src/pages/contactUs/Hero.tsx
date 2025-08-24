@@ -7,7 +7,7 @@ import Container from '@/components/Container';
 import { useState } from 'react';
 import { handleError } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useCreateMessageMutation, MessageFormData } from '@/hooks/useMessagesQuery';
+import { useCreateMessageMutation } from '@/hooks/useMessagesQuery';
 
 const Hero = () => {
   const {

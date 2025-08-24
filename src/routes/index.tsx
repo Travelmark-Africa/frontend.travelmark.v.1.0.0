@@ -15,12 +15,14 @@ import LoginPage from '@/pages/auth/Login';
 import DashboardPage from '@/pages/dashboard/Dashboard';
 import CompanySettingsPage from '@/pages/dashboard/CompanySettings';
 import ServicesPage from '@/pages/dashboard/Services';
-import UniquenessPage from '@/pages/dashboard/Uniqueness';
-import DashboardPortfolioPage from '@/pages/dashboard/Portfolio';
+import USPPage from '@/pages/dashboard/USPPage';
+import ProjectsPage from '@/pages/dashboard/Projects';
 import PartnersPage from '@/pages/dashboard/Partners';
 import GlobalPresencePage from '@/pages/dashboard/GlobalPresence';
 import TeamPage from '@/pages/dashboard/Team';
 import ContactsPage from '@/pages/dashboard/Contacts';
+import SubscribersPage from '@/pages/dashboard/Subscribers';
+import FAQsPage from '@/pages/dashboard/FAQs';
 import AccountSettingsPage from '@/pages/dashboard/AccountSettings';
 
 // Error pages
@@ -49,12 +51,14 @@ const routes: RouteObject[] = [
       { path: '', element: <DashboardPage /> },
       { path: 'settings', element: <CompanySettingsPage /> },
       { path: 'services', element: <ServicesPage /> },
-      { path: 'uniqueness', element: <UniquenessPage /> },
-      { path: 'portfolio', element: <DashboardPortfolioPage /> },
+      { path: 'projects', element: <ProjectsPage /> },
+      { path: 'unique-selling-points', element: <USPPage /> },
       { path: 'partners', element: <PartnersPage /> },
-      { path: 'presence', element: <GlobalPresencePage /> },
+      { path: 'regions', element: <GlobalPresencePage /> },
       { path: 'team', element: <TeamPage /> },
       { path: 'contacts', element: <ContactsPage /> },
+      { path: 'subscribers', element: <SubscribersPage /> },
+      { path: 'faqs', element: <FAQsPage /> },
       { path: 'account-settings', element: <AccountSettingsPage /> },
     ],
   },

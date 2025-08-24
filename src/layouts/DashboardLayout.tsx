@@ -78,7 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const SidebarContent = () => (
     <div className='flex flex-col h-full'>
-      <nav className='flex-1 space-y-2 px-2'>
+      <nav className='flex-1 space-y-1 px-2'>
         {(navLinks as NavLink[]).map((link: NavLink) => {
           const IconComponent = getIconComponent(link.iconName);
           return (
@@ -117,7 +117,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <img src={logo1} alt='Travelmark Africa Logo' className='h-14 w-auto' />
         </div>
 
-        <div className='flex-1 overflow-y-auto py-2 flex flex-col'>
+        <div className='flex-1 overflow-y-auto pb-2 flex flex-col'>
           <SidebarContent />
         </div>
       </aside>

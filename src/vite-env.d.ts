@@ -75,7 +75,7 @@ interface ServiceFormData {
 }
 
 interface FAQ {
-  $id?: string;
+  $id: string;
   question: string;
   answer: string;
   $createdAt?: string;
@@ -85,4 +85,131 @@ interface FAQ {
 interface FAQFormData {
   question: string;
   answer: string;
+}
+
+interface MessageFormData {
+  $id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  telephone: string;
+  subject: string;
+  message: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface TeamMember {
+  $id: string;
+  fullName: string;
+  email: string;
+  position: string;
+  bio?: string;
+  profileImageUrl?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface TeamMemberFormData {
+  fullName: string;
+  email: string;
+  position: string;
+  bio: string;
+  profileImageUrl: string;
+}
+
+interface Partner {
+  $id: string;
+  name: string;
+  logo: string;
+  website: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface PartnerFormData {
+  name: string;
+  logo: string;
+  website: string;
+}
+
+interface SubscriptionFormData {
+  email: string;
+}
+
+interface Subscription extends SubscriptionFormData {
+  $id?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface SubscriptionsResponse {
+  data: Subscription[];
+  total: number;
+}
+
+interface MutationResponse {
+  ok: boolean;
+  message: string;
+  data: Subscription;
+}
+
+interface DeleteMutationResponse {
+  ok: boolean;
+  message: string;
+}
+
+interface Region {
+  $id: string;
+  name: string;
+  description: string;
+  image: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface RegionFormData {
+  name: string;
+  description: string;
+  image: string;
+}
+
+interface USP {
+  $id: string;
+  title: string;
+  description: string;
+  iconName: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface USPFormData {
+  title: string;
+  description: string;
+  iconName: string;
+}
+
+interface Project {
+  $id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  category: string;
+  impact: string;
+  location: string;
+  year: number;
+  image: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface ProjectFormData {
+  title: string;
+  subtitle: string;
+  description: string;
+  category: string;
+  impact: string;
+  location: string;
+  year: number;
+  image: string;
 }
