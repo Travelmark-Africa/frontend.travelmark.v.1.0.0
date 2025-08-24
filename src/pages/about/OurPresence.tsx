@@ -1,34 +1,97 @@
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetRegionsQuery } from '@/hooks/useRegionsQuery';
+import BlurImage from '@/components/BlurImage';
+import { Globe } from 'lucide-react';
 import Container from '@/components/Container';
-import { regions } from '@/constants';
 
 const OurPresence = () => {
-  return (
-    <div className='w-full bg-secondary/5 py-20 px-4'>
-      <Container>
-        <div className='text-center max-w-4xl mx-auto'>
-          {/* Title */}
-          <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-6'>
-            Our <span className='text-primary'>Presence</span>
-          </h2>
+  const { data: regionsData, isLoading, isError, error } = useGetRegionsQuery();
 
-          {/* Subtitle */}
-          <h3 className='text-xl font-semibold text-gray-700 mb-8'>Headquartered in Kigali, Rwanda</h3>
+  const regions = regionsData?.data || [];
 
-          {/* Paragraph */}
-          <p className='text-gray-600 text-lg leading-relaxed mb-16 max-w-3xl mx-auto'>
-            TravelMark Africa has a presence across multiple regions including West Africa, Central Africa, North
-            Africa, and Southern Africa.
-          </p>
-
-          {/* Region Badges */}
-          <div className='flex flex-wrap justify-center gap-4'>
-            {regions.map(region => (
-              <div key={region.name} className={`${region.color} px-5 py-2 rounded-xl border font-medium`}>
-                {region.name}
-              </div>
-            ))}
+  if (isLoading) {
+    return (
+      <div className='py-16 sm:py-24 pl-16 bg-white'>
+        <Container className='grid gap-x-8 gap-y-12 xl:grid-cols-12'>
+          <div className='max-w-2xl sm:max-w-none col-span-5'>
+            <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>WHERE YOU CAN FIND US</h2>
+            <p className='mt-6 text-lg leading-8 text-gray-600'>
+              Discover our global presence and explore the locations where we provide our exceptional services.
+            </p>
           </div>
+          <ul role='list' className='grid gap-x-16 gap-y-8 sm:grid-cols-2 sm:gap-y-12 xl:col-span-7'>
+            {Array.from({ length: 8 }).map((_, index) => (
+              <li key={index}>
+                <div className='flex items-center gap-x-3'>
+                  <Skeleton className='h-32 w-36 rounded-lg flex-shrink-0' />
+                  <div>
+                    <Skeleton className='h-6 w-24' />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className='py-24 sm:py-32 pl-16 bg-white'>
+        <Container className='grid gap-x-8 gap-y-12 px-6 lg:px-8 xl:grid-cols-12'>
+          <div className='max-w-2xl sm:max-w-none col-span-5'>
+            <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>WHERE YOU CAN FIND US</h2>
+            <p className='mt-6 text-lg leading-8 text-gray-600'>
+              Discover our global presence and explore the locations where we provide our exceptional services.
+            </p>
+          </div>
+          <div className='xl:col-span-7 flex items-center justify-center'>
+            <div className='text-center'>
+              <Globe className='w-16 h-16 mx-auto text-red-400 mb-4' />
+              <p className='text-gray-500'>{error instanceof Error ? error.message : 'Unable to load regions'}</p>
+            </div>
+          </div>
+        </Container>
+      </div>
+    );
+  }
+
+  return (
+    <div className='py-24 sm:py-32 pl-16 bg-white'>
+      <Container className='grid gap-x-8 gap-y-20 xl:grid-cols-12'>
+        <div className='max-w-2xl sm:max-w-none col-span-5'>
+          <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>WHERE YOU CAN FIND US</h2>
+          <p className='mt-6 text-lg leading-8 text-gray-600'>
+            Discover our global presence and explore the locations where we provide our exceptional services.
+          </p>
         </div>
+
+        {regions.length > 0 ? (
+          <ul role='list' className='grid gap-x-16 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-7'>
+            {regions.map((region, index) => (
+              <li key={region.$id || index}>
+                <div className='flex items-center gap-x-3 cursor-default'>
+                  <BlurImage
+                    src={region.image}
+                    alt={region.name}
+                    className='h-28 w-32 object-contain rounded-lg flex-shrink-0'
+                  />
+                  <div>
+                    <h3 className='text-base font-semibold leading-7 tracking-tight text-gray-900'>{region.name}</h3>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className='xl:col-span-7 flex items-center justify-center'>
+            <div className='text-center'>
+              <Globe className='w-16 h-16 mx-auto text-gray-400 mb-4' />
+              <p className='text-gray-500'>No regions available</p>
+            </div>
+          </div>
+        )}
       </Container>
     </div>
   );

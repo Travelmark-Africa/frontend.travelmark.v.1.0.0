@@ -1,15 +1,22 @@
 import { Button } from '@/components/ui/button';
-import { features, getIconComponent } from '@/constants';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetUSPsQuery } from '@/hooks/useUSPsQuery';
+import { getIconComponent } from '@/constants';
+import { AlertCircle } from 'lucide-react';
 
-// Define the Feature type based on your updated structure
+// Define the Feature type based on API structure
 interface Feature {
-  id: number;
+  $id: string;
   iconName: string;
   title: string;
   description: string;
 }
 
 const WhyChooseUs = () => {
+  const { data: featuresData, isLoading, isError, error } = useGetUSPsQuery();
+
+  const features = featuresData?.data || [];
+
   const handleGetStarted = () => {
     const ctaSection = document.getElementById('cta-section');
     if (ctaSection) {
@@ -25,7 +32,7 @@ const WhyChooseUs = () => {
     const IconComponent = getIconComponent(feature.iconName);
 
     return (
-      <div key={feature.id} className='flex flex-col'>
+      <div key={feature.$id} className='flex flex-col'>
         <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
           <IconComponent className='w-6 h-6 text-secondary' />
         </div>
@@ -34,6 +41,20 @@ const WhyChooseUs = () => {
       </div>
     );
   };
+
+  // Helper function to render skeleton cards
+  const renderSkeletonCard = (key: number) => (
+    <div key={key} className='flex flex-col'>
+      <div className='w-12 h-12 bg-secondary/20 rounded-2xl flex items-center justify-center mb-4'>
+        <Skeleton className='w-6 h-6' />
+      </div>
+      <Skeleton className='h-6 w-32 mb-3' />
+      <div className='space-y-2'>
+        <Skeleton className='h-4 w-full' />
+        <Skeleton className='h-4 w-3/4' />
+      </div>
+    </div>
+  );
 
   return (
     <section className='py-16 px-6 bg-secondary/10'>
@@ -68,14 +89,51 @@ const WhyChooseUs = () => {
 
           {/* Right Column - Features Grid */}
           <div className='grid grid-cols-1 gap-8'>
-            {/* First Row - Two columns */}
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>{features.slice(0, 2).map(renderFeatureCard)}</div>
+            {isLoading ? (
+              <>
+                {/* First Row - Two columns (Loading) */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  {Array.from({ length: 2 }).map((_, index) => renderSkeletonCard(index))}
+                </div>
 
-            {/* Separator Line */}
-            <div className='border-t border-secondary/40'></div>
+                {/* Separator Line */}
+                <div className='border-t border-secondary/40'></div>
 
-            {/* Second Row - Two columns */}
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>{features.slice(2, 4).map(renderFeatureCard)}</div>
+                {/* Second Row - Two columns (Loading) */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  {Array.from({ length: 2 }).map((_, index) => renderSkeletonCard(index + 2))}
+                </div>
+              </>
+            ) : isError ? (
+              <div className='flex items-center justify-center h-60'>
+                <div className='text-center'>
+                  <AlertCircle className='w-16 h-16 mx-auto text-red-400 mb-4' />
+                  <p className='text-gray-500'>{error instanceof Error ? error.message : 'Unable to load features'}</p>
+                </div>
+              </div>
+            ) : features.length === 0 ? (
+              <div className='flex items-center justify-center h-60'>
+                <div className='text-center'>
+                  <AlertCircle className='w-16 h-16 mx-auto text-gray-400 mb-4' />
+                  <p className='text-gray-500'>No features available</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* First Row - Two columns */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  {features.slice(0, 2).map(renderFeatureCard)}
+                </div>
+
+                {/* Separator Line */}
+                <div className='border-t border-secondary/40'></div>
+
+                {/* Second Row - Two columns */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                  {features.slice(2, 4).map(renderFeatureCard)}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

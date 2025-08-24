@@ -37,7 +37,7 @@ const WhoWeAre = () => {
       </div>
 
       {/* About Hero Section */}
-      <section className='flex items-center pt-16 lg:pt-18 pb-8 lg:pb-12 bg-gray-50'>
+      <section className='flex items-center pt-16 lg:pt-18 pb-8 lg:pb-12 bg-secondary/5'>
         <div className='w-full'>
           {/* Hero Content */}
           <Container>
