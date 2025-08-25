@@ -471,7 +471,7 @@ const CompanySettings = () => {
         </div>
 
         {/* Alerts */}
-        <div className='mb-8 space-y-4'>
+        <div className='my-4 space-y-4'>
           {isFirstTimeSetup && (
             <Alert variant='info'>
               <div>
