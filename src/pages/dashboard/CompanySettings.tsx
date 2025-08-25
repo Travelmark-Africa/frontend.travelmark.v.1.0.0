@@ -44,12 +44,14 @@ const CompanySettings = () => {
   const existingSettings = settingsResponse?.data;
   const isFirstTimeSetup = !existingSettings;
 
-  // Auto-enable edit mode for first time setup
+  // Auto-enable edit mode for first time setup only - but wait for loading to complete
   useEffect(() => {
-    if (isFirstTimeSetup) {
+    if (!isLoadingSettings && isFirstTimeSetup) {
       setIsEditMode(true);
+    } else if (!isLoadingSettings && existingSettings) {
+      setIsEditMode(false);
     }
-  }, [isFirstTimeSetup]);
+  }, [isLoadingSettings, isFirstTimeSetup, existingSettings]);
 
   const {
     register,
@@ -424,7 +426,7 @@ const CompanySettings = () => {
               <h1 className='text-xl font-bold text-gray-900'>Company Settings</h1>
               <p className='text-base text-gray-600'>
                 {isFirstTimeSetup
-                  ? 'Complete your company setup to get started'
+                  ? 'Set up your company information to get started'
                   : isEditMode
                   ? 'Edit your company information'
                   : 'Manage your company information and settings'}
