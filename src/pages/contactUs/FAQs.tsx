@@ -64,7 +64,7 @@ const FAQs: React.FC = () => {
   }
 
   return (
-    <div className='max-w-3xl mx-auto px-6 py-12'>
+    <div className='max-w-3xl mx-auto px-6 py-12' id='faqs'>
       <div className='mb-8'>
         <h6 className='font-bold mb-2 text-secondary'>FAQ</h6>
         <h4 className='text-4xl font-bold text-gray-800 mb-4 font-poppins'>Do you have any questions for us?</h4>

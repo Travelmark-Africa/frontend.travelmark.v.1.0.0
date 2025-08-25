@@ -1,9 +1,11 @@
 import { Mail, Phone, MapPin, ArrowRight, Loader2 } from 'lucide-react';
 import Container from '@/components/Container';
+import { Skeleton } from '@/components/ui/skeleton';
 import { logo2 } from '@/assets';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { hideFooterOrNavbarRoutes } from '@/constants';
 import { useCreateSubscriptionMutation } from '@/hooks/useSubscriptions';
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { handleError } from '@/lib/utils';
@@ -35,9 +37,14 @@ const LinkedInIcon = ({ className }: IconProps) => (
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Check if current route should hide footer
   const shouldHideFooter = hideFooterOrNavbarRoutes.some(route => location.pathname.includes(route));
+
+  // Fetch company settings
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
 
   // Newsletter subscription form
   const {
@@ -48,6 +55,32 @@ const Footer: React.FC = () => {
   } = useForm<SubscriptionFormData>();
   const createSubscriptionMutation = useCreateSubscriptionMutation();
 
+  // Function to scroll to FAQs section
+  const scrollToFAQs = () => {
+    const faqElement = document.getElementById('faqs');
+    if (faqElement) {
+      faqElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
+
+  // Function to handle FAQ navigation with smooth scrolling
+  const navigateToFAQ = () => {
+    if (location.pathname === '/contact-us') {
+      // Already on contact page, just scroll
+      scrollToFAQs();
+    } else {
+      // Navigate to contact page first, then scroll
+      navigate('/contact-us');
+      // Use setTimeout to ensure page loads before scrolling
+      setTimeout(() => {
+        scrollToFAQs();
+      }, 100);
+    }
+  };
+
   const quickLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about-us' },
@@ -56,11 +89,24 @@ const Footer: React.FC = () => {
     { name: 'Contact', href: '/contact-us' },
   ];
 
+  // Dynamic social links based on company settings - only show if URL exists
   const socialLinks = [
-    { name: 'Instagram', icon: InstagramIcon, href: 'https://instagram.com/travelmarkafrica' },
-    { name: 'Twitter', icon: TwitterIcon, href: 'https://twitter.com/travelmarkafrica' },
-    { name: 'LinkedIn', icon: LinkedInIcon, href: 'https://linkedin.com/company/travelmarkafrica' },
-  ];
+    {
+      name: 'Instagram',
+      icon: InstagramIcon,
+      href: companySettings?.instagram,
+    },
+    {
+      name: 'Twitter',
+      icon: TwitterIcon,
+      href: companySettings?.twitter,
+    },
+    {
+      name: 'LinkedIn',
+      icon: LinkedInIcon,
+      href: companySettings?.linkedin,
+    },
+  ].filter(social => social.href); // Only include links with valid URLs
 
   // Handle newsletter subscription
   const onSubscribe = async (data: SubscriptionFormData) => {
@@ -82,6 +128,144 @@ const Footer: React.FC = () => {
     return null;
   }
 
+  // Show loading state with skeletons while fetching company settings
+  if (isLoadingSettings) {
+    return (
+      <footer className='bg-gray-900 text-white'>
+        <Container>
+          <div className='py-16'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8'>
+              {/* Company Info */}
+              <div className='lg:col-span-4 space-y-4'>
+                <Link to='/' className='flex items-center'>
+                  <img src={logo2} alt='TravelMark Africa' className='h-16 w-auto' />
+                </Link>
+                {/* Company description skeleton - fetched from settings */}
+                <div className='space-y-2'>
+                  <Skeleton className='h-4 w-full bg-gray-800' />
+                  <Skeleton className='h-4 w-4/5 bg-gray-800' />
+                  <Skeleton className='h-4 w-3/4 bg-gray-800' />
+                </div>
+
+                {/* Social Links */}
+                <div className='space-y-3'>
+                  <h3 className='text-sm font-medium text-gray-300 uppercase tracking-wide'>Follow Us</h3>
+                  {/* Social links skeleton - URLs fetched from settings */}
+                  <div className='flex space-x-3'>
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <Skeleton key={index} className='h-8 w-8 rounded-lg bg-gray-800' />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Links - Static, no skeleton needed */}
+              <div className='lg:col-span-2 space-y-4'>
+                <h3 className='text-sm font-medium text-gray-300 uppercase tracking-wide'>Quick Links</h3>
+                <ul className='space-y-3'>
+                  {quickLinks.map(link => (
+                    <li key={link.name}>
+                      <a href={link.href} className='text-gray-400 hover:text-white transition-colors text-sm'>
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Contact Info */}
+              <div className='lg:col-span-3 space-y-4'>
+                <h3 className='text-sm font-medium text-gray-300 uppercase tracking-wide'>Contact Info</h3>
+                {/* Contact info skeleton - fetched from settings */}
+                <div className='space-y-3'>
+                  <div className='flex items-center text-gray-400'>
+                    <Phone className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
+                    <Skeleton className='h-4 w-32 bg-gray-800' />
+                  </div>
+                  <div className='flex items-center text-gray-400'>
+                    <Mail className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
+                    <Skeleton className='h-4 w-36 bg-gray-800' />
+                  </div>
+                  <div className='flex items-start text-gray-400'>
+                    <MapPin className='h-4 w-4 mr-3 text-secondary flex-shrink-0 mt-0.5' />
+                    <Skeleton className='h-4 w-28 bg-gray-800' />
+                  </div>
+                </div>
+              </div>
+
+              {/* Newsletter - Static, no skeleton needed */}
+              <div className='lg:col-span-3 space-y-4'>
+                <h3 className='text-sm font-medium text-gray-300 uppercase tracking-wide'>Stay Updated</h3>
+                <p className='text-gray-400 text-sm leading-relaxed'>
+                  Get updates on Africa's top MICE and business events.
+                </p>
+                <form onSubmit={handleSubmit(onSubscribe)} className='space-y-3'>
+                  <div className='relative'>
+                    <input
+                      type='email'
+                      placeholder='Enter your email'
+                      {...register('email', {
+                        required: 'Email is required',
+                        pattern: {
+                          value: /^\S+@\S+$/i,
+                          message: 'Invalid email address',
+                        },
+                      })}
+                      disabled={createSubscriptionMutation.isPending}
+                      className='w-full pl-4 pr-12 py-3 rounded-full bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-secondary focus:border-transparent text-sm disabled:opacity-50 disabled:cursor-not-allowed'
+                    />
+                    <button
+                      type='submit'
+                      disabled={createSubscriptionMutation.isPending}
+                      className='absolute right-2 top-1/2 transform -translate-y-1/2 bg-secondary hover:bg-secondary/90 text-primary rounded-full p-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+                    >
+                      {createSubscriptionMutation.isPending ? (
+                        <Loader2 className='h-4 w-4 animate-spin' />
+                      ) : (
+                        <ArrowRight className='h-4 w-4' />
+                      )}
+                    </button>
+                  </div>
+                  {errors.email && <p className='text-red-400 text-xs mt-1'>{errors.email.message}</p>}
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Copyright - Static, no skeleton needed */}
+          <div className='border-t border-gray-800 py-6'>
+            <div className='flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500'>
+              <p>&copy; {currentYear} TravelMark Africa. All rights reserved.</p>
+              <div className='flex items-center space-x-6'>
+                <button
+                  onClick={navigateToFAQ}
+                  className='hover:text-gray-400 transition-colors cursor-pointer bg-transparent border-none text-inherit text-sm p-0'
+                >
+                  FAQ
+                </button>
+                <span className='text-gray-700'>|</span>
+                <Link to='/auth/login' className='hover:text-gray-400 transition-colors'>
+                  Staff Login
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </footer>
+    );
+  }
+
+  // Get company description from mission or vision
+  const companyDescription =
+    companySettings?.mission ||
+    companySettings?.vision ||
+    'Your trusted partner for high-impact events, destination marketing, and MICE consultancy across Africa.';
+
+  // Get dynamic contact information
+  const contactPhone = companySettings?.phoneNumber || '+250 788 357 850';
+  const contactEmail = companySettings?.email || 'info@travelmark.africa';
+  const contactAddress = companySettings?.address || 'Kigali, Rwanda';
+
   return (
     <footer className='bg-gray-900 text-white'>
       <Container>
@@ -92,30 +276,30 @@ const Footer: React.FC = () => {
               <Link to='/' className='flex items-center'>
                 <img src={logo2} alt='TravelMark Africa' className='h-16 w-auto' />
               </Link>
-              <p className='text-gray-400 text-sm leading-relaxed'>
-                Your trusted partner for high-impact events, destination marketing, and MICE consultancy across Africa.
-              </p>
+              <p className='text-gray-400 text-sm leading-relaxed'>{companyDescription}</p>
 
               {/* Social Links */}
               <div className='space-y-3'>
                 <h3 className='text-sm font-medium text-gray-300 uppercase tracking-wide'>Follow Us</h3>
-                <div className='flex space-x-3'>
-                  {socialLinks.map(social => {
-                    const IconComponent = social.icon;
-                    return (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='text-gray-400 hover:text-secondary transition-colors p-2 rounded-lg hover:bg-gray-800'
-                        aria-label={social.name}
-                      >
-                        <IconComponent className='h-4 w-4' />
-                      </a>
-                    );
-                  })}
-                </div>
+                {socialLinks.length > 0 ? (
+                  <div className='flex space-x-3'>
+                    {socialLinks.map(social => {
+                      const IconComponent = social.icon;
+                      return (
+                        <a
+                          key={social.name}
+                          href={social.href}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-gray-400 hover:text-secondary transition-colors p-2 rounded-lg hover:bg-gray-800'
+                          aria-label={social.name}
+                        >
+                          <IconComponent className='h-4 w-4' />
+                        </a>
+                      );
+                    })}
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -137,26 +321,32 @@ const Footer: React.FC = () => {
             <div className='lg:col-span-3 space-y-4'>
               <h3 className='text-sm font-medium text-gray-300 uppercase tracking-wide'>Contact Info</h3>
               <div className='space-y-3'>
-                <div className='flex items-center text-gray-400'>
-                  <Phone className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
-                  <a href='tel:+250788357850' className='hover:text-white transition-colors text-sm'>
-                    +250 788 357 850
-                  </a>
-                </div>
-                <div className='flex items-center text-gray-400'>
-                  <Mail className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
-                  <a href='mailto:info@travelmark.africa' className='hover:text-white transition-colors text-sm'>
-                    info@travelmark.africa
-                  </a>
-                </div>
-                <div className='flex items-start text-gray-400'>
-                  <MapPin className='h-4 w-4 mr-3 text-secondary flex-shrink-0 mt-0.5' />
-                  <span className='text-sm'>
-                    Kigali, Rwanda
-                    <br />
-                    <span className='text-xs'>Serving All of Africa</span>
-                  </span>
-                </div>
+                {contactPhone && (
+                  <div className='flex items-center text-gray-400'>
+                    <Phone className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
+                    <a href={`tel:${contactPhone}`} className='hover:text-white transition-colors text-sm'>
+                      {contactPhone}
+                    </a>
+                  </div>
+                )}
+                {contactEmail && (
+                  <div className='flex items-center text-gray-400'>
+                    <Mail className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
+                    <a href={`mailto:${contactEmail}`} className='hover:text-white transition-colors text-sm'>
+                      {contactEmail}
+                    </a>
+                  </div>
+                )}
+                {contactAddress && (
+                  <div className='flex items-start text-gray-400'>
+                    <MapPin className='h-4 w-4 mr-3 text-secondary flex-shrink-0 mt-0.5' />
+                    <span className='text-sm'>
+                      {contactAddress}
+                      <br />
+                      <span className='text-xs'>Serving All of Africa</span>
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -204,9 +394,12 @@ const Footer: React.FC = () => {
           <div className='flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500'>
             <p>&copy; {currentYear} TravelMark Africa. All rights reserved.</p>
             <div className='flex items-center space-x-6'>
-              <a href='/faq' className='hover:text-gray-400 transition-colors'>
+              <button
+                onClick={navigateToFAQ}
+                className='hover:text-gray-400 transition-colors cursor-pointer bg-transparent border-none text-inherit text-sm p-0'
+              >
                 FAQ
-              </a>
+              </button>
               <span className='text-gray-700'>|</span>
               <Link to='/auth/login' className='hover:text-gray-400 transition-colors'>
                 Staff Login

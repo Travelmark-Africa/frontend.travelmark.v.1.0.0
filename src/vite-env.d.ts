@@ -229,6 +229,7 @@ interface CompanySettingsPayload {
 
 interface CompanySettings {
   $id?: string;
+  description: string;
   vision?: string;
   mission?: string;
   calendlyLink: string;
@@ -254,4 +255,10 @@ interface CompanySettingsFormData {
   instagram: string;
   twitter: string;
   linkedin: string;
+}
+
+interface Statistic {
+  id?: string | number;
+  value: string;
+  key: string;
 }

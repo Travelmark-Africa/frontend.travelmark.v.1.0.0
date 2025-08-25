@@ -1,9 +1,16 @@
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
 import BlurImage from '@/components/BlurImage';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/Container';
-import { stepCards, contactLinks } from '@/constants';
+import { stepCards } from '@/constants';
 
 const HeroSection = () => {
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
+
+  const handleCalendlyClick = () => {
+    window.open(companySettings?.calendlyLink, '_blank');
+  };
   return (
     <>
       {/* Hero Section */}
@@ -37,15 +44,13 @@ const HeroSection = () => {
                 potential.
               </p>
 
-              <Button hideChevron={true} className='w-full sm:w-auto text-[1.1rem]! sm:text-[1.125rem]!'>
-                <a
-                  href={contactLinks.calendly}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='inline-flex items-center gap-2 px-4 py-2'
-                >
-                  Schedule a meeting
-                </a>
+              <Button
+                onClick={handleCalendlyClick}
+                disabled={isLoadingSettings}
+                hideChevron={true}
+                className='w-full sm:w-auto text-[1rem]! px-8'
+              >
+                Schedule a meeting
               </Button>
             </div>
           </Container>

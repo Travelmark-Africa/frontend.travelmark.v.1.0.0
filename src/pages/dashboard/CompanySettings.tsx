@@ -240,7 +240,7 @@ const CompanySettings = () => {
                     key={index}
                     className='bg-white p-6 rounded-xl border border-gray-100 text-center group transition-shadow'
                   >
-                    <div className='text-2xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors'>
+                    <div className='text-2xl font-bold text-gray-900 mb-2 group-hover:text-secondary transition-colors'>
                       {stat.value}
                     </div>
                     <div className='text-sm text-gray-600 font-medium uppercase tracking-wide'>{stat.key}</div>

@@ -1,8 +1,16 @@
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
 import Container from '@/components/Container';
-import { contactLinks, servicesDetails } from '@/constants';
+import { Button } from '@/components/ui/button';
+import { servicesDetails } from '@/constants';
 import { Calendar, CheckCircle } from 'lucide-react';
 
 const ServicesPage = () => {
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
+
+  const handleCalendlyClick = () => {
+    window.open(companySettings?.calendlyLink, '_blank');
+  };
   return (
     <div className='w-full bg-white'>
       {/* Header Section */}
@@ -91,15 +99,10 @@ const ServicesPage = () => {
           Let's discuss how our Africa-ready tourism solutions can elevate your next project. Schedule a consultation
           with our experts today.
         </p>
-        <a
-          href={contactLinks.calendly}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='inline-flex items-center gap-3 px-6 py-2 bg-secondary text-white rounded-xl text-[1rem] hover:bg-secondary/90 transition-all duration-300 transform hover:scale-[1.01]'
-        >
+        <Button onClick={handleCalendlyClick} disabled={isLoadingSettings} hideChevron={true} size='sm'>
           <Calendar className='w-5 h-5' />
           Schedule a Call With Us
-        </a>
+        </Button>
       </div>
     </div>
   );

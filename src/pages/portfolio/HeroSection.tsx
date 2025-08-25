@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Award } from 'lucide-react';
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
+
 import { Button } from '@/components/ui/button';
-import { contactLinks } from '@/constants';
 
 const HeroSection = () => {
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
+
   const handleCalendlyClick = () => {
-    window.open(contactLinks.calendly, '_blank');
+    window.open(companySettings?.calendlyLink, '_blank');
   };
 
   return (
@@ -48,6 +52,7 @@ const HeroSection = () => {
 
           <Button
             size='sm'
+            disabled={isLoadingSettings}
             onClick={handleCalendlyClick}
             className='border-1! border-secondary/30! hover:border-secondary/40! bg-secondary/10! hover:bg-secondary/20! text-secondary! hover:text-secondary transition-colors duration-500 text-[0.87rem]'
           >

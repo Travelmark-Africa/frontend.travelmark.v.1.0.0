@@ -49,6 +49,10 @@ export const formatDateWithOrdinal = (dateInput: Date | string): string => {
   return `${day}${ordinalSuffix} ${date.toLocaleDateString('en-US', options)}`;
 };
 
+export const formatPhoneForWhatsApp = (phone: string) => {
+  return phone.replace(/[^\d+]/g, '');
+};
+
 export const formatDateRange = (startDate?: string, endDate?: string) => {
   if (!startDate && !endDate) return 'N/A';
 

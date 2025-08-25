@@ -1,14 +1,29 @@
 import { Button } from '@/components/ui/button';
 import { Calendar, MessageCircle } from 'lucide-react';
-import { contactLinks } from '@/constants'; // Import the contact links
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
+
+import { formatPhoneForWhatsApp } from '@/lib/utils';
 
 const CallToAction = () => {
+  // Fetch company settings for calendly and phone number
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
+
+  // Get dynamic contact information
+  const calendlyLink = companySettings?.calendlyLink;
+  const phoneNumber = companySettings?.phoneNumber;
+
   const handleCalendlyClick = () => {
-    window.open(contactLinks.calendly, '_blank');
+    if (calendlyLink) {
+      window.open(calendlyLink, '_blank');
+    }
   };
 
   const handleWhatsAppClick = () => {
-    window.open(contactLinks.whatsapp, '_blank');
+    if (phoneNumber) {
+      const formattedPhone = formatPhoneForWhatsApp(phoneNumber);
+      window.open(`https://wa.me/${formattedPhone}`, '_blank');
+    }
   };
 
   return (
@@ -22,7 +37,7 @@ const CallToAction = () => {
 
         {/* Action Buttons */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
-          <Button onClick={handleCalendlyClick} size='sm' className='text-[0.85rem]!'>
+          <Button disabled={isLoadingSettings} onClick={handleCalendlyClick} size='sm' className='text-[0.85rem]!'>
             <Calendar size={20} />
             Book a Strategy Call
           </Button>
@@ -31,6 +46,7 @@ const CallToAction = () => {
             hideChevron
             size='sm'
             onClick={handleWhatsAppClick}
+            disabled={isLoadingSettings}
             className='border-1! border-green-300! hover:border-green-400! bg-green-100! hover:bg-green-200! text-green-800! hover:text-green-900! transition-colors! duration-500 text-[0.87rem]!'
           >
             <MessageCircle size={20} />

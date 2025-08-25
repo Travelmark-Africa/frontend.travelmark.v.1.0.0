@@ -3,11 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Mail, Phone } from 'lucide-react';
 import Container from '@/components/Container';
 import { useState } from 'react';
 import { handleError } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useCreateMessageMutation } from '@/hooks/useMessages';
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
 
 const Hero = () => {
   const {
@@ -19,8 +22,17 @@ const Hero = () => {
   } = useForm<MessageFormData>();
 
   const createMessageMutation = useCreateMessageMutation();
+
+  // Fetch company settings for contact information
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
+
   const [wordCount, setWordCount] = useState(0);
   const maxWords = 120;
+
+  // Get dynamic contact information
+  const contactEmail = companySettings?.email || 'info@travelmarkafrica.com';
+  const contactPhone = companySettings?.phoneNumber || '🇷🇼 0788 357 850';
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -61,8 +73,36 @@ const Hero = () => {
                   marketing, our team is here to support you with insight, professionalism, and precision.
                 </p>
                 <div className='space-y-2'>
-                  <p className='text-gray-700'>info@travelmarkafrica.com</p>
-                  <p className='text-gray-700'>🇷🇼 0788 357 850</p>
+                  {isLoadingSettings ? (
+                    <>
+                      <div className='flex items-center'>
+                        <Skeleton className='h-4 w-4 mr-3 bg-gray-200' />
+                        <Skeleton className='h-5 w-48 bg-gray-200' />
+                      </div>
+                      <div className='flex items-center'>
+                        <Skeleton className='h-4 w-4 mr-3 bg-gray-200' />
+                        <Skeleton className='h-5 w-32 bg-gray-200' />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className='flex items-center text-gray-700'>
+                        <Mail className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
+                        <a href={`mailto:${contactEmail}`} className='hover:text-primary transition-colors'>
+                          {contactEmail}
+                        </a>
+                      </div>
+                      <div className='flex items-center text-gray-700'>
+                        <Phone className='h-4 w-4 mr-3 text-secondary flex-shrink-0' />
+                        <a
+                          href={`tel:${contactPhone.replace(/[^\d+]/g, '')}`}
+                          className='hover:text-primary transition-colors'
+                        >
+                          {contactPhone}
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 

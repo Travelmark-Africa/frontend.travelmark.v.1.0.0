@@ -1,14 +1,28 @@
 import { Button } from '@/components/ui/button';
-import { contactLinks } from '@/constants';
+import { useGetCompanySettingsQuery } from '@/hooks/useCompanySettings';
+import { formatPhoneForWhatsApp } from '@/lib/utils';
 import { Calendar, MessageCircle } from 'lucide-react';
 
 const CallToAction = () => {
+  // Fetch company settings for calendly and phone number
+  const { data: companySettingsData, isLoading: isLoadingSettings } = useGetCompanySettingsQuery();
+  const companySettings = companySettingsData?.data;
+
+  // Get dynamic contact information
+  const calendlyLink = companySettings?.calendlyLink;
+  const phoneNumber = companySettings?.phoneNumber;
+
   const handleCalendlyClick = () => {
-    window.open(contactLinks.calendly, '_blank');
+    if (calendlyLink) {
+      window.open(calendlyLink, '_blank');
+    }
   };
 
   const handleWhatsAppClick = () => {
-    window.open(contactLinks.whatsapp, '_blank');
+    if (phoneNumber) {
+      const formattedPhone = formatPhoneForWhatsApp(phoneNumber);
+      window.open(`https://wa.me/${formattedPhone}`, '_blank');
+    }
   };
 
   return (
@@ -19,21 +33,21 @@ const CallToAction = () => {
 
         {/* Main Heading */}
         <h1 className='text-3xl md:text-4xl font-bold text-primary mb-8 leading-snug'>
-          Let’s Add Your Event to Our <br />
+          Let's Add Your Event to Our <br />
           <span className='text-secondary italic'>Success Portfolio</span>
         </h1>
 
         {/* Action Buttons */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
-          <Button onClick={handleCalendlyClick} size='sm' className='text-[0.85rem]!'>
+          <Button disabled={isLoadingSettings} onClick={handleCalendlyClick} size='sm' className='text-[0.85rem]!'>
             <Calendar size={20} />
             Book a Planning Call
           </Button>
-
           <Button
             hideChevron
             size='sm'
             onClick={handleWhatsAppClick}
+            disabled={isLoadingSettings}
             className='border-1! border-green-300! hover:border-green-400! bg-green-100! hover:bg-green-200! text-green-800! hover:text-green-900! transition-colors! duration-500 text-[0.87rem]!'
           >
             <MessageCircle size={20} />
@@ -43,8 +57,13 @@ const CallToAction = () => {
 
         {/* Subtitle */}
         <p className='text-primary/70 mt-6 text-base'>
-          From strategic vision to operational delivery — we’re ready to bring your next event to life.
+          From strategic vision to operational delivery — we're ready to bring your next event to life.
         </p>
+
+        {/* Optional: Show message if no contact methods configured */}
+        {!isLoadingSettings && !calendlyLink && !phoneNumber && (
+          <p className='text-gray-500 text-sm mt-4'>Contact methods will be available soon</p>
+        )}
       </div>
     </section>
   );

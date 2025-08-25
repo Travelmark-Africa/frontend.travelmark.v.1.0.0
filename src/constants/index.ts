@@ -41,12 +41,6 @@ export const stepCards = [
   { id: '03', description: 'We empower local talent, foster global partnerships, and promote sustainable tourism.' },
 ];
 
-// Contact Links
-export const contactLinks = {
-  calendly: 'https://calendly.com/travelmarkafrica/30min',
-  whatsapp: 'https://wa.me/250788357850',
-};
-
 // Who We Are Section - Service cards
 export const serviceCards = [
   {
@@ -70,13 +64,6 @@ export const serviceCards = [
     title: 'Capacity & Sustainability',
     description: 'We train professionals, enable partnerships, and promote responsible growth in tourism.',
   },
-];
-
-// Who We Are Section - Stats
-export const stats = [
-  { id: 1, value: '5', label: 'African Regions Covered' },
-  { id: 2, value: '10+', label: 'Events Led & Coordinated' },
-  { id: 3, value: 'Global', label: 'Event Footprint' },
 ];
 
 /********************************
