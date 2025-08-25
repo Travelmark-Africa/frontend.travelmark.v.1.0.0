@@ -1,6 +1,6 @@
 import { Users, MapPin, Globe, AlertCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetProjectsQuery } from '@/hooks/useProjectsQuery';
+import { useGetProjectsQuery } from '@/hooks/useProjects';
 import BlurImage from '@/components/BlurImage';
 
 const OurWorkSection = () => {

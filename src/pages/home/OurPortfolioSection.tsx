@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight, AlertCircle, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetProjectsQuery } from '@/hooks/useProjectsQuery';
+import { useGetProjectsQuery } from '@/hooks/useProjects';
 import BlurImage from '@/components/BlurImage';
 
 const ModernCardCarousel = () => {

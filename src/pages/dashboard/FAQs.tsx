@@ -30,12 +30,7 @@ import Error from '@/components/Error';
 import Empty from '@/components/Empty';
 
 // Import TanStack Query hooks
-import {
-  useGetFAQsQuery,
-  useCreateFAQMutation,
-  useUpdateFAQMutation,
-  useDeleteFAQMutation,
-} from '@/hooks/useFAQsQuery';
+import { useGetFAQsQuery, useCreateFAQMutation, useUpdateFAQMutation, useDeleteFAQMutation } from '@/hooks/useFAQs';
 
 const FAQsPage: React.FC = () => {
   // TanStack Query hooks

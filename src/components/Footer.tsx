@@ -3,7 +3,7 @@ import Container from '@/components/Container';
 import { logo2 } from '@/assets';
 import { Link, useLocation } from 'react-router-dom';
 import { hideFooterOrNavbarRoutes } from '@/constants';
-import { useCreateSubscriptionMutation } from '@/hooks/useSubscriptionsQuery';
+import { useCreateSubscriptionMutation } from '@/hooks/useSubscriptions';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { handleError } from '@/lib/utils';

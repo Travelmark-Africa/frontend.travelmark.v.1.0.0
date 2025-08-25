@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetRegionsQuery } from '@/hooks/useRegionsQuery';
+import { useGetRegionsQuery } from '@/hooks/useRegions';
 import BlurImage from '@/components/BlurImage';
 import { Globe } from 'lucide-react';
 import Container from '@/components/Container';

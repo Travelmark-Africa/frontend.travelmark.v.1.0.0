@@ -213,3 +213,19 @@ interface ProjectFormData {
   year: number;
   image: string;
 }
+
+interface CompanySettings {
+  $id?: string;
+  vision?: string;
+  mission?: string;
+  calendlyLink: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  statistics: string;
+  instagram: string;
+  twitter: string;
+  linkedin: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}

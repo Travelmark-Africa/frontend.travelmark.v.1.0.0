@@ -16,12 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import ConfirmationModal from '@/components/ConfirmationModal';
-import {
-  useGetUSPsQuery,
-  useCreateUSPMutation,
-  useUpdateUSPMutation,
-  useDeleteUSPMutation,
-} from '@/hooks/useUSPsQuery';
+import { useGetUSPsQuery, useCreateUSPMutation, useUpdateUSPMutation, useDeleteUSPMutation } from '@/hooks/useUSPs';
 import { Edit, Trash2, Plus, X, Loader2, Edit3, MoreVertical, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { handleError, getRelativeTime } from '@/lib/utils';

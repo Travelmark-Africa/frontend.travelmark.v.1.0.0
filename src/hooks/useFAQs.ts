@@ -12,7 +12,7 @@ export const useGetFAQsQuery = () => {
         total: response.total,
       };
     },
-    staleTime: 10 * 60 * 1000, // 10 minutes - FAQs don't change frequently
+    staleTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });

@@ -46,7 +46,7 @@ import {
   useCreateServiceMutation,
   useUpdateServiceMutation,
   useDeleteServiceMutation,
-} from '@/hooks/useServicesQuery';
+} from '@/hooks/useServices';
 import { uploadToCloudinary, validateFileSize, ImageUploadStatus } from '@/lib/utils';
 import { CATEGORIES, ICONS, getIconComponent } from '@/constants';
 

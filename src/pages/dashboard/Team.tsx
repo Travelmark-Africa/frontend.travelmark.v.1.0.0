@@ -21,7 +21,7 @@ import {
   useCreateTeamMemberMutation,
   useUpdateTeamMemberMutation,
   useDeleteTeamMemberMutation,
-} from '@/hooks/useTeamMembersQuery';
+} from '@/hooks/useTeamMembers';
 import { Edit, Trash2, Plus, X, Loader2, Edit3, Check, Camera, Users, Mail, Eye, MoreVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import { handleError, uploadToCloudinary, validateFileSize, ImageUploadStatus, getRelativeTime } from '@/lib/utils';

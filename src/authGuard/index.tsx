@@ -31,7 +31,7 @@ export default function ProtectedRoute({ redirectPath = '/auth/login' }: Protect
   return <Outlet />;
 }
 
-export function PublicOnlyRoute({ redirectPath = '/dashboard' }: ProtectedRouteProps) {
+export function PublicOnlyRoute({ redirectPath = '/dashboard/company-settings' }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 

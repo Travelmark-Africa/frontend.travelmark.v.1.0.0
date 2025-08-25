@@ -21,7 +21,7 @@ import {
   useCreateProjectMutation,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
-} from '@/hooks/useProjectsQuery';
+} from '@/hooks/useProjects';
 import {
   Edit,
   Trash2,

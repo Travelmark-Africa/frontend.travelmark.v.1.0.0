@@ -1,6 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetFAQsQuery } from '@/hooks/useFAQsQuery';
+import { useGetFAQsQuery } from '@/hooks/useFAQs';
 import { MessageCircle } from 'lucide-react';
 
 const FAQs: React.FC = () => {

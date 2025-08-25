@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetUSPsQuery } from '@/hooks/useUSPsQuery';
+import { useGetUSPsQuery } from '@/hooks/useUSPs';
 import { getIconComponent } from '@/constants';
 import { AlertCircle } from 'lucide-react';
 

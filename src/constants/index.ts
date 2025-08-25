@@ -26,21 +26,7 @@ import {
   ArrowRight,
   HelpCircle,
 } from 'lucide-react';
-import {
-  team,
-  conference,
-  norken,
-  tourism,
-  aboutImage1,
-  aboutImage2,
-  aboutImage3,
-  afp,
-  icca,
-  meetingsAfrica,
-  nepad,
-  rcb,
-  unt,
-} from '@/assets';
+import { conference, norken, tourism, aboutImage1, aboutImage2, aboutImage3 } from '@/assets';
 
 /********************************
  * Home Page
@@ -60,28 +46,6 @@ export const contactLinks = {
   calendly: 'https://calendly.com/travelmarkafrica/30min',
   whatsapp: 'https://wa.me/250788357850',
 };
-
-// Project Cards
-export const cards = [
-  {
-    category: 'Event Consulting',
-    title: 'Africa Energy Expo – Powering Partnerships for a Sustainable Future',
-    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753729758/energy_awxxim.png',
-    textColor: 'text-white',
-  },
-  {
-    category: 'High-Level Convenings',
-    title: 'International Health Ministerial Summit Rwanda',
-    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753730919/ihms_pxivnk.png',
-    textColor: 'text-white',
-  },
-  {
-    category: 'Agribusiness & Development',
-    title: "Agro-Food Rwanda Project – Showcasing Africa's Food Security Innovations",
-    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753731827/images_1_byjdeg.png',
-    textColor: 'text-white',
-  },
-];
 
 // Who We Are Section - Service cards
 export const serviceCards = [
@@ -113,38 +77,6 @@ export const stats = [
   { id: 1, value: '5', label: 'African Regions Covered' },
   { id: 2, value: '10+', label: 'Events Led & Coordinated' },
   { id: 3, value: 'Global', label: 'Event Footprint' },
-];
-
-// Why Choose Us Section - Features
-export const features = [
-  {
-    id: 1,
-    iconName: 'Award',
-    title: 'Deep Regional Expertise',
-    description:
-      'With teams across Africa, we bring localized knowledge, cultural fluency, and regional market insights into every project we deliver.',
-  },
-  {
-    id: 2,
-    iconName: 'Calendar',
-    title: 'Tailored Strategies',
-    description:
-      'No one-size-fits-all. Every country, institution, or event gets a custom roadmap based on its unique goals, audience, and strengths.',
-  },
-  {
-    id: 3,
-    iconName: 'Users',
-    title: 'Reliable Local Networks',
-    description:
-      'We work with vetted vendors, suppliers, and facilitators in every region—ensuring quality delivery with zero guesswork or delays.',
-  },
-  {
-    id: 4,
-    iconName: 'Star',
-    title: 'End-to-End Execution',
-    description:
-      'From strategy and planning to on-site coordination and post-event review—we stay with you every step of the journey.',
-  },
 ];
 
 /********************************
@@ -182,32 +114,6 @@ export const services = [
     accent: 'text-green-600',
     iconName: 'Users',
   },
-];
-
-// Partners
-export const partners = [
-  { id: 1, name: 'Rwanda Convention Bureau (RCB)', logo: rcb, website: 'https://rcb.rw' },
-  { id: 2, name: 'Africa Tourism Partners', logo: afp, website: 'https://africatourismpartners.com' },
-  { id: 3, name: 'UNWTO', logo: unt, website: 'https://www.unwto.org' },
-  { id: 4, name: 'ICCA', logo: icca, website: 'https://www.iccaworld.org' },
-  { id: 6, name: 'NEPAD (AUDA)', logo: nepad, website: 'https://www.nepad.org' },
-  { id: 7, name: 'Meetings Africa', logo: meetingsAfrica, website: 'https://www.meetingsafrica.co.za' },
-];
-
-// Regions
-export const regions = [
-  { name: 'North Africa', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-  { name: 'West Africa', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-  { name: 'East Africa', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  { name: 'Central Africa', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-  { name: 'Southern Africa', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-];
-
-// Team Members
-export const teamMembers = [
-  { id: 1, name: 'Yves Gahonzire', position: 'CEO & Co-Founder', image: team },
-  { id: 2, name: 'Yves Gahonzire', position: 'CEO & Co-Founder', image: team },
-  { id: 3, name: 'Yves Gahonzire', position: 'CEO & Co-Founder', image: team },
 ];
 
 /********************************
@@ -293,95 +199,12 @@ export const servicesDetails = [
   },
 ];
 
-// FAQs
-export const faqs = [
-  {
-    question: 'What services does TravelMark Africa offer?',
-    answer:
-      'We specialize in three core areas: Event Consultation, MICE (Meetings, Incentives, Conferences & Exhibitions) Consultation, and Destination Marketing. Each service is tailored to meet the unique needs of our clients across Africa.',
-  },
-  {
-    question: 'What is MICE consultation?',
-    answer:
-      'MICE stands for Meetings, Incentives, Conferences, and Exhibitions. Our MICE services involve strategic planning, stakeholder engagement, destination marketing, and seamless event execution to support corporate and institutional gatherings.',
-  },
-  {
-    question: 'Do you only operate in Rwanda?',
-    answer:
-      'While we are based in Kigali, Rwanda, TravelMark Africa operates across the continent. We have partnered with various organizations to deliver events and consultations throughout Africa.',
-  },
-  {
-    question: 'Can you assist with international conferences?',
-    answer:
-      'Yes. We provide full-scale support for international events, including government and ministerial summits, business expos, and industry-specific gatherings.',
-  },
-  {
-    question: 'How early should I contact you to plan an event?',
-    answer:
-      'For the best results, we recommend reaching out at least 4–6 weeks before your planned event. However, we can accommodate shorter timelines depending on the scope.',
-  },
-  {
-    question: 'Do you help with marketing my event?',
-    answer:
-      'Yes. Through our Destination Marketing service, we help you position your event for maximum visibility and attendance, including digital campaigns and stakeholder outreach.',
-  },
-];
-
-// Portfolio
-export const projects = [
-  {
-    id: 1,
-    title: 'Africa Energy Expo',
-    subtitle: 'Powering Partnerships for a Sustainable Future',
-    description:
-      "Led strategic advisory and event operations for Africa's flagship energy conference, fostering investment dialogue in renewable energy, oil & gas, and clean technologies.",
-    category: 'Event Consulting',
-    impact: '500+ Delegates',
-    location: 'Kigali, Rwanda',
-    year: '2024',
-    color: 'bg-gradient-to-br from-orange-50 to-red-100',
-    accent: 'text-orange-600',
-    iconName: 'Globe',
-    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753729758/energy_awxxim.png',
-  },
-  {
-    id: 2,
-    title: 'International Health Ministerial Summit',
-    subtitle: 'Strengthening Health Systems Through Dialogue',
-    description:
-      'Convened over 45 health ministers and sector leaders for a high-level summit on healthcare innovation, policy reform, and cross-border collaboration.',
-    category: 'Ministerial Summit',
-    impact: '45+ Ministers',
-    location: 'Kigali, Rwanda',
-    year: '2024',
-    color: 'bg-gradient-to-br from-blue-50 to-indigo-100',
-    accent: 'text-blue-600',
-    iconName: 'Users',
-    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753730919/ihms_pxivnk.png',
-  },
-  {
-    id: 3,
-    title: 'Agro-Food Rwanda Project',
-    subtitle: 'Scaling Agri-Tech and Food Security Solutions',
-    description:
-      'Curated a multi-stakeholder initiative spotlighting innovations in agri-processing, food supply chains, and sustainable farming across regional ecosystems.',
-    category: 'Development Initiative',
-    impact: '200+ Stakeholders',
-    location: 'Multiple Regions',
-    year: '2024',
-    color: 'bg-gradient-to-br from-green-50 to-emerald-100',
-    accent: 'text-green-600',
-    iconName: 'Award',
-    image: 'https://res.cloudinary.com/dsubfxzdx/image/upload/v1753731827/images_1_byjdeg.png',
-  },
-];
-
 // Routes to hide navbar/footer
 export const hideFooterOrNavbarRoutes = ['/auth/login', '/dashboard'];
 
 // Dashboard Nav links
 export const navLinks = [
-  { href: '/dashboard/settings', label: 'Company Settings', iconName: 'Settings' },
+  { href: '/dashboard/company-settings', label: 'Company Settings', iconName: 'Settings' },
   { href: '/dashboard/services', label: 'Services', iconName: 'ClipboardList' },
   { href: '/dashboard/projects', label: 'Projects', iconName: 'Briefcase' },
   { href: '/dashboard/unique-selling-points', label: 'Unique Selling Points', iconName: 'Star' },
@@ -397,8 +220,10 @@ export const navLinks = [
 // Services constants
 export const CATEGORIES = [
   'Event Planning',
-  'Consulting',
   'Digital Services',
+  'Event Consulting',
+  'Ministerial Summit',
+  'Development Initiative',
   'Marketing',
   'Training',
   'Other',

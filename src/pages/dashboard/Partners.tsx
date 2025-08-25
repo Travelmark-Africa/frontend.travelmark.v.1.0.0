@@ -20,7 +20,7 @@ import {
   useCreatePartnerMutation,
   useUpdatePartnerMutation,
   useDeletePartnerMutation,
-} from '@/hooks/usePartnersQuery';
+} from '@/hooks/usePartners';
 import {
   Edit,
   Trash2,

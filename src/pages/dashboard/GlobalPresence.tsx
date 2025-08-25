@@ -21,7 +21,7 @@ import {
   useCreateRegionMutation,
   useUpdateRegionMutation,
   useDeleteRegionMutation,
-} from '@/hooks/useRegionsQuery';
+} from '@/hooks/useRegions';
 import { Edit, Trash2, Plus, X, Loader2, Edit3, Check, Camera, MapPin, Eye, MoreVertical, Map } from 'lucide-react';
 import { toast } from 'sonner';
 import { handleError, uploadToCloudinary, validateFileSize, ImageUploadStatus } from '@/lib/utils';

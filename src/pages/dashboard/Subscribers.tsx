@@ -25,7 +25,7 @@ import {
   useGetSubscriptionsQuery,
   useUpdateSubscriptionMutation,
   useDeleteSubscriptionMutation,
-} from '@/hooks/useSubscriptionsQuery';
+} from '@/hooks/useSubscriptions';
 
 const Subscribers: React.FC = () => {
   // TanStack Query hooks

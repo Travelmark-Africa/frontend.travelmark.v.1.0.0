@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetTeamMembersQuery } from '@/hooks/useTeamMembersQuery';
+import { useGetTeamMembersQuery } from '@/hooks/useTeamMembers';
 import { Users } from 'lucide-react';
 
 const Team = () => {

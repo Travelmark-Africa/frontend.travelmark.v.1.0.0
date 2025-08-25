@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetPartnersQuery } from '@/hooks/usePartnersQuery';
+import { useGetPartnersQuery } from '@/hooks/usePartners';
 import Container from '@/components/Container';
 import { Globe } from 'lucide-react';
 

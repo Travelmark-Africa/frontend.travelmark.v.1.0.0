@@ -49,7 +49,7 @@ const routes: RouteObject[] = [
     element: <ProtectedRoute />,
     children: [
       { path: '', element: <DashboardPage /> },
-      { path: 'settings', element: <CompanySettingsPage /> },
+      { path: 'company-settings', element: <CompanySettingsPage /> },
       { path: 'services', element: <ServicesPage /> },
       { path: 'projects', element: <ProjectsPage /> },
       { path: 'unique-selling-points', element: <USPPage /> },

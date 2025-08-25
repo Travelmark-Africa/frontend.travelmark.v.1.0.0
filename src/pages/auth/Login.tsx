@@ -25,14 +25,14 @@ const LoginPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { login, isAuthenticating } = useAuth(); // Use isAuthenticating instead of isLoading
+  const { login, isAuthenticating } = useAuth();
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async data => {
     try {
       const session = await login(data.email, data.password);
 
       if (session) {
-        navigate('/dashboard');
+        navigate('/dashboard/company-settings');
       } else {
         toast.error('Invalid credentials. Please try again.');
       }

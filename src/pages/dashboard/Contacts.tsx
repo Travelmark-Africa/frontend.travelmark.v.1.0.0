@@ -17,7 +17,7 @@ import { getRelativeTime, handleError } from '@/lib/utils';
 import Error from '@/components/Error';
 import Empty from '@/components/Empty';
 
-import { useGetMessagesQuery, useDeleteMessageMutation } from '@/hooks/useMessagesQuery';
+import { useGetMessagesQuery, useDeleteMessageMutation } from '@/hooks/useMessages';
 
 type Message = MessageFormData;
 
