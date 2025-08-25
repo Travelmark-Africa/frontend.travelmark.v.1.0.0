@@ -418,9 +418,9 @@ const CompanySettings = () => {
 
   return (
     <DashboardLayout>
-      <div className='py-8'>
+      <div className='py-6'>
         {/* Header Section */}
-        <div className='mb-8'>
+        <div>
           <div className='flex items-start justify-between'>
             <div className='space-y-1'>
               <h1 className='text-xl font-bold text-gray-900'>Company Settings</h1>
