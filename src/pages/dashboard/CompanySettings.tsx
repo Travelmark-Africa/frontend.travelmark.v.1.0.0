@@ -32,20 +32,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert } from '@/components/ui/alert';
 import { handleError } from '@/lib/utils';
 
-// Types for form data (used internally with array structure)
-interface CompanySettingsFormData {
-  vision: string;
-  mission: string;
-  calendlyLink: string;
-  phoneNumber: string;
-  email: string;
-  address: string;
-  statistics: Array<{ key: string; value: string }>;
-  instagram: string;
-  twitter: string;
-  linkedin: string;
-}
-
 const CompanySettings = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -371,19 +357,11 @@ const CompanySettings = () => {
         return;
       }
 
-      // Convert statistics array to JSON string for Appwrite
+      // Use spread operator and type cast - simple and clean
       const payload = {
-        vision: data.vision,
-        mission: data.mission,
-        calendlyLink: data.calendlyLink,
-        phoneNumber: data.phoneNumber,
-        email: data.email,
-        address: data.address,
+        ...data,
         statistics: JSON.stringify(validStatistics),
-        instagram: data.instagram,
-        twitter: data.twitter,
-        linkedin: data.linkedin,
-      };
+      } as CompanySettingsPayload;
 
       if (isFirstTimeSetup) {
         await createMutation.mutateAsync(payload);

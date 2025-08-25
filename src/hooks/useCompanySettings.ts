@@ -24,12 +24,12 @@ export const useCreateCompanySettingsMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: CompanySettingsFormData) => {
+    mutationFn: async (data: CompanySettingsPayload) => {
+      // Changed from CompanySettingsFormData
       const response = await AppwriteService.createDocument(DATABASES.MAIN, COLLECTIONS.COMPANY_SETTINGS, data);
       return { ok: true, message: 'Company settings created successfully', data: response };
     },
     onSuccess: () => {
-      // Invalidate and refetch company settings
       queryClient.invalidateQueries({ queryKey: ['companySettings'] });
     },
     onError: error => {
@@ -43,12 +43,12 @@ export const useUpdateCompanySettingsMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<CompanySettingsFormData> }) => {
+    mutationFn: async ({ id, data }: { id: string; data: Partial<CompanySettingsPayload> }) => {
+      // Changed from Partial<CompanySettingsFormData>
       const response = await AppwriteService.updateDocument(DATABASES.MAIN, COLLECTIONS.COMPANY_SETTINGS, id, data);
       return { ok: true, message: 'Company settings updated successfully', data: response };
     },
     onSuccess: () => {
-      // Invalidate and refetch company settings
       queryClient.invalidateQueries({ queryKey: ['companySettings'] });
     },
     onError: error => {
@@ -67,7 +67,6 @@ export const useDeleteCompanySettingsMutation = () => {
       return { ok: true, message: 'Company settings deleted successfully' };
     },
     onSuccess: () => {
-      // Invalidate and refetch company settings
       queryClient.invalidateQueries({ queryKey: ['companySettings'] });
     },
     onError: error => {

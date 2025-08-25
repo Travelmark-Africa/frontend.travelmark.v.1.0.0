@@ -214,6 +214,19 @@ interface ProjectFormData {
   image: string;
 }
 
+interface CompanySettingsPayload {
+  vision: string;
+  mission: string;
+  calendlyLink: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  statistics: string;
+  instagram: string;
+  twitter: string;
+  linkedin: string;
+}
+
 interface CompanySettings {
   $id?: string;
   vision?: string;
@@ -228,4 +241,17 @@ interface CompanySettings {
   linkedin: string;
   $createdAt?: string;
   $updatedAt?: string;
+}
+
+interface CompanySettingsFormData {
+  vision: string;
+  mission: string;
+  calendlyLink: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  statistics: Array<{ key: string; value: string }>;
+  instagram: string;
+  twitter: string;
+  linkedin: string;
 }
