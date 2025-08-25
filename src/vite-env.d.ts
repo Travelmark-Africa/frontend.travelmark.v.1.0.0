@@ -43,35 +43,40 @@ interface SubService {
 }
 
 interface Service {
-  [x: string]: Key | null | undefined;
   $id: string;
-  serviceName: string;
-  serviceTitle: string;
-  serviceSummary: string;
-  serviceDescription: string;
-  category: string;
-  iconIdentifier: string;
-  mediaThumbnailUrl?: string;
-  mediaThumbnailAlt?: string;
-  mediaBannerUrl?: string;
-  mediaBannerAlt?: string;
-  subServicesJson?: string;
+  homepageHeroStepDescriptionText: string;
+  homepageCardTitleText: string;
+  homepageCardDescriptionText: string;
+  homepageCardThumbnailImageUrl?: string;
+  homepageCardThumbnailImageAltText?: string;
+  aboutPageServiceFullTitleText: string;
+  aboutPageServiceFullDescriptionText: string;
+  aboutPageServiceCategoryText: string;
+  aboutPageServiceIconIdentifier: string;
+  servicesPageFullTitleText: string;
+  servicesPageFullDescriptionText: string;
+  servicesPageBannerImageUrl?: string;
+  servicesPageBannerImageAltText?: string;
+  servicesPageSubServicesJson?: string;
   $createdAt?: string;
   $updatedAt?: string;
 }
 
 interface ServiceFormData {
-  serviceName: string;
-  serviceTitle: string;
-  serviceSummary: string;
-  serviceDescription: string;
-  category: string;
-  iconIdentifier: string;
-  mediaThumbnailUrl: string;
-  mediaThumbnailAlt: string;
-  mediaBannerUrl: string;
-  mediaBannerAlt: string;
-  subServices: SubService[];
+  homepageHeroStepDescriptionText: string;
+  homepageCardTitleText: string;
+  homepageCardDescriptionText: string;
+  homepageCardThumbnailImageUrl: string;
+  homepageCardThumbnailImageAltText: string;
+  aboutPageServiceFullTitleText: string;
+  aboutPageServiceFullDescriptionText: string;
+  aboutPageServiceCategoryText: string;
+  aboutPageServiceIconIdentifier: string;
+  servicesPageFullTitleText: string;
+  servicesPageFullDescriptionText: string;
+  servicesPageBannerImageUrl: string;
+  servicesPageBannerImageAltText: string;
+  servicesPageSubServices: SubService[];
 }
 
 interface FAQ {

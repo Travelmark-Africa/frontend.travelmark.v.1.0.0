@@ -33,7 +33,10 @@ import {
   Save,
   ArrowLeft,
   Layers,
-  Bookmark,
+  Home,
+  Info,
+  FileText,
+  Globe,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { handleError, getRelativeTime } from '@/lib/utils';
@@ -49,6 +52,49 @@ import {
 } from '@/hooks/useServices';
 import { uploadToCloudinary, validateFileSize, ImageUploadStatus } from '@/lib/utils';
 import { CATEGORIES, ICONS, getIconComponent } from '@/constants';
+
+// Updated interfaces
+interface SubService {
+  subServiceTitle: string;
+  subServiceDescription: string;
+}
+
+interface Service {
+  $id: string;
+  homepageHeroStepDescriptionText: string;
+  homepageCardTitleText: string;
+  homepageCardDescriptionText: string;
+  homepageCardThumbnailImageUrl?: string;
+  homepageCardThumbnailImageAltText?: string;
+  aboutPageServiceFullTitleText: string;
+  aboutPageServiceFullDescriptionText: string;
+  aboutPageServiceCategoryText: string;
+  aboutPageServiceIconIdentifier: string;
+  servicesPageFullTitleText: string;
+  servicesPageFullDescriptionText: string;
+  servicesPageBannerImageUrl?: string;
+  servicesPageBannerImageAltText?: string;
+  servicesPageSubServicesJson?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+}
+
+interface ServiceFormData {
+  homepageHeroStepDescriptionText: string;
+  homepageCardTitleText: string;
+  homepageCardDescriptionText: string;
+  homepageCardThumbnailImageUrl: string;
+  homepageCardThumbnailImageAltText: string;
+  aboutPageServiceFullTitleText: string;
+  aboutPageServiceFullDescriptionText: string;
+  aboutPageServiceCategoryText: string;
+  aboutPageServiceIconIdentifier: string;
+  servicesPageFullTitleText: string;
+  servicesPageFullDescriptionText: string;
+  servicesPageBannerImageUrl: string;
+  servicesPageBannerImageAltText: string;
+  servicesPageSubServices: SubService[];
+}
 
 const ServicesPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -84,29 +130,32 @@ const ServicesPage: React.FC = () => {
     control,
   } = useForm<ServiceFormData>({
     defaultValues: {
-      serviceName: '',
-      serviceTitle: '',
-      serviceSummary: '',
-      serviceDescription: '',
-      category: '',
-      iconIdentifier: 'Settings',
-      mediaThumbnailUrl: '',
-      mediaThumbnailAlt: '',
-      mediaBannerUrl: '',
-      mediaBannerAlt: '',
-      subServices: [{ subServiceTitle: '', subServiceDescription: '' }],
+      homepageHeroStepDescriptionText: '',
+      homepageCardTitleText: '',
+      homepageCardDescriptionText: '',
+      homepageCardThumbnailImageUrl: '',
+      homepageCardThumbnailImageAltText: '',
+      aboutPageServiceFullTitleText: '',
+      aboutPageServiceFullDescriptionText: '',
+      aboutPageServiceCategoryText: '',
+      aboutPageServiceIconIdentifier: 'Settings',
+      servicesPageFullTitleText: '',
+      servicesPageFullDescriptionText: '',
+      servicesPageBannerImageUrl: '',
+      servicesPageBannerImageAltText: '',
+      servicesPageSubServices: [{ subServiceTitle: '', subServiceDescription: '' }],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'subServices',
+    name: 'servicesPageSubServices',
   });
 
   // Watch form values
-  const watchedThumbnailUrl = watch('mediaThumbnailUrl');
-  const watchedBannerUrl = watch('mediaBannerUrl');
-  const watchedIconIdentifier = watch('iconIdentifier');
+  const watchedThumbnailUrl = watch('homepageCardThumbnailImageUrl');
+  const watchedBannerUrl = watch('servicesPageBannerImageUrl');
+  const watchedIconIdentifier = watch('aboutPageServiceIconIdentifier');
 
   // Navigation helpers
   const navigateToList = () => {
@@ -175,17 +224,20 @@ const ServicesPage: React.FC = () => {
 
   const resetForm = useCallback((): void => {
     reset({
-      serviceName: '',
-      serviceTitle: '',
-      serviceSummary: '',
-      serviceDescription: '',
-      category: '',
-      iconIdentifier: 'Settings',
-      mediaThumbnailUrl: '',
-      mediaThumbnailAlt: '',
-      mediaBannerUrl: '',
-      mediaBannerAlt: '',
-      subServices: [{ subServiceTitle: '', subServiceDescription: '' }],
+      homepageHeroStepDescriptionText: '',
+      homepageCardTitleText: '',
+      homepageCardDescriptionText: '',
+      homepageCardThumbnailImageUrl: '',
+      homepageCardThumbnailImageAltText: '',
+      aboutPageServiceFullTitleText: '',
+      aboutPageServiceFullDescriptionText: '',
+      aboutPageServiceCategoryText: '',
+      aboutPageServiceIconIdentifier: 'Settings',
+      servicesPageFullTitleText: '',
+      servicesPageFullDescriptionText: '',
+      servicesPageBannerImageUrl: '',
+      servicesPageBannerImageAltText: '',
+      servicesPageSubServices: [{ subServiceTitle: '', subServiceDescription: '' }],
     });
     setUploadedThumbnailUrl('');
     setUploadedBannerUrl('');
@@ -200,8 +252,8 @@ const ServicesPage: React.FC = () => {
     } else if (currentView === 'edit' && currentService) {
       let parsedSubServices: SubService[];
       try {
-        parsedSubServices = currentService.subServicesJson
-          ? JSON.parse(currentService.subServicesJson)
+        parsedSubServices = currentService.servicesPageSubServicesJson
+          ? JSON.parse(currentService.servicesPageSubServicesJson)
           : [{ subServiceTitle: '', subServiceDescription: '' }];
       } catch (error) {
         handleError(error);
@@ -209,21 +261,24 @@ const ServicesPage: React.FC = () => {
       }
 
       reset({
-        serviceName: currentService.serviceName,
-        serviceTitle: currentService.serviceTitle,
-        serviceSummary: currentService.serviceSummary,
-        serviceDescription: currentService.serviceDescription,
-        category: currentService.category,
-        iconIdentifier: currentService.iconIdentifier,
-        mediaThumbnailUrl: currentService.mediaThumbnailUrl || '',
-        mediaThumbnailAlt: currentService.mediaThumbnailAlt || '',
-        mediaBannerUrl: currentService.mediaBannerUrl || '',
-        mediaBannerAlt: currentService.mediaBannerAlt || '',
-        subServices: parsedSubServices,
+        homepageHeroStepDescriptionText: currentService.homepageHeroStepDescriptionText,
+        homepageCardTitleText: currentService.homepageCardTitleText,
+        homepageCardDescriptionText: currentService.homepageCardDescriptionText,
+        homepageCardThumbnailImageUrl: currentService.homepageCardThumbnailImageUrl || '',
+        homepageCardThumbnailImageAltText: currentService.homepageCardThumbnailImageAltText || '',
+        aboutPageServiceFullTitleText: currentService.aboutPageServiceFullTitleText,
+        aboutPageServiceFullDescriptionText: currentService.aboutPageServiceFullDescriptionText,
+        aboutPageServiceCategoryText: currentService.aboutPageServiceCategoryText,
+        aboutPageServiceIconIdentifier: currentService.aboutPageServiceIconIdentifier,
+        servicesPageFullTitleText: currentService.servicesPageFullTitleText,
+        servicesPageFullDescriptionText: currentService.servicesPageFullDescriptionText,
+        servicesPageBannerImageUrl: currentService.servicesPageBannerImageUrl || '',
+        servicesPageBannerImageAltText: currentService.servicesPageBannerImageAltText || '',
+        servicesPageSubServices: parsedSubServices,
       });
 
-      setUploadedThumbnailUrl(currentService.mediaThumbnailUrl || '');
-      setUploadedBannerUrl(currentService.mediaBannerUrl || '');
+      setUploadedThumbnailUrl(currentService.homepageCardThumbnailImageUrl || '');
+      setUploadedBannerUrl(currentService.servicesPageBannerImageUrl || '');
       setThumbnailUploadStatus(null);
       setBannerUploadStatus(null);
     }
@@ -276,11 +331,11 @@ const ServicesPage: React.FC = () => {
         if (type === 'thumbnail') {
           setThumbnailUploadStatus(prev => (prev ? { ...prev, status: 'completed', url, progress: 100 } : null));
           setUploadedThumbnailUrl(url);
-          setValue('mediaThumbnailUrl', url);
+          setValue('homepageCardThumbnailImageUrl', url);
         } else {
           setBannerUploadStatus(prev => (prev ? { ...prev, status: 'completed', url, progress: 100 } : null));
           setUploadedBannerUrl(url);
-          setValue('mediaBannerUrl', url);
+          setValue('servicesPageBannerImageUrl', url);
         }
 
         toast.success(`${file.name} uploaded successfully`);
@@ -301,11 +356,11 @@ const ServicesPage: React.FC = () => {
     if (type === 'thumbnail') {
       setThumbnailUploadStatus(null);
       setUploadedThumbnailUrl('');
-      setValue('mediaThumbnailUrl', '');
+      setValue('homepageCardThumbnailImageUrl', '');
     } else {
       setBannerUploadStatus(null);
       setUploadedBannerUrl('');
-      setValue('mediaBannerUrl', '');
+      setValue('servicesPageBannerImageUrl', '');
     }
   };
 
@@ -339,22 +394,25 @@ const ServicesPage: React.FC = () => {
   // Form submission
   const onSubmit = async (data: ServiceFormData): Promise<void> => {
     try {
-      const validSubServices = data.subServices.filter(
+      const validSubServices = data.servicesPageSubServices.filter(
         sub => sub.subServiceTitle.trim() && sub.subServiceDescription.trim()
       );
 
       const payload = {
-        serviceName: data.serviceName.trim(),
-        serviceTitle: data.serviceTitle.trim(),
-        serviceSummary: data.serviceSummary.trim(),
-        serviceDescription: data.serviceDescription.trim(),
-        category: data.category,
-        iconIdentifier: data.iconIdentifier,
-        mediaThumbnailUrl: uploadedThumbnailUrl || watchedThumbnailUrl || '',
-        mediaThumbnailAlt: data.mediaThumbnailAlt.trim(),
-        mediaBannerUrl: uploadedBannerUrl || watchedBannerUrl || '',
-        mediaBannerAlt: data.mediaBannerAlt.trim(),
-        subServicesJson: JSON.stringify(validSubServices),
+        homepageHeroStepDescriptionText: data.homepageHeroStepDescriptionText.trim(),
+        homepageCardTitleText: data.homepageCardTitleText.trim(),
+        homepageCardDescriptionText: data.homepageCardDescriptionText.trim(),
+        homepageCardThumbnailImageUrl: uploadedThumbnailUrl || watchedThumbnailUrl || '',
+        homepageCardThumbnailImageAltText: data.homepageCardThumbnailImageAltText.trim(),
+        aboutPageServiceFullTitleText: data.aboutPageServiceFullTitleText.trim(),
+        aboutPageServiceFullDescriptionText: data.aboutPageServiceFullDescriptionText.trim(),
+        aboutPageServiceCategoryText: data.aboutPageServiceCategoryText,
+        aboutPageServiceIconIdentifier: data.aboutPageServiceIconIdentifier,
+        servicesPageFullTitleText: data.servicesPageFullTitleText.trim(),
+        servicesPageFullDescriptionText: data.servicesPageFullDescriptionText.trim(),
+        servicesPageBannerImageUrl: uploadedBannerUrl || watchedBannerUrl || '',
+        servicesPageBannerImageAltText: data.servicesPageBannerImageAltText.trim(),
+        servicesPageSubServicesJson: JSON.stringify(validSubServices),
       };
 
       if (currentView === 'edit' && currentService) {
@@ -516,42 +574,153 @@ const ServicesPage: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
-        {/* Basic Information */}
+        {/* Homepage Section */}
         <Card className='p-6'>
           <div className='space-y-6'>
-            <h4 className='text-sm font-semibold text-primary/90 border-b pb-2'>Basic Information</h4>
+            <div className='flex items-center gap-3 border-b pb-3'>
+              <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
+                <Home className='w-4 h-4 text-blue-600' />
+              </div>
+              <div>
+                <h4 className='text-sm font-semibold text-primary'>Homepage Content</h4>
+                <p className='text-xs text-primary/60'>Content that appears on the homepage</p>
+              </div>
+            </div>
+
+            {/* Homepage Hero Step Description */}
+            <div className='space-y-2'>
+              <Label htmlFor='homepageHeroStepDescriptionText'>
+                Hero Step Description <span className='text-red-500'>*</span>
+              </Label>
+              <p className='text-xs text-gray-600 mb-2'>Brief description for the homepage hero step cards</p>
+              <Textarea
+                id='homepageHeroStepDescriptionText'
+                placeholder='From concept to execution, we help design and deliver strategic, impactful events.'
+                {...register('homepageHeroStepDescriptionText', {
+                  required: 'Homepage hero step description is required',
+                  maxLength: { value: 200, message: 'Description must not exceed 200 characters' },
+                })}
+                className={`resize-none ${
+                  errors.homepageHeroStepDescriptionText ? 'border-red-500 focus:ring-red-500' : ''
+                }`}
+                rows={2}
+              />
+              {errors.homepageHeroStepDescriptionText && (
+                <p className='text-red-500 text-xs'>{errors.homepageHeroStepDescriptionText.message}</p>
+              )}
+            </div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              {/* Service Name */}
+              {/* Homepage Card Title */}
               <div className='space-y-2'>
-                <Label htmlFor='serviceName'>
-                  Service Name <span className='text-red-500'>*</span>
+                <Label htmlFor='homepageCardTitleText'>
+                  Card Title <span className='text-red-500'>*</span>
                 </Label>
+                <p className='text-xs text-gray-600 mb-2'>Title for the homepage service card</p>
                 <Input
-                  id='serviceName'
-                  placeholder='e.g. Event Consultation'
-                  {...register('serviceName', {
-                    required: 'Service name is required',
-                    minLength: { value: 2, message: 'Service name must be at least 2 characters' },
-                    maxLength: { value: 100, message: 'Service name must not exceed 100 characters' },
+                  id='homepageCardTitleText'
+                  placeholder='Event Consultation'
+                  {...register('homepageCardTitleText', {
+                    required: 'Homepage card title is required',
+                    maxLength: { value: 100, message: 'Title must not exceed 100 characters' },
                   })}
-                  className={errors.serviceName ? 'border-red-500 focus:ring-red-500' : ''}
+                  className={errors.homepageCardTitleText ? 'border-red-500 focus:ring-red-500' : ''}
                 />
-                {errors.serviceName && <p className='text-red-500 text-xs'>{errors.serviceName.message}</p>}
+                {errors.homepageCardTitleText && (
+                  <p className='text-red-500 text-xs'>{errors.homepageCardTitleText.message}</p>
+                )}
+              </div>
+
+              {/* Homepage Card Thumbnail */}
+              <div>
+                <ImageUpload
+                  label='Card Thumbnail Image'
+                  uploadStatus={thumbnailUploadStatus}
+                  uploadedUrl={uploadedThumbnailUrl}
+                  watchedUrl={watchedThumbnailUrl}
+                  altTextValue={watch('homepageCardThumbnailImageAltText')}
+                  onImageSelect={e => handleImageSelection(e, 'thumbnail')}
+                  onRemove={() => removeImage('thumbnail')}
+                  onAltTextChange={value => setValue('homepageCardThumbnailImageAltText', value)}
+                  height='h-24'
+                />
+              </div>
+            </div>
+
+            {/* Homepage Card Description */}
+            <div className='space-y-2'>
+              <Label htmlFor='homepageCardDescriptionText'>
+                Card Description <span className='text-red-500'>*</span>
+              </Label>
+              <p className='text-xs text-gray-600 mb-2'>Description for the homepage service card</p>
+              <Textarea
+                id='homepageCardDescriptionText'
+                placeholder='From concept to coordination, we design experiences that reflect purpose and professionalism.'
+                {...register('homepageCardDescriptionText', {
+                  required: 'Homepage card description is required',
+                  maxLength: { value: 300, message: 'Description must not exceed 300 characters' },
+                })}
+                className={`resize-none ${
+                  errors.homepageCardDescriptionText ? 'border-red-500 focus:ring-red-500' : ''
+                }`}
+                rows={3}
+              />
+              {errors.homepageCardDescriptionText && (
+                <p className='text-red-500 text-xs'>{errors.homepageCardDescriptionText.message}</p>
+              )}
+            </div>
+          </div>
+        </Card>
+
+        {/* About Page Section */}
+        <Card className='p-6'>
+          <div className='space-y-6'>
+            <div className='flex items-center gap-3 border-b pb-3'>
+              <div className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'>
+                <Info className='w-4 h-4 text-green-600' />
+              </div>
+              <div>
+                <h4 className='text-sm font-semibold text-primary'>About Page Content</h4>
+                <p className='text-xs text-primary/60'>Content that appears on the about us page</p>
+              </div>
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              {/* About Page Service Title */}
+              <div className='space-y-2'>
+                <Label htmlFor='aboutPageServiceFullTitleText'>
+                  Service Title <span className='text-red-500'>*</span>
+                </Label>
+                <p className='text-xs text-gray-600 mb-2'>Full title for the about page</p>
+                <Input
+                  id='aboutPageServiceFullTitleText'
+                  placeholder='Event Consultation Services'
+                  {...register('aboutPageServiceFullTitleText', {
+                    required: 'About page service title is required',
+                    maxLength: { value: 150, message: 'Title must not exceed 150 characters' },
+                  })}
+                  className={errors.aboutPageServiceFullTitleText ? 'border-red-500 focus:ring-red-500' : ''}
+                />
+                {errors.aboutPageServiceFullTitleText && (
+                  <p className='text-red-500 text-xs'>{errors.aboutPageServiceFullTitleText.message}</p>
+                )}
               </div>
 
               {/* Category */}
               <div className='space-y-2'>
                 <Label>
-                  Category <span className='text-red-500'>*</span>
+                  Service Category <span className='text-red-500'>*</span>
                 </Label>
+                <p className='text-xs text-gray-600 mb-2'>Category for grouping services</p>
                 <Controller
-                  name='category'
+                  name='aboutPageServiceCategoryText'
                   control={control}
                   rules={{ required: 'Category is required' }}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className={errors.category ? 'border-red-500 focus:ring-red-500' : ''}>
+                      <SelectTrigger
+                        className={errors.aboutPageServiceCategoryText ? 'border-red-500 focus:ring-red-500' : ''}
+                      >
                         <SelectValue placeholder='Select a category' />
                       </SelectTrigger>
                       <SelectContent>
@@ -564,38 +733,24 @@ const ServicesPage: React.FC = () => {
                     </Select>
                   )}
                 />
-                {errors.category && <p className='text-red-500 text-xs'>{errors.category.message}</p>}
+                {errors.aboutPageServiceCategoryText && (
+                  <p className='text-red-500 text-xs'>{errors.aboutPageServiceCategoryText.message}</p>
+                )}
               </div>
-            </div>
-
-            {/* Service Title */}
-            <div className='space-y-2'>
-              <Label htmlFor='serviceTitle'>
-                Service Title <span className='text-red-500'>*</span>
-              </Label>
-              <Input
-                id='serviceTitle'
-                placeholder='e.g. Event Consultation Services'
-                {...register('serviceTitle', {
-                  required: 'Service title is required',
-                  maxLength: { value: 200, message: 'Service title must not exceed 200 characters' },
-                })}
-                className={errors.serviceTitle ? 'border-red-500 focus:ring-red-500' : ''}
-              />
-              {errors.serviceTitle && <p className='text-red-500 text-xs'>{errors.serviceTitle.message}</p>}
             </div>
 
             {/* Icon Selection */}
             <div className='space-y-2'>
               <Label>
-                Icon <span className='text-red-500'>*</span>
+                Service Icon <span className='text-red-500'>*</span>
               </Label>
+              <p className='text-xs text-gray-600 mb-2'>Icon to represent the service</p>
               <div className='flex items-center gap-3'>
                 <div className='w-10 h-10 bg-gray-100 rounded flex items-center justify-center border'>
                   {renderIcon(watchedIconIdentifier)}
                 </div>
                 <Controller
-                  name='iconIdentifier'
+                  name='aboutPageServiceIconIdentifier'
                   control={control}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
@@ -618,75 +773,102 @@ const ServicesPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Service Summary */}
+            {/* About Page Service Description */}
             <div className='space-y-2'>
-              <Label htmlFor='serviceSummary'>
-                Service Summary <span className='text-red-500'>*</span>
-              </Label>
-              <Textarea
-                id='serviceSummary'
-                placeholder='Brief summary of the service...'
-                {...register('serviceSummary', {
-                  required: 'Service summary is required',
-                  maxLength: { value: 500, message: 'Service summary must not exceed 500 characters' },
-                })}
-                className={`resize-none ${errors.serviceSummary ? 'border-red-500 focus:ring-red-500' : ''}`}
-                rows={3}
-              />
-              {errors.serviceSummary && <p className='text-red-500 text-xs'>{errors.serviceSummary.message}</p>}
-            </div>
-
-            {/* Service Description */}
-            <div className='space-y-2'>
-              <Label htmlFor='serviceDescription'>
+              <Label htmlFor='aboutPageServiceFullDescriptionText'>
                 Service Description <span className='text-red-500'>*</span>
               </Label>
+              <p className='text-xs text-gray-600 mb-2'>Detailed description for the about page</p>
               <Textarea
-                id='serviceDescription'
-                placeholder='Detailed description of the service...'
-                {...register('serviceDescription', {
-                  required: 'Service description is required',
-                  maxLength: { value: 2000, message: 'Service description must not exceed 2000 characters' },
+                id='aboutPageServiceFullDescriptionText'
+                placeholder='Expert guidance in designing and implementing impactful events and conferences tailored to your unique objectives and strategic goals.'
+                {...register('aboutPageServiceFullDescriptionText', {
+                  required: 'About page service description is required',
+                  maxLength: { value: 500, message: 'Description must not exceed 500 characters' },
                 })}
-                className={`resize-none ${errors.serviceDescription ? 'border-red-500 focus:ring-red-500' : ''}`}
-                rows={6}
+                className={`resize-none ${
+                  errors.aboutPageServiceFullDescriptionText ? 'border-red-500 focus:ring-red-500' : ''
+                }`}
+                rows={4}
               />
-              {errors.serviceDescription && <p className='text-red-500 text-xs'>{errors.serviceDescription.message}</p>}
+              {errors.aboutPageServiceFullDescriptionText && (
+                <p className='text-red-500 text-xs'>{errors.aboutPageServiceFullDescriptionText.message}</p>
+              )}
             </div>
           </div>
         </Card>
 
-        {/* Media Section */}
+        {/* Services Page Section */}
         <Card className='p-6'>
           <div className='space-y-6'>
-            <h4 className='text-sm font-semibold text-primary/90 border-b pb-2'>Media Assets</h4>
+            <div className='flex items-center gap-3 border-b pb-3'>
+              <div className='w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center'>
+                <FileText className='w-4 h-4 text-purple-600' />
+              </div>
+              <div>
+                <h4 className='text-sm font-semibold text-primary'>Services Page Content</h4>
+                <p className='text-xs text-primary/60'>Detailed content for the dedicated services page</p>
+              </div>
+            </div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-              {/* Thumbnail Image */}
-              <ImageUpload
-                label='Thumbnail Image'
-                uploadStatus={thumbnailUploadStatus}
-                uploadedUrl={uploadedThumbnailUrl}
-                watchedUrl={watchedThumbnailUrl}
-                altTextValue={watch('mediaThumbnailAlt')}
-                onImageSelect={e => handleImageSelection(e, 'thumbnail')}
-                onRemove={() => removeImage('thumbnail')}
-                onAltTextChange={value => setValue('mediaThumbnailAlt', value)}
-                height='h-32'
-              />
+              {/* Services Page Title */}
+              <div className='space-y-2'>
+                <Label htmlFor='servicesPageFullTitleText'>
+                  Full Service Title <span className='text-red-500'>*</span>
+                </Label>
+                <p className='text-xs text-gray-600 mb-2'>Complete title for the services page</p>
+                <Input
+                  id='servicesPageFullTitleText'
+                  placeholder='Event Consultation'
+                  {...register('servicesPageFullTitleText', {
+                    required: 'Services page title is required',
+                    maxLength: { value: 150, message: 'Title must not exceed 150 characters' },
+                  })}
+                  className={errors.servicesPageFullTitleText ? 'border-red-500 focus:ring-red-500' : ''}
+                />
+                {errors.servicesPageFullTitleText && (
+                  <p className='text-red-500 text-xs'>{errors.servicesPageFullTitleText.message}</p>
+                )}
+              </div>
 
-              {/* Banner Image */}
-              <ImageUpload
-                label='Banner Image'
-                uploadStatus={bannerUploadStatus}
-                uploadedUrl={uploadedBannerUrl}
-                watchedUrl={watchedBannerUrl}
-                altTextValue={watch('mediaBannerAlt')}
-                onImageSelect={e => handleImageSelection(e, 'banner')}
-                onRemove={() => removeImage('banner')}
-                onAltTextChange={value => setValue('mediaBannerAlt', value)}
-                height='h-32'
+              {/* Services Page Banner */}
+              <div>
+                <ImageUpload
+                  label='Service Banner Image'
+                  uploadStatus={bannerUploadStatus}
+                  uploadedUrl={uploadedBannerUrl}
+                  watchedUrl={watchedBannerUrl}
+                  altTextValue={watch('servicesPageBannerImageAltText')}
+                  onImageSelect={e => handleImageSelection(e, 'banner')}
+                  onRemove={() => removeImage('banner')}
+                  onAltTextChange={value => setValue('servicesPageBannerImageAltText', value)}
+                  height='h-32'
+                />
+              </div>
+            </div>
+
+            {/* Services Page Description */}
+            <div className='space-y-2'>
+              <Label htmlFor='servicesPageFullDescriptionText'>
+                Full Service Description <span className='text-red-500'>*</span>
+              </Label>
+              <p className='text-xs text-gray-600 mb-2'>Complete detailed description for the services page</p>
+              <Textarea
+                id='servicesPageFullDescriptionText'
+                placeholder='We work with institutions, corporates, and development partners to design and execute impactful events, summits, and conferences. From concept to delivery, we ensure every event is purpose-driven, well-managed, and aligns with your organizational goals.'
+                {...register('servicesPageFullDescriptionText', {
+                  required: 'Services page description is required',
+                  maxLength: { value: 1000, message: 'Description must not exceed 1000 characters' },
+                })}
+                className={`resize-none ${
+                  errors.servicesPageFullDescriptionText ? 'border-red-500 focus:ring-red-500' : ''
+                }`}
+                rows={6}
               />
+              {errors.servicesPageFullDescriptionText && (
+                <p className='text-red-500 text-xs'>{errors.servicesPageFullDescriptionText.message}</p>
+              )}
             </div>
           </div>
         </Card>
@@ -694,8 +876,16 @@ const ServicesPage: React.FC = () => {
         {/* Sub-Services Section */}
         <Card className='p-6'>
           <div className='space-y-6'>
-            <div className='flex items-center justify-between border-b pb-2'>
-              <h4 className='text-sm font-semibold text-primary/90'>Sub-Services</h4>
+            <div className='flex items-center justify-between border-b pb-3'>
+              <div className='flex items-center gap-3'>
+                <div className='w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center'>
+                  <Layers className='w-4 h-4 text-orange-600' />
+                </div>
+                <div>
+                  <h4 className='text-sm font-semibold text-primary'>Sub-Services</h4>
+                  <p className='text-xs text-primary/60'>Detailed breakdown of service offerings</p>
+                </div>
+              </div>
               <Button
                 type='button'
                 variant='outline'
@@ -731,37 +921,41 @@ const ServicesPage: React.FC = () => {
                   <div className='space-y-3'>
                     <div>
                       <Input
-                        placeholder='Sub-service title...'
-                        {...register(`subServices.${index}.subServiceTitle` as const, {
+                        placeholder='Sub-service title (e.g., Event & Conference Concepts)'
+                        {...register(`servicesPageSubServices.${index}.subServiceTitle` as const, {
                           required: 'Sub-service title is required',
                           maxLength: { value: 150, message: 'Title must not exceed 150 characters' },
                         })}
                         className={
-                          errors.subServices?.[index]?.subServiceTitle ? 'border-red-500 focus:ring-red-500' : ''
+                          errors.servicesPageSubServices?.[index]?.subServiceTitle
+                            ? 'border-red-500 focus:ring-red-500'
+                            : ''
                         }
                       />
-                      {errors.subServices?.[index]?.subServiceTitle && (
+                      {errors.servicesPageSubServices?.[index]?.subServiceTitle && (
                         <p className='text-red-500 text-xs mt-1'>
-                          {errors.subServices[index]?.subServiceTitle?.message}
+                          {errors.servicesPageSubServices[index]?.subServiceTitle?.message}
                         </p>
                       )}
                     </div>
 
                     <div>
                       <Textarea
-                        placeholder='Sub-service description...'
-                        {...register(`subServices.${index}.subServiceDescription` as const, {
+                        placeholder='Sub-service description (e.g., We co-create strong themes, formats, agendas, and delivery frameworks tailored to your audience and outcomes.)'
+                        {...register(`servicesPageSubServices.${index}.subServiceDescription` as const, {
                           required: 'Sub-service description is required',
-                          maxLength: { value: 1000, message: 'Description must not exceed 1000 characters' },
+                          maxLength: { value: 500, message: 'Description must not exceed 500 characters' },
                         })}
                         className={`resize-none ${
-                          errors.subServices?.[index]?.subServiceDescription ? 'border-red-500 focus:ring-red-500' : ''
+                          errors.servicesPageSubServices?.[index]?.subServiceDescription
+                            ? 'border-red-500 focus:ring-red-500'
+                            : ''
                         }`}
                         rows={3}
                       />
-                      {errors.subServices?.[index]?.subServiceDescription && (
+                      {errors.servicesPageSubServices?.[index]?.subServiceDescription && (
                         <p className='text-red-500 text-xs mt-1'>
-                          {errors.subServices[index]?.subServiceDescription?.message}
+                          {errors.servicesPageSubServices[index]?.subServiceDescription?.message}
                         </p>
                       )}
                     </div>
@@ -823,7 +1017,9 @@ const ServicesPage: React.FC = () => {
       );
     }
 
-    const subServices = currentService.subServicesJson ? JSON.parse(currentService.subServicesJson) : [];
+    const subServices = currentService.servicesPageSubServicesJson
+      ? JSON.parse(currentService.servicesPageSubServicesJson)
+      : [];
 
     return (
       <div className='max-w-4xl'>
@@ -831,7 +1027,7 @@ const ServicesPage: React.FC = () => {
         <div className='flex items-center justify-between mb-8'>
           <div>
             <h2 className='text-2xl font-bold text-primary'>Service Details</h2>
-            <p className='text-primary/70 mt-1'>View service information and details.</p>
+            <p className='text-primary/70 mt-1'>View comprehensive service information across all pages.</p>
           </div>
           <div className='flex items-center gap-3'>
             <Button
@@ -862,15 +1058,15 @@ const ServicesPage: React.FC = () => {
         <div className='space-y-8'>
           {/* Hero Section */}
           <div className='relative rounded-xl overflow-hidden shadow-lg'>
-            {currentService.mediaBannerUrl ? (
+            {currentService.servicesPageBannerImageUrl ? (
               <img
-                src={currentService.mediaBannerUrl}
-                alt={currentService.mediaBannerAlt || currentService.serviceName}
+                src={currentService.servicesPageBannerImageUrl}
+                alt={currentService.servicesPageBannerImageAltText || currentService.servicesPageFullTitleText}
                 className='w-full h-64 object-cover'
               />
             ) : (
               <div className='w-full h-64 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center'>
-                {renderIcon(currentService.iconIdentifier, 'w-16 h-16 text-white')}
+                {renderIcon(currentService.aboutPageServiceIconIdentifier, 'w-16 h-16 text-white')}
               </div>
             )}
             <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent' />
@@ -878,7 +1074,7 @@ const ServicesPage: React.FC = () => {
             {/* Category Badge */}
             <div className='absolute top-6 right-6'>
               <span className='px-4 py-2 bg-white/20 backdrop-blur-md text-white text-sm rounded-full border border-white/30'>
-                {currentService.category}
+                {currentService.aboutPageServiceCategoryText}
               </span>
             </div>
 
@@ -886,89 +1082,154 @@ const ServicesPage: React.FC = () => {
             <div className='absolute bottom-6 left-6 right-6'>
               <div className='flex items-center gap-3 mb-2'>
                 <div className='w-12 h-12 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30'>
-                  {currentService.mediaThumbnailUrl ? (
+                  {currentService.homepageCardThumbnailImageUrl ? (
                     <img
-                      src={currentService.mediaThumbnailUrl}
-                      alt={currentService.mediaThumbnailAlt || currentService.serviceName}
+                      src={currentService.homepageCardThumbnailImageUrl}
+                      alt={currentService.homepageCardThumbnailImageAltText || currentService.homepageCardTitleText}
                       className='w-full h-full object-cover rounded-lg'
                     />
                   ) : (
-                    renderIcon(currentService.iconIdentifier, 'w-6 h-6 text-white')
+                    renderIcon(currentService.aboutPageServiceIconIdentifier, 'w-6 h-6 text-white')
                   )}
                 </div>
                 <div>
-                  <h1 className='text-3xl font-bold text-white'>{currentService.serviceName}</h1>
-                  <p className='text-white/90 text-lg'>{currentService.serviceTitle}</p>
+                  <h1 className='text-3xl font-bold text-white'>{currentService.servicesPageFullTitleText}</h1>
+                  <p className='text-white/90 text-lg'>{currentService.aboutPageServiceFullTitleText}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Service Details Grid */}
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-            {/* Service Information */}
-            <div className='space-y-6'>
-              <h3 className='text-lg font-semibold text-primary'>Service Information</h3>
+          {/* Content by Page Sections */}
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+            {/* Homepage Content */}
+            <Card className='p-6'>
+              <div className='flex items-center gap-3 mb-4'>
+                <div className='w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center'>
+                  <Home className='w-4 h-4 text-blue-600' />
+                </div>
+                <h3 className='text-lg font-semibold text-primary'>Homepage</h3>
+              </div>
 
               <div className='space-y-4'>
-                <div className='p-4 bg-blue-50 rounded-lg border border-blue-200'>
-                  <label className='text-xs font-medium text-blue-700 uppercase tracking-wide'>Summary</label>
-                  <p className='text-sm text-blue-900 font-medium mt-1'>{currentService.serviceSummary}</p>
+                <div>
+                  <label className='text-xs font-medium text-blue-700 uppercase tracking-wide'>Hero Step</label>
+                  <p className='text-sm text-blue-900 mt-1'>{currentService.homepageHeroStepDescriptionText}</p>
                 </div>
 
-                <div className='p-4 bg-green-50 rounded-lg border border-green-200'>
-                  <label className='text-xs font-medium text-green-700 uppercase tracking-wide'>Sub-Services</label>
+                <div>
+                  <label className='text-xs font-medium text-blue-700 uppercase tracking-wide'>Card Title</label>
+                  <p className='text-sm text-blue-900 font-medium mt-1'>{currentService.homepageCardTitleText}</p>
+                </div>
+
+                <div>
+                  <label className='text-xs font-medium text-blue-700 uppercase tracking-wide'>Card Description</label>
+                  <p className='text-sm text-blue-900 mt-1'>{currentService.homepageCardDescriptionText}</p>
+                </div>
+              </div>
+            </Card>
+
+            {/* About Page Content */}
+            <Card className='p-6'>
+              <div className='flex items-center gap-3 mb-4'>
+                <div className='w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center'>
+                  <Info className='w-4 h-4 text-green-600' />
+                </div>
+                <h3 className='text-lg font-semibold text-primary'>About Page</h3>
+              </div>
+
+              <div className='space-y-4'>
+                <div>
+                  <label className='text-xs font-medium text-green-700 uppercase tracking-wide'>Service Title</label>
                   <p className='text-sm text-green-900 font-medium mt-1'>
+                    {currentService.aboutPageServiceFullTitleText}
+                  </p>
+                </div>
+
+                <div>
+                  <label className='text-xs font-medium text-green-700 uppercase tracking-wide'>Category</label>
+                  <p className='text-sm text-green-900 mt-1'>{currentService.aboutPageServiceCategoryText}</p>
+                </div>
+
+                <div>
+                  <label className='text-xs font-medium text-green-700 uppercase tracking-wide'>Description</label>
+                  <p className='text-sm text-green-900 mt-1'>{currentService.aboutPageServiceFullDescriptionText}</p>
+                </div>
+
+                <div>
+                  <label className='text-xs font-medium text-green-700 uppercase tracking-wide'>Icon</label>
+                  <div className='flex items-center gap-2 mt-1'>
+                    {renderIcon(currentService.aboutPageServiceIconIdentifier)}
+                    <span className='text-sm text-green-900'>{currentService.aboutPageServiceIconIdentifier}</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Services Page Content */}
+            <Card className='p-6'>
+              <div className='flex items-center gap-3 mb-4'>
+                <div className='w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center'>
+                  <FileText className='w-4 h-4 text-purple-600' />
+                </div>
+                <h3 className='text-lg font-semibold text-primary'>Services Page</h3>
+              </div>
+
+              <div className='space-y-4'>
+                <div>
+                  <label className='text-xs font-medium text-purple-700 uppercase tracking-wide'>Full Title</label>
+                  <p className='text-sm text-purple-900 font-medium mt-1'>{currentService.servicesPageFullTitleText}</p>
+                </div>
+
+                <div>
+                  <label className='text-xs font-medium text-purple-700 uppercase tracking-wide'>Sub-Services</label>
+                  <p className='text-sm text-purple-900 mt-1'>
                     {subServices.length} sub-service{subServices.length !== 1 ? 's' : ''} available
                   </p>
                 </div>
               </div>
-            </div>
-
-            {/* Timestamps */}
-            <div className='space-y-6'>
-              <h3 className='text-lg font-semibold text-primary'>Timeline</h3>
-
-              <div className='space-y-4'>
-                <div className='p-4 bg-gray-50 rounded-lg border border-gray-200'>
-                  <label className='text-xs font-medium text-gray-600 uppercase tracking-wide'>Created</label>
-                  <p className='text-sm text-gray-900'>
-                    {currentService.$createdAt ? getRelativeTime(currentService.$createdAt) : 'N/A'}
-                  </p>
-                </div>
-
-                <div className='p-4 bg-gray-50 rounded-lg border border-gray-200'>
-                  <label className='text-xs font-medium text-gray-600 uppercase tracking-wide'>Last Updated</label>
-                  <p className='text-sm text-gray-900'>
-                    {currentService.$updatedAt ? getRelativeTime(currentService.$updatedAt) : 'N/A'}
-                  </p>
-                </div>
-              </div>
-            </div>
+            </Card>
           </div>
 
-          {/* Description */}
-          <div className='space-y-4'>
-            <h3 className='text-lg font-semibold text-primary'>Service Description</h3>
-            <div className='p-6 bg-gray-50 rounded-lg border border-gray-200'>
-              <p className='text-primary/80 leading-relaxed whitespace-pre-wrap'>{currentService.serviceDescription}</p>
-            </div>
-          </div>
+          {/* Services Page Description */}
+          <Card className='p-6'>
+            <h3 className='text-lg font-semibold text-primary mb-4'>Services Page Description</h3>
+            <p className='text-primary/80 leading-relaxed whitespace-pre-wrap'>
+              {currentService.servicesPageFullDescriptionText}
+            </p>
+          </Card>
 
           {/* Sub-Services */}
           {subServices.length > 0 && (
-            <div className='space-y-4'>
-              <h3 className='text-lg font-semibold text-primary'>Sub-Services</h3>
+            <Card className='p-6'>
+              <h3 className='text-lg font-semibold text-primary mb-4'>Sub-Services</h3>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 {subServices.map((subService: SubService, index: number) => (
-                  <div key={index} className='p-4 bg-white rounded-lg border border-gray-200 shadow-sm'>
+                  <div key={index} className='p-4 bg-gray-50 rounded-lg border border-gray-200'>
                     <h4 className='font-semibold text-primary mb-2 text-base'>{subService.subServiceTitle}</h4>
                     <p className='text-primary/80 text-sm leading-relaxed'>{subService.subServiceDescription}</p>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           )}
+
+          {/* Timeline */}
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <Card className='p-4'>
+              <label className='text-xs font-medium text-gray-600 uppercase tracking-wide'>Created</label>
+              <p className='text-sm text-gray-900'>
+                {currentService.$createdAt ? getRelativeTime(currentService.$createdAt) : 'N/A'}
+              </p>
+            </Card>
+
+            <Card className='p-4'>
+              <label className='text-xs font-medium text-gray-600 uppercase tracking-wide'>Last Updated</label>
+              <p className='text-sm text-gray-900'>
+                {currentService.$updatedAt ? getRelativeTime(currentService.$updatedAt) : 'N/A'}
+              </p>
+            </Card>
+          </div>
         </div>
       </div>
     );
@@ -978,7 +1239,7 @@ const ServicesPage: React.FC = () => {
   if (currentView === 'create') {
     return (
       <DashboardLayout>
-        <div className='space-y-3 py-4'>
+        <div className='py-4 pb-0'>
           <ServiceForm isEdit={false} />
         </div>
       </DashboardLayout>
@@ -988,7 +1249,7 @@ const ServicesPage: React.FC = () => {
   if (currentView === 'edit') {
     return (
       <DashboardLayout>
-        <div className='space-y-3 py-4'>
+        <div className='py-4 pb-0'>
           <ServiceForm isEdit={true} />
         </div>
       </DashboardLayout>
@@ -998,7 +1259,7 @@ const ServicesPage: React.FC = () => {
   if (currentView === 'view') {
     return (
       <DashboardLayout>
-        <div className='space-y-3 py-4'>
+        <div className='py-4 pb-0'>
           <ViewService />
         </div>
       </DashboardLayout>
@@ -1008,7 +1269,7 @@ const ServicesPage: React.FC = () => {
   // Default list view with cards
   return (
     <DashboardLayout>
-      <div className='space-y-6 py-4'>
+      <div className='space-y-6 py-4 pb-0'>
         {/* Header */}
         <div className='flex justify-between items-center'>
           <h3 className='font-bold text-xl text-primary'>Services ({sortedServices.length})</h3>
@@ -1019,7 +1280,7 @@ const ServicesPage: React.FC = () => {
         </div>
 
         {/* Services Grid */}
-        <Card>
+        <Card className='mb-0'>
           <CardContent className='p-6'>
             {isLoading ? (
               <ServicesSkeleton />
@@ -1035,7 +1296,9 @@ const ServicesPage: React.FC = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                 {sortedServices.map((service, index) => {
                   const isNew = index < 3;
-                  const subServices = service.subServicesJson ? JSON.parse(service.subServicesJson) : [];
+                  const subServices = service.servicesPageSubServicesJson
+                    ? JSON.parse(service.servicesPageSubServicesJson)
+                    : [];
 
                   return (
                     <Card
@@ -1045,15 +1308,19 @@ const ServicesPage: React.FC = () => {
                     >
                       {/* Service Image/Icon */}
                       <div className='relative h-48 overflow-hidden'>
-                        {service.mediaBannerUrl || service.mediaThumbnailUrl ? (
+                        {service.servicesPageBannerImageUrl || service.homepageCardThumbnailImageUrl ? (
                           <img
-                            src={service.mediaBannerUrl || service.mediaThumbnailUrl}
-                            alt={service.mediaBannerAlt || service.mediaThumbnailAlt || service.serviceName}
+                            src={service.servicesPageBannerImageUrl || service.homepageCardThumbnailImageUrl}
+                            alt={
+                              service.servicesPageBannerImageAltText ||
+                              service.homepageCardThumbnailImageAltText ||
+                              service.homepageCardTitleText
+                            }
                             className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300'
                           />
                         ) : (
                           <div className='w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform duration-300'>
-                            {renderIcon(service.iconIdentifier, 'w-16 h-16 text-white')}
+                            {renderIcon(service.aboutPageServiceIconIdentifier, 'w-16 h-16 text-white')}
                           </div>
                         )}
 
@@ -1063,7 +1330,7 @@ const ServicesPage: React.FC = () => {
                         {/* Category Badge */}
                         <div className='absolute top-4 left-4'>
                           <span className='px-3 py-1 bg-white/80 backdrop-blur-md text-primary text-xs rounded-full border border-white/30'>
-                            {service.category}
+                            {service.aboutPageServiceCategoryText}
                           </span>
                         </div>
 
@@ -1075,7 +1342,7 @@ const ServicesPage: React.FC = () => {
                           </div>
                         </div>
 
-                        {/* Actions Menu - Positioned at bottom right */}
+                        {/* Actions Menu */}
                         <div className='absolute bottom-4 right-4'>
                           <DropdownMenu modal={false}>
                             <DropdownMenuTrigger asChild>
@@ -1091,16 +1358,29 @@ const ServicesPage: React.FC = () => {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align='end'>
-                              <DropdownMenuItem onClick={() => handleView(service)}>
+                              <DropdownMenuItem
+                                onClick={e => {
+                                  e.stopPropagation();
+                                  handleView(service);
+                                }}
+                              >
                                 <Eye className='h-4 w-4' />
                                 View Details
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleEdit(service)}>
+                              <DropdownMenuItem
+                                onClick={e => {
+                                  e.stopPropagation();
+                                  handleEdit(service);
+                                }}
+                              >
                                 <Edit className='h-4 w-4' />
                                 Edit Service
                               </DropdownMenuItem>
                               <DropdownMenuItem
-                                onClick={() => handleDelete(service)}
+                                onClick={e => {
+                                  e.stopPropagation();
+                                  handleDelete(service);
+                                }}
                                 className='text-red-600 focus:text-red-600'
                               >
                                 <Trash2 className='h-4 w-4' />
@@ -1117,7 +1397,7 @@ const ServicesPage: React.FC = () => {
                           {/* Title and New Badge */}
                           <div className='flex items-start justify-between gap-3'>
                             <h4 className='font-semibold text-lg text-primary line-clamp-2 leading-tight'>
-                              {service.serviceName}
+                              {service.homepageCardTitleText}
                             </h4>
                             {isNew && (
                               <div className='flex-shrink-0'>
@@ -1126,13 +1406,15 @@ const ServicesPage: React.FC = () => {
                             )}
                           </div>
 
-                          {/* Service Title */}
-                          <p className='text-primary/80 text-sm line-clamp-2'>{service.serviceTitle}</p>
+                          {/* Service Subtitle */}
+                          <p className='text-primary/80 text-sm line-clamp-2'>
+                            {service.aboutPageServiceFullTitleText}
+                          </p>
 
-                          {/* Summary */}
+                          {/* Homepage Description */}
                           <div className='flex items-start gap-2 text-sm'>
-                            <Bookmark className='w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0' />
-                            <span className='text-primary/90 font-medium line-clamp-2'>{service.serviceSummary}</span>
+                            <Home className='w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0' />
+                            <span className='text-primary/90 line-clamp-2'>{service.homepageCardDescriptionText}</span>
                           </div>
 
                           {/* Sub-services indicator */}
@@ -1143,9 +1425,10 @@ const ServicesPage: React.FC = () => {
                             </span>
                           </div>
 
-                          {/* Description Preview */}
-                          <p className='text-primary/70 text-xs line-clamp-3 leading-relaxed'>
-                            {service.serviceDescription}
+                          {/* Hero Step Preview */}
+                          <p className='text-primary/70 text-xs line-clamp-2 leading-relaxed'>
+                            <Globe className='w-3 h-3 inline mr-1' />
+                            {service.homepageHeroStepDescriptionText}
                           </p>
                         </div>
                       </CardContent>
@@ -1165,7 +1448,7 @@ const ServicesPage: React.FC = () => {
           title='Delete Service'
           description={
             selectedService
-              ? `Are you sure you want to delete "${selectedService.serviceName}"? This action cannot be undone and will remove all associated data.`
+              ? `Are you sure you want to delete "${selectedService.homepageCardTitleText}"? This action cannot be undone and will remove all associated data.`
               : 'Are you sure you want to delete this service? This action cannot be undone.'
           }
           confirmText='Delete Permanently'
