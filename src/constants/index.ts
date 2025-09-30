@@ -54,6 +54,7 @@ export const CATEGORIES = [
   'Development Initiative',
   'Marketing',
   'Training',
+  'Exhibition',
   'Other',
 ] as const;
 
