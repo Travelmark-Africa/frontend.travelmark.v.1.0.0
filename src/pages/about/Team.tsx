@@ -20,7 +20,7 @@ const Team = () => {
     } else if (count === 4) {
       classes += 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-5xl';
     } else {
-      classes += 'grid-cols-1 md:grid-cols-3 lg:grid-cols-5 max-w-full';
+      classes += 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-5xl';
     }
 
     return classes;
