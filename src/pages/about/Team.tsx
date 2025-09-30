@@ -120,7 +120,7 @@ const Team = () => {
             </div>
             <h3 className='text-xl font-bold mb-1'>{member.fullName}</h3>
             <p className='text-gray-600 text-sm'>{member.position}</p>
-            <Link to={`${member.bio}`} className='text-center mt-2'>
+            <Link to={`${member.bio}`} className='text-center mt-2' target='_blank'>
               <Linkedin className='text-blue-600 hover:text-blue-800 transition-all duration-500' />
             </Link>
           </div>
