@@ -8,24 +8,6 @@ const Team = () => {
 
   const teamMembers = teamData?.data || [];
 
-  const getGridClasses = (count: number) => {
-    let classes = 'grid gap-8 mb-16 justify-items-center mx-auto ';
-
-    if (count === 1) {
-      classes += 'grid-cols-1 max-w-xs';
-    } else if (count === 2) {
-      classes += 'grid-cols-1 md:grid-cols-2 max-w-2xl';
-    } else if (count === 3) {
-      classes += 'grid-cols-1 md:grid-cols-3 max-w-4xl';
-    } else if (count === 4) {
-      classes += 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-5xl';
-    } else {
-      classes += 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-5xl';
-    }
-
-    return classes;
-  };
-
   if (isLoading) {
     return (
       <div className='w-full bg-secondary/10 py-16 px-4'>
@@ -40,13 +22,14 @@ const Team = () => {
         </div>
 
         <div className='grid gap-8 mb-16 grid-cols-1 md:grid-cols-3 justify-items-center mx-auto max-w-4xl'>
-          {Array.from({ length: 3 }).map((_, index) => (
+          {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className='flex flex-col items-center text-center'>
               <div className='mb-4 w-48 h-48 rounded-full overflow-hidden border-4 border-secondary/10 bg-[#FFF0E6]'>
                 <Skeleton className='w-full h-full rounded-full' />
               </div>
               <Skeleton className='h-6 w-32 mb-1' />
-              <Skeleton className='h-4 w-24' />
+              <Skeleton className='h-4 w-24 mb-1' />
+              <Skeleton className='h-8 w-10' />
             </div>
           ))}
         </div>
@@ -112,7 +95,7 @@ const Team = () => {
         </p>
       </div>
 
-      <div className={getGridClasses(teamMembers.length)}>
+      <div className="grid gap-8 mb-16 justify-items-center mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-3xl">
         {teamMembers.map((member, index) => (
           <div key={member.$id || index} className='flex flex-col items-center text-center'>
             <div className='mb-4 w-48 h-48 rounded-full overflow-hidden border-4 border-secondary/10 bg-[#FFF0E6]'>
